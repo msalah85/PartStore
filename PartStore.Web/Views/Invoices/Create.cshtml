@@ -1,0 +1,131 @@
+﻿@model PartStore.Core.StoreModels.Invoices
+@{
+    ViewData["Title"] = "Create";
+}
+<h2>Add/Edit</h2>
+<h4>Invoice</h4>
+<hr />
+<form id="aspnetForm" asp-action="Save">
+    <div class="row">
+        <div class="col-md-12">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="hidden" asp-for="Id" value="0" />
+                    <div class="form-group">
+                        <label asp-for="AccountId" class="control-label">Customer</label>
+                        <select asp-for="AccountId" class="select2 form-control" asp-items="ViewBag.AccountId"></select>
+                        <span asp-validation-for="AccountId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="InvoiceNo" class="control-label">Refrence No</label>
+                        <input asp-for="InvoiceNo" class="form-control" value="@ViewBag.InvoiceNo" />
+                        <span asp-validation-for="InvoiceNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label" for="AddDate">Date</label>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input id="AddDate" type="text" class="form-control datepicker today">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="Notes">Notes</label>
+                        <textarea class="form-control" id="Notes" cols="2" rows="2"></textarea>
+                        <span asp-validation-for="Notes" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="listItems" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th width="50" class="text-center" title="Index">#</th>
+                        <th width="350px">Choose car</th>
+                        <th>Part name</th>
+                        <th width="100px">Quantity</th>
+                        <th width="120px" title="Unit price">Price <sub>$</sub></th>
+                        <th width="120px">Total <sub>$</sub></th>
+                    </tr>
+                </thead>
+                <tbody class="ui-sortable">
+                    <tr>
+                        <td class="itemdiv text-center"><span class="num">1</span><input type="hidden" name="childID" value="0" /></td>
+                        <td class="edit">
+                            <select asp-for="InvoiceDetails.First().ItemId" id="car_1" required class="select2 form-control cars" asp-items="ViewBag.Cars" data-placeholder="Choose a car"></select>
+                        </td>
+                        <td class="edit">
+                            <input asp-for="InvoiceDetails.First().PartName" required class="input-block-level form-control" type="text" />
+                        </td>
+                        <td class="edit">
+                            <input asp-for="InvoiceDetails.First().Quantity" required class="input-block-level form-control" type="number" value="0" />
+                        </td>
+                        <td class="edit">
+                            <input asp-for="InvoiceDetails.First().Price" required class="input-block-level form-control money" type="text" value="0" />
+                        </td>
+                        <td class="money">0</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="5">
+                            <button type="button" class="btn btn-default newLine btn-xs" data-toggle="tooltip" title="Add new line">New part</button>
+                            <strong class="pull-right blue">Total <sub>$</sub></strong>
+                        </th>
+                        <th style="border-right: 0.5px dotted rgba(213, 213, 213, 0.63)!important;" id="TotalAmount">0</th>
+                    </tr>
+                    <tr>
+                        <th colspan="5"><strong class="pull-right purple">Discount <sub>$</sub></strong></th>
+                        <th style="border-right: 0!important;" class="edit">
+                            <input asp-for="Discount" name="Discount" id="Discount" required class="input-block-level form-control bolder money" type="text" value="0" />
+                            <span asp-validation-for="Discount" class="text-danger"></span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="5"><strong class="pull-right green">Net price <sub>$</sub></strong></th>
+                        <th style="border-right: 0.5px dotted rgba(213, 213, 213, 0.63)!important;" id="NetAmount">0</th>
+                    </tr>
+                </tfoot>
+            </table>
+            <div>
+                <a class="btn" asp-action="Index">Back to List</a>
+                <button type="submit" id="btnSave" class="btn btn-app btn-success pull-right" title="Save"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Save all</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    var avialableCars = [];
+    @foreach (var d in ViewBag.Cars)
+    {
+        @:avialableCars.push({ id: '@d?.Value', text: '@d?.Text' });
+    }
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/autoNumeric.js"></script>
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/app/DataService.js"></script>
+    <script src="~/lib/app/Common.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script src="~/lib/numeral.js"></script>
+    <script src="~/lib/jquery/dist/jquery-ui.js"></script>
+    <script src="~/lib/moment/moment.js"></script>
+    <script src="~/lib/datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/lib/app/parts/partsadd.js"></script>
+}
+@section Styles{
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/select2/bootstrap-theme/select2-bootstrap.css" rel="stylesheet" />
+    <link href="~/css/invoice-add.css" rel="stylesheet" />
+    <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/lib/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+}

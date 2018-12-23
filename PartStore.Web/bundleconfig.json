@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "wwwroot/lib/numeral.min.js",
+    "inputFiles": [
+      "wwwroot/lib/numeral.js"
+    ]
+  }
+]

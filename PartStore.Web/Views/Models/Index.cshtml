@@ -1,0 +1,41 @@
+﻿@model IEnumerable<PartStore.Core.StoreModels.Models>
+
+@{
+    ViewData["Title"] = "Models";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-bordered table-responsive table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ModelName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Make)
+            </th>
+            <th width="15%">Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModelName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Make.MakeName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ModelId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ModelId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,69 @@
+﻿@model PartStore.Core.StoreModels.Payments
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Payments</h4>
+<hr />
+<div class="row">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InvoiceId" class="control-label">Invoice No</label>
+                <select asp-for="InvoiceId" class="form-control" asp-items="ViewBag.InvoiceId"><option value="">Choose an invoice</option></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountId" class="control-label">Account</label>
+                <select asp-for="AccountId" class="form-control" asp-items="ViewBag.AccountId"><option value="">Choose an account</option></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentTypeId" class="control-label">Payment type</label>
+                <select asp-for="PaymentTypeId" class="form-control" asp-items="ViewBag.PaymentTypeId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="OperationId" class="control-label">Operation</label>
+                <select asp-for="OperationId" class="form-control" asp-items="ViewBag.OperationId"></select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="FromBankId" class="control-label">From bank</label>
+                <select asp-for="FromBankId" class="form-control" asp-items="ViewBag.FromBankId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToBankId" class="control-label">To bank</label>
+                <select asp-for="ToBankId" class="form-control" asp-items="ViewBag.ToBankId">
+                    <option value="">Choose to bank</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RefNo" class="control-label">Ref No.</label>
+                <input asp-for="RefNo" class="form-control" />
+                <span asp-validation-for="RefNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notes" class="control-label"></label>
+                <textarea asp-for="Notes" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </form>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

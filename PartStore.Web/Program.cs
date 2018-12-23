@@ -19,6 +19,7 @@ namespace PartStore.Web
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                //.UseUrls("https://localhost:8880/")
                 .UseStartup<Startup>();
     }
 }
