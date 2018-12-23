@@ -1,90 +1,117 @@
 ﻿@model PartStore.Core.StoreModels.Invoices
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Print";
 }
 
-<h2>Details</h2>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-body printableArea">
+            <h3><b>TAX INVOICE</b> <span class="pull-right">#@Html.DisplayFor(model => model.InvoiceNo)</span></h3>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <address>
+                            <h3><b class="text-danger">A-Z Auto Car Parts</b></h3>
+                            <p class="text-muted m-l-5">
+                                Block #15, Dajla Road,
+                                <br />Industerial Area #6,
+                                <br> Sharjah,
+                                <br> UAE - 33930
+                                <br />TRX: 00000000000000
+                            </p>
+                        </address>
+                    </div>
+                    <div class="pull-right text-right">
+                        <address>
+                            <h3>To,</h3>
+                            <h4 class="font-bold">@Html.DisplayFor(model => model.Account.Title),</h4>
+                            <p class="text-muted m-l-30">
+                                @Html.DisplayFor(model => model.Account.Address)
+                                <br />
+                            </p>
+                            <p class="m-t-30"><b>Invoice Date :</b> <i class="fa fa-calendar"></i> @Html.DisplayFor(model => model.AddDate)</p>
+                        </address>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responsive m-t-40" style="clear: both;">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Description</th>
+                                    <th class="text-right">Quantity</th>
+                                    <th class="text-right">Unit Cost</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.InvoiceDetails)
+                                {
+                                    <tr>
+                                        <td class="text-center">@item.Id</td>
+                                        <td>@item.PartName</td>
+                                        <td class="text-right">@item.Quantity</td>
+                                        <td class="text-right">@item.Price</td>
+                                        <td class="text-right">@item.SubTotal</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="pull-right m-t-30 text-right">
+                        <p>Sub - Total amount: @Html.DisplayFor(model => model.TotalAmount)</p>
+                        <p>VAT (5%): @Html.DisplayFor(model => model.Tax) </p>
+                        <p>Discount: @Html.DisplayFor(model => model.Discount) </p>
+                        <hr>
+                        <h3><b>Total :</b> @Html.DisplayFor(model => model.NetAmount)</h3>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                    <p>
+                        Remarks: @Html.DisplayFor(model => model.Notes)
+                    </p>
+                    <div class="text-right">
+                        @*<button class="btn btn-danger" type="submit"> Proceed to payment </button>*@
+                        <button id="print" class="btn btn-default btn-outline noprint" type="button" onclick="window.print();">
+                            <span class="glyphicon glyphicon-print"></span>
+                            Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="noprint">
+    <a class="noprint" asp-action="Create" asp-route-id="@Model.Id">Edit</a> |
+    <a class="noprint" asp-action="Index">Back to List</a>
+</div>
+@section Styles{
+    <style>
+        .card {
+            background-color: #fff;
+            color: #455a64;
+        }
 
-<div>
-    <h4>Invoices</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.InvoiceNo)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.InvoiceNo)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.TotalAmount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Discount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Discount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Tax)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Tax)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.NetAmount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.NetAmount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Ip)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Ip)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IsCache)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsCache)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AddDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AddDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AddTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AddTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Account)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Account.AccountId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+        .btn {
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            color: #455a64;
+        }
+
+        .card-body .btn span.glyphicon {
+            font-size: 1.4rem;
+        }
+    </style>
+    <style media="print" type="text/css">
+        .noprint {
+            display: none
+        }
+    </style>
+}

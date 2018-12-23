@@ -17,15 +17,13 @@ namespace PartStore.Web.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
-
+            ViewData["Message"] = "";
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
-
+            ViewData["Message"] = "We are happy to assest you :)";
             return View();
         }
 

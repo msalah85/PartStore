@@ -36,6 +36,7 @@ namespace PartStore.Web.Controllers
 
             var invoices = await _context.Invoices
                 .Include(i => i.Account)
+                .Include(i => i.InvoiceDetails) //.ThenInclude(d => d.Items)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (invoices == null)
             {

@@ -16,9 +16,11 @@ namespace PartStore.Core.StoreModels
         public int? AccountId { get; set; }
         public string InvoiceNo { get; set; }
         public string Notes { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal TotalAmount { get; set; }
         public decimal Discount { get; set; }
         public decimal? Tax { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal NetAmount { get; set; }
         public int? UserId { get; set; }
         public string Ip { get; set; }

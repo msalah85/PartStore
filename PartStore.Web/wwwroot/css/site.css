@@ -51,8 +51,7 @@ body {
     padding: 0px;
 }
 
-.card {
-    background-color: #f4f6f9;
+.card {    
     -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
     border-radius: 4px;
@@ -181,6 +180,9 @@ html body .m-t-10 {
 
 .bg-megna {
     background-color: #56c0d8;
+}
+.bg-grey {
+    background-color: #f4f6f9;
 }
 
 @media (min-width: 768px) {

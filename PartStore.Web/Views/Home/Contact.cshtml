@@ -5,13 +5,32 @@
 <h3>@ViewData["Message"]</h3>
 
 <address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
+    Mohamed Salah<br />
+    Dubai, UAE<br />
+    <abbr title="Phone">Call:</abbr>
+    <a href="tel:00971506406641">
+        +971-506406641
+    </a><br />
+    <abbr title="Whatsapp message">Whatsapp:</abbr>
+    <a href="https://web.whatsapp.com/send?phone=+971506406641&amp;text=Hi," class="hidemobile">
+        +971-506406641
+    </a>
+    <a href="https://api.whatsapp.com/send?phone=+971506406641&text=Hi," class="hideweb">
+        +971-506406641
+    </a>
 </address>
 
 <address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+    <strong>Support:</strong> <a href="mailto:eng.msalah.abdullah@gmail.com">eng.msalah.abdullah@gmail.com</a>
 </address>
+@section Scripts{
+    <script type="text/javascript">
+        var mobile = (/iphone|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+        if (mobile) {
+            $('.hidemobile').css('display', 'none');
+        }
+        else {
+            $('.hideweb').css('display', 'none');
+        }
+    </script>
+}

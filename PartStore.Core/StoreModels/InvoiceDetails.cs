@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PartStore.Core.StoreModels
 {
@@ -10,8 +11,10 @@ namespace PartStore.Core.StoreModels
         public long? ItemId { get; set; }
         public string PartName { get; set; }
         public int Quantity { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Price { get; set; }
         public decimal? Discount { get; set; } = 0;
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal SubTotal { get; set; }
 
         public Invoices Invoice { get; set; }

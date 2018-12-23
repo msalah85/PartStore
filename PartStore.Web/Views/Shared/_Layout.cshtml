@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PartStore.Web</title>
+    <title>@ViewData["Title"] - Part Store Web</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -63,8 +63,8 @@
     <partial name="_CookieConsentPartial" />
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
+        <hr class="noprint" />
+        <footer class="noprint">
             <p>&copy; @DateTime.Now.Year - Parts Store Web</p>
         </footer>
     </div>
