@@ -1,19 +1,17 @@
-﻿@model IEnumerable<PartStore.Core.StoreModels.Banks>
+﻿@using SysLanguages;
+@model IEnumerable<PartStore.Core.StoreModels.Banks>
 
 @{
-    ViewData["Title"] = "Banks";
+    ViewData["Title"] = Lang.Banks;
 }
 
 <h2>@ViewData["Title"]</h2>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Lang.New</a>
 </p>
 <table class="table table-bordered table-responsive table-hover table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -28,11 +26,8 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Lang.Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Lang.Delete</a>
                 </td>
             </tr>
         }

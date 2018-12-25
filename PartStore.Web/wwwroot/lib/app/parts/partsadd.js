@@ -191,9 +191,7 @@ var partsManager = function () {
                     _data.invoiceDetails.push(itm);
                 }
             });
-
-            console.log(_data);
-
+            
             if (_data.accountId !== '' && _data.invoiceDetails.length > 0) {
                 commonManger.doWork(pageElements.form, url, _data, successSaveClient);
             } else {

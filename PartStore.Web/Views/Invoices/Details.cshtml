@@ -1,14 +1,15 @@
-﻿@model PartStore.Core.StoreModels.Invoices
+﻿@using SysLanguages;
+@model PartStore.Core.StoreModels.Invoices
 
 @{
-    ViewData["Title"] = "Print";
+    ViewData["Title"] = Lang.Print;
 }
 
 <br />
 <div class="row">
     <div class="col-md-12">
         <div class="card card-body printableArea">
-            <h3><b>TAX INVOICE</b> <span class="pull-right">#@Html.DisplayFor(model => model.InvoiceNo)</span></h3>
+            <h3><b>@Lang.TaxInvoice</b> <span class="pull-right">#@Html.DisplayFor(model => model.InvoiceNo)</span></h3>
             <hr>
             <div class="row">
                 <div class="col-md-12">
@@ -89,7 +90,7 @@
     </div>
 </div>
 <div class="noprint">
-    <a class="noprint" asp-action="Create" asp-route-id="@Model.Id">Edit</a> |
+    <a class="noprint" asp-action="Create" asp-route-id="@Model.Id">@Lang.Edit</a> |
     <a class="noprint" asp-action="Index">Back to List</a>
 </div>
 @section Styles{
@@ -107,11 +108,6 @@
 
         .card-body .btn span.glyphicon {
             font-size: 1.4rem;
-        }
-    </style>
-    <style media="print" type="text/css">
-        .noprint {
-            display: none
         }
     </style>
 }

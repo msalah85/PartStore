@@ -24,12 +24,19 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PartStore.Core\PartStore.Core.csproj" />
+    <ProjectReference Include="..\SysLanguages\SysLanguages.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\lib\datepicker\" />
     <Folder Include="wwwroot\lib\moment\" />
     <Folder Include="wwwroot\lib\select2\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Shared\_TopMenu.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

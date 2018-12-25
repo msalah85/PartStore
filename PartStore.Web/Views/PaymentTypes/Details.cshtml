@@ -1,13 +1,14 @@
-﻿@model PartStore.Core.StoreModels.PaymentTypes
+﻿@using SysLanguages
+@model PartStore.Core.StoreModels.PaymentTypes
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Lang.Details;
 }
 
-<h2>Details</h2>
+<h2>@Lang.Details</h2>
 
 <div>
-    <h4>PaymentTypes</h4>
+    <h4>@Lang.PaymentTypes</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,6 +20,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">@Lang.Edit</a> |
+    <a asp-action="Index">@Lang.BackToList</a>
 </div>

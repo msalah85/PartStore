@@ -1,12 +1,12 @@
-﻿@model PartStore.Core.StoreModels.Models
+﻿@using SysLanguages
+@model PartStore.Core.StoreModels.Models
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = Lang.New;
 }
 
-<h2>Create</h2>
-
-<h4>Models</h4>
+<h2>@Lang.New</h2>
+<h4>@Lang.Models</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="MakeId" class="control-label"></label>
-                <select asp-for="MakeId" class ="form-control" asp-items="ViewBag.MakeId"></select>
+                <select asp-for="MakeId" class="form-control" asp-items="ViewBag.MakeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ModelName" class="control-label"></label>
@@ -22,14 +22,14 @@
                 <span asp-validation-for="ModelName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="@Lang.Create" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Lang.BackToList</a>
 </div>
 
 @section Scripts {

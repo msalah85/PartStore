@@ -1,9 +1,10 @@
-﻿@model PartStore.Core.StoreModels.Invoices
+﻿@using SysLanguages;
+@model PartStore.Core.StoreModels.Invoices
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = @Lang.Create;
 }
-<h2>Add/Edit</h2>
-<h4>Invoice</h4>
+<h2>@Lang.New</h2>
+<h4>@Lang.Invoice</h4>
 <hr />
 <form id="aspnetForm" asp-action="Save">
     <div class="row">
@@ -13,30 +14,29 @@
                 <div class="col-md-6">
                     <input type="hidden" asp-for="Id" value="0" />
                     <div class="form-group">
-                        <label asp-for="AccountId" class="control-label">Customer</label>
+                        <label asp-for="AccountId" class="control-label">@Lang.Customer</label>
                         <select asp-for="AccountId" class="select2 form-control" asp-items="ViewBag.AccountId"></select>
                         <span asp-validation-for="AccountId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="InvoiceNo" class="control-label">Refrence No</label>
+                        <label asp-for="InvoiceNo" class="control-label"></label>
                         <input asp-for="InvoiceNo" class="form-control" value="@ViewBag.InvoiceNo" />
                         <span asp-validation-for="InvoiceNo" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="AddDate">Date</label>
+                        <label class="control-label" asp-for="AddDate"></label>
                         <div class="input-group date" data-provide="datepicker">
-                            <input id="AddDate" type="text" class="form-control datepicker today">
+                            <input asp-for="AddDate" type="text" class="form-control datepicker today">
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-th"></span>
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label" for="Notes">Notes</label>
-                        <textarea class="form-control" id="Notes" cols="2" rows="2"></textarea>
+                        <label class="control-label" asp-for="Notes"></label>
+                        <textarea class="form-control" asp-for="Notes" id="Notes" cols="2" rows="2"></textarea>
                         <span asp-validation-for="Notes" class="text-danger"></span>
                     </div>
                 </div>
@@ -49,11 +49,11 @@
                 <thead>
                     <tr>
                         <th width="50" class="text-center" title="Index">#</th>
-                        <th width="350px">Choose car</th>
+                        <th width="350px">@Lang.ChooseACar</th>
                         <th>Part name</th>
-                        <th width="100px">Quantity</th>
-                        <th width="120px" title="Unit price">Price <sub>$</sub></th>
-                        <th width="120px">Total <sub>$</sub></th>
+                        <th width="100px">@Lang.Quantity</th>
+                        <th width="120px" title="Unit price">@Lang.Price <sub>$</sub></th>
+                        <th width="120px">@Lang.Total <sub>$</sub></th>
                     </tr>
                 </thead>
                 <tbody class="ui-sortable">
@@ -77,27 +77,27 @@
                 <tfoot>
                     <tr>
                         <th colspan="5">
-                            <button type="button" class="btn btn-default newLine btn-xs" data-toggle="tooltip" title="Add new line">New part</button>
-                            <strong class="pull-right blue">Total <sub>$</sub></strong>
+                            <button type="button" class="btn btn-default newLine btn-xs" data-toggle="tooltip" title="Add new line">@Lang.NewPart</button>
+                            <strong class="pull-right blue">@Lang.Total <sub>$</sub></strong>
                         </th>
                         <th style="border-right: 0.5px dotted rgba(213, 213, 213, 0.63)!important;" id="TotalAmount">0</th>
                     </tr>
                     <tr>
-                        <th colspan="5"><strong class="pull-right purple">Discount <sub>$</sub></strong></th>
+                        <th colspan="5"><strong class="pull-right purple">@Lang.Discount <sub>$</sub></strong></th>
                         <th style="border-right: 0!important;" class="edit">
                             <input asp-for="Discount" name="Discount" id="Discount" required class="input-block-level form-control bolder money" type="text" value="0" />
                             <span asp-validation-for="Discount" class="text-danger"></span>
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="5"><strong class="pull-right green">Net price <sub>$</sub></strong></th>
+                        <th colspan="5"><strong class="pull-right green">@Lang.NetPrice <sub>$</sub></strong></th>
                         <th style="border-right: 0.5px dotted rgba(213, 213, 213, 0.63)!important;" id="NetAmount">0</th>
                     </tr>
                 </tfoot>
             </table>
             <div>
-                <a class="btn" asp-action="Index">Back to List</a>
-                <button type="submit" id="btnSave" class="btn btn-app btn-success pull-right" title="Save"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> Save all</button>
+                <a class="btn" asp-action="Index">@Lang.BackToList</a>
+                <button type="submit" id="btnSave" class="btn btn-app btn-success pull-right" title="Save"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> @Lang.SaveAll</button>
             </div>
         </div>
     </div>

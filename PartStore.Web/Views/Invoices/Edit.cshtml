@@ -1,12 +1,12 @@
-﻿@model PartStore.Core.StoreModels.Invoices
+﻿@using SysLanguages;
+@model PartStore.Core.StoreModels.Invoices
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = Lang.Edit;
 }
 
-<h2>Edit</h2>
-
-<h4>Invoices</h4>
+<h2>@Lang.Edit</h2>
+<h4>@Lang.Invoices</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -74,14 +74,14 @@
                 <span asp-validation-for="AddTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="@Lang.Save" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Lang.BackToList</a>
 </div>
 
 @section Scripts {

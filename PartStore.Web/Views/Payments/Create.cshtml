@@ -1,69 +1,91 @@
-﻿@model PartStore.Core.StoreModels.Payments
+﻿@using SysLanguages
+@model PartStore.Core.StoreModels.Payments
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Payment";
 }
 
-<h2>Create</h2>
-
-<h4>Payments</h4>
+<h2>@Lang.New</h2>
+<h4>@ViewData["Title"]</h4>
 <hr />
 <div class="row">
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-md-6">
             <div class="form-group">
+                <label asp-for="OperationId" class="control-label">@Lang.Operation</label>
+                <select asp-for="OperationId" class="form-control" asp-items="ViewBag.OperationId"></select>
+            </div>
+            <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" class="form-control" />
+                <div class="input-group">
+                    <input asp-for="Amount" class="form-control" />
+                    <div class="input-group-addon">$</div>
+                </div>
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="InvoiceId" class="control-label">Invoice No</label>
-                <select asp-for="InvoiceId" class="form-control" asp-items="ViewBag.InvoiceId"><option value="">Choose an invoice</option></select>
+            <div class="form-group hidden">
+                <label asp-for="InvoiceId" class="control-label">@Lang.InvoiceNo</label>
+                <select asp-for="InvoiceId" class="form-control" asp-items="ViewBag.InvoiceId"><option value="">@Lang.ChooseInvoice</option></select>
             </div>
-            <div class="form-group">
+            <div class="form-group Account">
                 <label asp-for="AccountId" class="control-label">Account</label>
-                <select asp-for="AccountId" class="form-control" asp-items="ViewBag.AccountId"><option value="">Choose an account</option></select>
+                <select asp-for="AccountId" class="form-control select2" asp-items="ViewBag.AccountId"><option value="">@Lang.ChooseAccount</option></select>
             </div>
             <div class="form-group">
-                <label asp-for="PaymentTypeId" class="control-label">Payment type</label>
-                <select asp-for="PaymentTypeId" class="form-control" asp-items="ViewBag.PaymentTypeId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="OperationId" class="control-label">Operation</label>
-                <select asp-for="OperationId" class="form-control" asp-items="ViewBag.OperationId"></select>
+                <label asp-for="PaymentTypeId" class="control-label">@Lang.DebitCreditTransferType</label>
+                <a title="Add new type" asp-controller="PaymentTypes" asp-action="Create"><span class="glyphicon glyphicon-plus"></span></a>
+                <select asp-for="PaymentTypeId" class="form-control select2" required asp-items="ViewBag.PaymentTypeId"></select>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label asp-for="FromBankId" class="control-label">From bank</label>
-                <select asp-for="FromBankId" class="form-control" asp-items="ViewBag.FromBankId"></select>
+                <label asp-for="AddDate" class="control-label">@Lang.Date</label>
+                <div class="input-group date" data-provide="datepicker">
+                    <input asp-for="AddDate" id="AddDate" type="text" class="form-control datepicker today">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+                <span asp-validation-for="AddDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ToBankId" class="control-label">To bank</label>
-                <select asp-for="ToBankId" class="form-control" asp-items="ViewBag.ToBankId">
+            <div class="form-group banks" id="banks1">
+                <label asp-for="FromBankId" class="control-label">@Lang.FromBank</label>
+                <a title="Add new bank" asp-controller="Banks" asp-action="Create"><span class="glyphicon glyphicon-plus"></span></a>
+                <select asp-for="FromBankId" class="form-control select2" required asp-items="ViewBag.FromBankId"><option value="">@Lang.ChooseBank</option></select>
+            </div>
+            <div class="form-group hidden banks" id="banks2">
+                <label asp-for="ToBankId" class="control-label">@Lang.ToBank</label>
+                <a title="Add new bank" asp-controller="Banks" asp-action="Create"><span class="glyphicon glyphicon-plus"></span></a>
+                <select asp-for="ToBankId" class="form-control select2" required asp-items="ViewBag.ToBankId">
                     <option value="">Choose to bank</option>
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="RefNo" class="control-label">Ref No.</label>
+                <label asp-for="RefNo" class="control-label">@Lang.RefNo</label>
                 <input asp-for="RefNo" class="form-control" />
                 <span asp-validation-for="RefNo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Notes" class="control-label"></label>
-                <textarea asp-for="Notes" class="form-control" rows="5"></textarea>
+                <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="@Lang.Create" class="btn btn-default" />
             </div>
         </div>
     </form>
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Lang.BackToList</a>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <script src="~/lib/datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/app/parts/addPayment.js"></script>}
+@section Styles{
+    <link href="~/lib/datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/select2/bootstrap-theme/select2-bootstrap.css" rel="stylesheet" />}

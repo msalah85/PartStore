@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PartStore.Core.StoreModels.PaymentTypes>
+﻿@using SysLanguages
+@model IEnumerable<PartStore.Core.StoreModels.PaymentTypes>
 
 @{
     ViewData["Title"] = "Payments types";
@@ -7,7 +8,7 @@
 <h2>@ViewData["Title"]</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Lang.New</a>
 </p>
 <table class="table table-bordered table-responsive table-hover table-striped">
     <thead>
@@ -19,16 +20,17 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Lang.Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Lang.Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

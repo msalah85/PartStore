@@ -1,108 +1,70 @@
-﻿@model PartStore.Core.StoreModels.Payments
+﻿@using SysLanguages
+@model PartStore.Core.StoreModels.Payments
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Lang.PrintReceipt;
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>Payments</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Amount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Discount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Discount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Tax)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Tax)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Extra)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Extra)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Total)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Total)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AddDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AddDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AddTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AddTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.RefNo)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RefNo)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Account)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Account.AccountId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.FromBank)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FromBank.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Invoice)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Invoice.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Operation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Operation.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PaymentType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PaymentType.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ToBank)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ToBank.Name)
-        </dd>
-    </dl>
+<h2 class="noprint">@ViewData["Title"]</h2>
+<hr class="noprint" />
+<div class="row">
+    <div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <address>
+                    <strong class="text-danger">A-Z Auto Car Parts</strong>
+                    <p class="text-muted m-l-5">
+                        مربع #15, شارع دجلة,
+                        <br />المنطقة الصناعية السادسة #6,
+                        <br> الشارقة,
+                        <br> الإمارات - 33930
+                        <br />الرقم الضريبي: 00000000000000
+                    </p>
+                </address>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                <p>
+                    <em>@Lang.Date: @Html.DisplayFor(model => model.AddDate)</em>
+                </p>
+                <p>
+                    <em>@Lang.ReceiptNo #: @Html.DisplayFor(model => model.Id)</em>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="text-center">
+                <h1>@Lang.Receipt @Html.DisplayFor(model => model.Operation.Name)</h1>
+            </div>
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <td class="col-md-12">@Lang.Amount: @Html.DisplayFor(model => model.Amount) @Lang.Only.</td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-12">For: @Html.DisplayFor(model => model.PaymentType.Name). <span class="pull-right">@Lang.WithReferenceCheckNo: @Html.DisplayFor(model => model.RefNo).</span></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-12"><em>@Lang.FromToName:</em> @Html.DisplayFor(model => model.Account.Title)</td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-12">
+                            <em>@Lang.FromToBankCache:</em>
+                            @Html.DisplayFor(model => model.FromBank.Name)
+                            @Html.DisplayFor(model => model.ToBank.Name)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-12"><em>@Lang.Notes:</em> @Html.DisplayFor(model => model.Notes)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-lg btn-block noprint" onclick="window.print();">
+                <span class="glyphicon glyphicon-print"></span>
+                @Lang.Print
+            </button>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="noprint">
+    <a asp-action="Edit" asp-route-id="@Model.Id">@Lang.Edit</a> |
+    <a asp-action="Index">@Lang.BackToList</a>
 </div>

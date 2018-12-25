@@ -1,31 +1,31 @@
-﻿@model PartStore.Core.StoreModels.Years
+﻿@using SysLanguages
+@model PartStore.Core.StoreModels.Years
 
 @{
-    ViewData["Title"] = "Edit Years";
+    ViewData["Title"] = Lang.Years;
 }
 
-<h2>Edit</h2>
-
-<h4>Years</h4>
+<h2>@Lang.Edit</h2>
+<h4>@Lang.Years</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="YearId" class="control-label">Year</label>
+                <label asp-for="YearId" class="control-label">@Lang.Year</label>
                 <input asp-for="YearId" class="form-control" />
                 <span asp-validation-for="YearId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="@Lang.Save" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Lang.BackToList</a>
 </div>
 
 @section Scripts {

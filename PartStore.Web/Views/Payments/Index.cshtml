@@ -1,21 +1,22 @@
-﻿@model IEnumerable<PartStore.Core.StoreModels.Payments>
+﻿@using SysLanguages
+@model IEnumerable<PartStore.Core.StoreModels.Payments>
 
 @{
-    ViewData["Title"] = "Payments";
+    ViewData["Title"] = Lang.Payments;
 }
 
 <h2>@ViewData["Title"]</h2>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Lang.New</a>
 </p>
-<table class="table table-bordered table-responsive table-hover table-striped">
+<table class="table table-bordered table-responsive table-hover table-striped datatable2">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Amount)
+                @Html.DisplayNameFor(model => model.AddDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AddDate)
+                @Html.DisplayNameFor(model => model.Amount)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RefNo)
@@ -24,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.Account)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FromBank)
+                @Lang.BankCache
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Invoice)
@@ -33,7 +34,7 @@
                 @Html.DisplayNameFor(model => model.Operation)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentType)
+                @Lang.PaymentType
             </th>
             <th></th>
         </tr>
@@ -43,10 +44,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Amount)
+                    @Html.DisplayFor(modelItem => item.AddDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AddDate)
+                    @Html.DisplayFor(modelItem => item.Amount)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RefNo)
@@ -56,6 +57,7 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FromBank.Name)
+                    @Html.DisplayFor(modelItem => item.ToBank.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Invoice.InvoiceNo)
@@ -67,11 +69,25 @@
                     @Html.DisplayFor(modelItem => item.PaymentType.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Print</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Lang.Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">@Lang.Print</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Lang.Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.datatable2').DataTable({ pageLength: 50});
+        });
+    </script>
+}
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+}

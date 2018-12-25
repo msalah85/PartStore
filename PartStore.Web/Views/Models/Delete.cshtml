@@ -1,14 +1,15 @@
-﻿@model PartStore.Core.StoreModels.Models
+﻿@using SysLanguages
+@model PartStore.Core.StoreModels.Models
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = Lang.Delete;
 }
 
-<h2>Delete</h2>
+<h2>@Lang.Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@Lang.DeleteConfirm</h3>
 <div>
-    <h4>Models</h4>
+    <h4>@Lang.Models</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -24,10 +25,10 @@
             @Html.DisplayFor(model => model.Make.MakeName)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="ModelId" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="@Lang.Delete" class="btn btn-default" /> |
+        <a asp-action="Index">@Lang.BackToList</a>
     </form>
 </div>

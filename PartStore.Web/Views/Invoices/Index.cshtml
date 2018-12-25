@@ -1,24 +1,25 @@
-﻿@model IEnumerable<PartStore.Core.StoreModels.Invoices>
+﻿@using SysLanguages;
+@model IEnumerable<PartStore.Core.StoreModels.Invoices>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Lang.Invoices;
 }
 
 <h2>@ViewData["Title"]</h2>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Lang.New</a>
 </p>
 
 <table class="table table-bordered table-responsive table-hover table-striped datatable2">
     <thead>
         <tr>
             <th>
-                Invoice No
+                @Lang.InvoiceNo
             </th>
             <th>
-                Customer
+                @Lang.Customer
             </th>
             <th>
-                Total Amount
+                @Lang.Total
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Discount)
@@ -27,7 +28,7 @@
                 @Html.DisplayNameFor(model => model.Tax)
             </th>
             <th>
-                Net Amount
+                @Lang.NetAmount
             </th>
             <th>
                 Date
@@ -35,7 +36,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Notes)
             </th>
-            <th>Options</th>
+            <th>@Lang.Options</th>
         </tr>
     </thead>
     <tbody>
@@ -67,9 +68,9 @@
                     @Html.DisplayFor(modelItem => item.Notes)
                 </td>
                 <td>
-                    <a asp-action="Create" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Print</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Create" asp-route-id="@item.Id">@Lang.Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">@Lang.Print</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Lang.Delete</a>
                 </td>
             </tr>
         }
@@ -87,7 +88,7 @@
         <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>*@
     <script>
         $(document).ready(function () {
-            $('.datatable2').DataTable();
+            $('.datatable2').DataTable({ pageLength: 50 });
         });
     </script>
 }

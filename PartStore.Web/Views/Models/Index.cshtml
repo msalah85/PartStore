@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PartStore.Core.StoreModels.Models>
+﻿@using SysLanguages
+@model IEnumerable<PartStore.Core.StoreModels.Models>
 
 @{
     ViewData["Title"] = "Models";
@@ -7,7 +8,7 @@
 <h2>@ViewData["Title"]</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Lang.New</a>
 </p>
 <table class="table table-bordered table-responsive table-hover table-striped">
     <thead>
@@ -18,7 +19,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Make)
             </th>
-            <th width="15%">Options</th>
+            <th width="15%">@Lang.Options</th>
         </tr>
     </thead>
     <tbody>
@@ -32,8 +33,8 @@
                     @Html.DisplayFor(modelItem => item.Make.MakeName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ModelId">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ModelId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.ModelId">@Lang.Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ModelId">@Lang.Delete</a>
                 </td>
             </tr>
         }
