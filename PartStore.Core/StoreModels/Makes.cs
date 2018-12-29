@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SysLanguages;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PartStore.Core.StoreModels
 {
@@ -12,6 +14,7 @@ namespace PartStore.Core.StoreModels
         }
 
         public int MakeId { get; set; }
+        [Display(Name = "Make", ResourceType = typeof(Lang))]
         public string MakeName { get; set; }
 
         public ICollection<Items> Items { get; set; }

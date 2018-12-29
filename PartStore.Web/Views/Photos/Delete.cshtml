@@ -1,0 +1,26 @@
+﻿@using SysLanguages
+@model PartStore.Core.StoreModels.Photos
+
+@{
+    ViewData["Title"] = Lang.Delete;
+}
+
+<h2>@Lang.Delete @Lang.Photos</h2>
+<h3>@Lang.DeleteConfirm</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+        <dd>
+            <img src="~/public/@Html.DisplayFor(model => model.Url)" style="max-height:200px;" />
+            <hr />
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="PhotoId" />
+                <input type="submit" value="@Lang.Delete" class="btn btn-default" /> |
+                <a asp-action="Index">@Lang.BackToList</a>
+            </form>
+        </dd>
+    </dl>
+</div>

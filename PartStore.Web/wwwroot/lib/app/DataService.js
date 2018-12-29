@@ -1,7 +1,4 @@
-﻿
-/// <reference path="../vendor/jquery-1.9.1.min.js" />
-var dataService = dataService || {},
-    dataService = function () {
+﻿var dataService = function () {
         var
             callAjax = function (reqestType, postedData, url, successCallback, errorCallback) {
                 jqueryAjax(reqestType, postedData, url, successCallback, errorCallback);

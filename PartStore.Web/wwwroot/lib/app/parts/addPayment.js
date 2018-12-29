@@ -46,9 +46,10 @@ var pageManager = function () {
         },
         bindSelect2 = function () {
             $(".select2").select2({
-                placeholder: "Please choose",
+                placeholder: lang.PleaseChoose,
                 allowClear: true,
-                theme: "bootstrap"
+                theme: "bootstrap",
+                dir: "rtl"
             });
         },
         bindDate = function () {

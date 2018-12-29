@@ -1,0 +1,89 @@
+﻿@using SysLanguages
+@model PartStore.Web.Models.PhotoModel
+
+@{
+    ViewData["Title"] = Lang.Photos;
+}
+
+<h2>
+    @ViewData["Title"] للسيارة : @Model.Car.Make.MakeName - @Model.Car.Model.ModelName  @Model.Car.YearId
+    <small><a asp-action="Index" asp-controller="Items" class="pull-left">@Lang.BackToCars</a></small>
+</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8 col-lg-offset-2">
+        <form asp-controller="Photos" asp-action="Upload" class="dropzone needsclick dz-clickable" id="uploader" enctype="multipart/form-data" method="post">
+            <input type="hidden" asp-for="Car.ItemId" value="@ViewData["id"]" />
+            <div class="dz-message" data-dz-message><span>اختر او اسحب صورة أو أكثر للسيارة</span></div>
+        </form>
+    </div>
+</div>
+<hr />
+
+
+<div class="row">
+    @foreach (var item in Model.Photo)
+    {
+        <div class="col-xs-6 col-md-3">
+            <a href="~/Public/@Html.DisplayFor(modelItem => item.Url)" target="_blank" title="@Html.DisplayFor(modelItem => item.Item.YearId) @Html.DisplayFor(modelItem => item.Item.Make.MakeName) @Html.DisplayFor(modelItem => item.Item.Model.ModelName)" class="thumbnail">
+                <img src="~/public/@Html.DisplayFor(modelItem => item.Url)" class="img-responsive img" title="@Html.DisplayFor(modelItem => item.Item.YearId) @Html.DisplayFor(modelItem => item.Item.Make.MakeName) @Html.DisplayFor(modelItem => item.Item.Model.ModelName)" />
+            </a>
+            <div class="caption">
+                <a class="btn btn-danger btn-block btn-xs" asp-action="Delete" asp-route-id="@item.PhotoId" title="@Lang.Delete"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+            </div>
+        </div>
+    }
+</div>
+
+
+<link href="~/lib/Dropzone/min/basic.min.css" rel="stylesheet" />
+<link href="~/lib/Dropzone/min/dropzone.min.css" rel="stylesheet" />
+<style>
+    .dropzone {
+        border: 2px dashed #0087F7;
+        border-radius: 5px;
+        background: white;
+    }
+
+    .thumbnail .img {
+        max-height: 150px;
+    }
+</style>
+@section Scripts{
+    <script src="~/lib/Dropzone/dropzone.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            Dropzone.options.uploader = {
+                maxFilesize: 15, // MB
+                maxFiles: 10,
+                clickable: true,
+                acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+                uploadMultiple: true,
+                paramName: function () { "files" }, // The name that will be used to transfer the file
+                createImageThumbnails: true,
+                init: function () {
+                    myDropzone = this;
+                    myDropzone.on("success", function (file, response) {
+                        console.log("Success");
+                        alert("Success");
+                        myDropzone.removeFile(file);
+                    });
+
+                    myDropzone.on("addedfile", function (file) { alert("Added file."); });
+                    myDropzone.on('complete', function (file) {
+                        alert('5555555555555');
+                    });
+                }
+                //accept: function (file, done) {
+                //    if (file.name == "badfile.jpg") {
+                //        done("This is a bad file!");
+                //    }
+                //    else {
+                //        //Show a confirm alert and display the image on the page.
+                //    }
+                //}
+            };
+
+        });
+    </script>
+}

@@ -166,7 +166,7 @@
     <value>المناطق</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>دخول</value>
+    <value>تسجيل الدخول</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>خروج</value>
@@ -499,7 +499,7 @@
     <value>إشعار حسابات بانتظار المراجعة</value>
   </data>
   <data name="CustomersSupliersEtc" xml:space="preserve">
-    <value>الحسابات : عملاء، موردين ، ومندوبي المبيعات ..وو</value>
+    <value>الحسابات : عملاء، موردين ، ومندوبي المبيعات</value>
   </data>
   <data name="DailyTransactionReport" xml:space="preserve">
     <value>الحركة اليومية</value>
@@ -538,7 +538,7 @@
     <value>رقم الفاتورة</value>
   </data>
   <data name="InvoicesList" xml:space="preserve">
-    <value>قائمة فواتير قطع الغيار المسجلة.</value>
+    <value>فواتير قطع الغيار</value>
   </data>
   <data name="NetAmount" xml:space="preserve">
     <value>صافى المبلغ</value>
@@ -591,7 +591,7 @@
   <data name="ReceiptNo" xml:space="preserve">
     <value>رقم الايصال</value>
   </data>
-  <data name="RefNo" xml:space="preserve">
+  <data name="RefCheckNo" xml:space="preserve">
     <value>رقم المرجع/الشيك</value>
   </data>
   <data name="SalesAnalysisReport" xml:space="preserve">
@@ -616,12 +616,99 @@
     <value>الإشعارات</value>
   </data>
   <data name="ViewPartInvoicesList" xml:space="preserve">
-    <value>تسجيل فاتورة قطع غيار جديدة.</value>
+    <value>قائمة فواتير قطع الغيار المسجلة فى النظام.</value>
   </data>
   <data name="VIN" xml:space="preserve">
     <value>رقم الشاصي</value>
   </data>
   <data name="WithReferenceCheckNo" xml:space="preserve">
     <value>برقم المرجع/الشيك</value>
+  </data>
+  <data name="BalanceIn" xml:space="preserve">
+    <value>دائن</value>
+  </data>
+  <data name="BalanceOut" xml:space="preserve">
+    <value>مدين</value>
+  </data>
+  <data name="Barcode" xml:space="preserve">
+    <value>الباركود</value>
+  </data>
+  <data name="Cat" xml:space="preserve">
+    <value>التصنيف</value>
+  </data>
+  <data name="ChooseToBank" xml:space="preserve">
+    <value>اختر الخزينة/البنك</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>الرقم</value>
+  </data>
+  <data name="Copyrights" xml:space="preserve">
+    <value>نظام إدارة المبيعات لقطع غيار السيارات</value>
+  </data>
+  <data name="Extra" xml:space="preserve">
+    <value>زيادة</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>المجموعة</value>
+  </data>
+  <data name="InvoiceDate" xml:space="preserve">
+    <value>تاريخ الفاتورة</value>
+  </data>
+  <data name="ModelName" xml:space="preserve">
+    <value>موديل السيارة</value>
+  </data>
+  <data name="More" xml:space="preserve">
+    <value>بيانات اضافية</value>
+  </data>
+  <data name="Remarks" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
+  <data name="SubTotalAmount" xml:space="preserve">
+    <value>إجمالى الفاتورة</value>
+  </data>
+  <data name="Tax" xml:space="preserve">
+    <value>الضريبة</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="ToBanks" xml:space="preserve">
+    <value>إلى الخزينة/البنك</value>
+  </data>
+  <data name="ToClient" xml:space="preserve">
+    <value>إلى العميل</value>
+  </data>
+  <data name="UnitPrice" xml:space="preserve">
+    <value>سعر القطعة</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>القيمة</value>
+  </data>
+  <data name="VAT" xml:space="preserve">
+    <value>الضريبة</value>
+  </data>
+  <data name="InvoiceType" xml:space="preserve">
+    <value>نوع الفاتورة</value>
+  </data>
+  <data name="ChooseAClient" xml:space="preserve">
+    <value>اختر العميل</value>
+  </data>
+  <data name="RefNo" xml:space="preserve">
+    <value>رقم المرجع</value>
+  </data>
+  <data name="LotNo" xml:space="preserve">
+    <value>رقم اللوت</value>
+  </data>
+  <data name="Supplier" xml:space="preserve">
+    <value>المورد</value>
+  </data>
+  <data name="SupplierCarNo" xml:space="preserve">
+    <value>رقم السيارة عند المورد</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>الصورة</value>
+  </data>
+  <data name="BackToCars" xml:space="preserve">
+    <value>رجوع لقائمة السيارات</value>
   </data>
 </root>

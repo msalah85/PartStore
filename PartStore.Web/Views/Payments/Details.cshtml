@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-xs-6 col-sm-6 col-md-6">
                 <address>
-                    <strong class="text-danger">A-Z Auto Car Parts</strong>
+                    <strong class="text-danger">A-Z لتجارة قطع غيار السيارات</strong>
                     <p class="text-muted m-l-5">
                         مربع #15, شارع دجلة,
                         <br />المنطقة الصناعية السادسة #6,
@@ -21,7 +21,7 @@
                     </p>
                 </address>
             </div>
-            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+            <div class="col-xs-6 col-sm-6 col-md-6 text-left">
                 <p>
                     <em>@Lang.Date: @Html.DisplayFor(model => model.AddDate)</em>
                 </p>
@@ -40,7 +40,7 @@
                         <td class="col-md-12">@Lang.Amount: @Html.DisplayFor(model => model.Amount) @Lang.Only.</td>
                     </tr>
                     <tr>
-                        <td class="col-md-12">For: @Html.DisplayFor(model => model.PaymentType.Name). <span class="pull-right">@Lang.WithReferenceCheckNo: @Html.DisplayFor(model => model.RefNo).</span></td>
+                        <td class="col-md-12">@Html.DisplayFor(model => model.PaymentType.Name). <span class="pull-left">@Lang.WithReferenceCheckNo: @Html.DisplayFor(model => model.RefNo).</span></td>
                     </tr>
                     <tr>
                         <td class="col-md-12"><em>@Lang.FromToName:</em> @Html.DisplayFor(model => model.Account.Title)</td>

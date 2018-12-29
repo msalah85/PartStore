@@ -13,6 +13,7 @@ using PartStore.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PartStore.Core.StoreModels;
+using SysLanguages;
 
 namespace PartStore.Web
 {
@@ -45,6 +46,7 @@ namespace PartStore.Web
                 );
         }
 
+        const string defaultCulture = "ar-AE";
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -65,8 +67,18 @@ namespace PartStore.Web
 
             app.UseAuthentication();
 
+            var supportedCultures = new[] { defaultCulture, "en-US" };
+            app.UseRequestLocalization(options =>
+                options
+                    .AddSupportedCultures(supportedCultures)
+                    .AddSupportedUICultures(supportedCultures)
+                    .SetDefaultCulture(defaultCulture)
+            );
+
+
             app.UseMvc(routes =>
             {
+                //routes.MapRoute("Photos", "Photos/{*id}", defaults: new { controller = "Photos", action = "Index" });
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

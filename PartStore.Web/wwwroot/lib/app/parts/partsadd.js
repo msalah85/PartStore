@@ -8,7 +8,7 @@ var partsManager = function () {
         Discount: $('#Discount'),
         NetAmount: $('#NetAmount'),
         newLine: $('.newLine'),
-        rowClone: '<tr><td class="itemdiv text-center"><span class="glyphicon glyphicon-resize-vertical movable"></span><span class="num">1</span><input type="hidden" name="childID" value="0" /><div class="tools"><a href="#delete" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></div></td><td class="edit"><select name="ItemID" id="car_1" required class="input-block-level form-control select2 new cars" data-placeholder="Choose a car"></select></td><td class="edit"><input name="PartName" required class="input-block-level form-control new" type="text"></td><td class="edit"><input name="Quantity" required class="input-block-level form-control number new" type="number" value="0"></td><td class="edit"><input name="Price" required class="input-block-level form-control money new" type="text" value="0"></td><td>0</td></tr>',
+        rowClone: '<tr><td class="itemdiv text-center"><span class="glyphicon glyphicon-resize-vertical movable"></span><span class="num">1</span><input type="hidden" name="childID" value="0" /><div class="tools"><a href="#delete" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></div></td><td class="edit"><select name="ItemID" id="car_1" required class="input-block-level form-control select2 new cars" data-placeholder="' + lang.ChooseaCar + '"></select></td><td class="edit"><input name="PartName" required class="input-block-level form-control new" type="text"></td><td class="edit"><input name="Quantity" required class="input-block-level form-control number new" type="number" value="1"></td><td class="edit"><input name="Price" required class="input-block-level form-control money new" type="text" value="0"></td><td>0</td></tr>',
         //saveAll: $('#SaveAll'),
         invoiceID: $('#Id'),
         accountId: $('#AccountId'),
@@ -42,7 +42,7 @@ var partsManager = function () {
                         pageElements.billBody.empty();// reset form.
                         $(jsn1).each(function (i, item) {
                             var rowIndex = i + 1,
-                                _row = $(pageElements.rowClone.split('1').join('' + rowIndex)).clone(true),
+                                _row = $(pageElements.rowClone.split('car_1').join('car_' + rowIndex)).clone(true),
                                 carSelectId = '#car_' + rowIndex;
 
                             $(".num", _row).text(i + 1);
@@ -67,6 +67,10 @@ var partsManager = function () {
             dataService.callAjax('GET', {}, sUrl, bindControls, commonManger.errorException);
         },
         Init = function () {
+            $(document).delegate('input[type="text"],input[type="number"]', "click", function () {
+                $(this).select();
+            });
+
             //$('.datepicker').datepicker({ autoclose: true }); // set default today 
             $('.today').datepicker('setDate', new Date()); // 
 
@@ -131,7 +135,7 @@ var partsManager = function () {
                 // apply validation on new controls.
                 var valid = commonManger.applyValidation(pageElements.form);
                 if (!valid)
-                    commonManger.showMessage('Required fields', 'Please ensure that you entered all required fields.', 'warning');
+                    commonManger.showMessage(lang.Required, lang.RequiredMsg, 'warning');
             });
 
             // set new line
@@ -167,10 +171,13 @@ var partsManager = function () {
                 url = '/Invoices/Save',
                 successSaveClient = function (d) {
                     if (d.saved === true) {
-                        commonManger.showMessage('Success', 'Data saved successfully.', 'success');
-                        window.location.href = '/Invoices';
+                        commonManger.showMessage(lang.Success, lang.SuccessMessage, 'success');
+                        if (d.id > 0)
+                            window.location.href = '/Invoices/Details/' + d.id;
+                        else
+                            window.location.href = '/Invoices';
                     } else {
-                        commonManger.showMessage('Error!', 'An error occured while saving the invoice!..' + d.id, 'error');
+                        commonManger.showMessage(lang.Error, lang.SystemError + d.id, 'error');
                     }
                 };
 
@@ -191,29 +198,30 @@ var partsManager = function () {
                     _data.invoiceDetails.push(itm);
                 }
             });
-            
+
             if (_data.accountId !== '' && _data.invoiceDetails.length > 0) {
                 commonManger.doWork(pageElements.form, url, _data, successSaveClient);
             } else {
-                commonManger.showMessage('Required fields!', 'Please add all required fileds first.', 'warning');
+                commonManger.showMessage(lang.Required, lang.RequiredMsg, 'warning');
             }
         },
         bindSelect2 = function () {
             $(".select2").select2({
-                placeholder: "Please choose",
-                allowClear: true
+                placeholder: lang.PleaseChoose,
+                allowClear: true,
+                dir: "rtl"
             });
         },
         bindCarsSelect2 = function (selector, selectedVal) {
-            var el = $(selector),
-                _placeholder = "Please choose";
+            var el = $(selector);
 
             if (el.hasClass('cars')) {
                 // bind items list 
                 $(selector).select2({
-                    placeholder: _placeholder,
+                    placeholder: lang.ChooseACar,
                     allowClear: true,
-                    data: avialableCars
+                    data: avialableCars,
+                    dir: "rtl"
                 });
 
                 // show the selected item
@@ -221,8 +229,9 @@ var partsManager = function () {
                     $(selector).val(selectedVal).trigger('change');
             } else {
                 $(selector).select2({
-                    placeholder: _placeholder,
-                    allowClear: true
+                    //placeholder: _placeholder,
+                    allowClear: true,
+                    dir: "rtl"
                 });
             }
         },

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SysLanguages;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PartStore.Core.StoreModels
@@ -13,7 +15,9 @@ namespace PartStore.Core.StoreModels
         }
 
         public int Id { get; set; }
+        [Display(Name = "Name", ResourceType = typeof(Lang))]
         public string Name { get; set; }
+        [Display(Name = "Cat", ResourceType = typeof(Lang))]
         public int? TypeId { get; set; }
 
         //[ForeignKey("Id")]

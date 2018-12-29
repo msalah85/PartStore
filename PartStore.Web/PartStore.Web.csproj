@@ -30,7 +30,9 @@
   <ItemGroup>
     <Folder Include="wwwroot\lib\datepicker\" />
     <Folder Include="wwwroot\lib\moment\" />
+    <Folder Include="wwwroot\lib\DataTables\" />
     <Folder Include="wwwroot\lib\select2\" />
+    <Folder Include="wwwroot\Public\" />
   </ItemGroup>
 
   <ItemGroup>

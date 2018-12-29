@@ -29,7 +29,7 @@
     .itemdiv .tools {
         width: 20px;
         position: absolute;
-        left: -15px;
+        right: -15px;
         top: 0;
         display: none;
     }
@@ -46,7 +46,7 @@
 
 .movable {
     position: absolute;
-    right: -3px;
+    left: 0;
     top: 10px;
     color: #c2c2c2;
 }

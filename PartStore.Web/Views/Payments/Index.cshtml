@@ -83,7 +83,11 @@
     <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('.datatable2').DataTable({ pageLength: 50});
+            $('.datatable2').DataTable({
+                pageLength: 50,
+                language: {
+                    "url": "/lib/DataTables/Arabic.json"
+                }});
         });
     </script>
 }

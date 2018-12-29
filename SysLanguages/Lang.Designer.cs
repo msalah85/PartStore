@@ -247,6 +247,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رجوع لقائمة السيارات.
+        /// </summary>
+        public static string BackToCars {
+            get {
+                return ResourceManager.GetString("BackToCars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الرجوع للقائمة.
         /// </summary>
         public static string BackToList {
@@ -261,6 +270,24 @@ namespace SysLanguages {
         public static string BackToPart {
             get {
                 return ResourceManager.GetString("BackToPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to دائن.
+        /// </summary>
+        public static string BalanceIn {
+            get {
+                return ResourceManager.GetString("BalanceIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مدين.
+        /// </summary>
+        public static string BalanceOut {
+            get {
+                return ResourceManager.GetString("BalanceOut", resourceCulture);
             }
         }
         
@@ -310,6 +337,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الباركود.
+        /// </summary>
+        public static string Barcode {
+            get {
+                return ResourceManager.GetString("Barcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to السيارة.
         /// </summary>
         public static string Car {
@@ -337,6 +373,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to التصنيف.
+        /// </summary>
+        public static string Cat {
+            get {
+                return ResourceManager.GetString("Cat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اختر سيارة.
         /// </summary>
         public static string ChooseACar {
@@ -355,6 +400,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اختر العميل.
+        /// </summary>
+        public static string ChooseAClient {
+            get {
+                return ResourceManager.GetString("ChooseAClient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اختر الخزينة/البنك.
         /// </summary>
         public static string ChooseBank {
@@ -369,6 +423,24 @@ namespace SysLanguages {
         public static string ChooseInvoice {
             get {
                 return ResourceManager.GetString("ChooseInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اختر الخزينة/البنك.
+        /// </summary>
+        public static string ChooseToBank {
+            get {
+                return ResourceManager.GetString("ChooseToBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الرقم.
+        /// </summary>
+        public static string Code {
+            get {
+                return ResourceManager.GetString("Code", resourceCulture);
             }
         }
         
@@ -396,6 +468,15 @@ namespace SysLanguages {
         public static string Contact {
             get {
                 return ResourceManager.GetString("Contact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نظام إدارة المبيعات لقطع غيار السيارات.
+        /// </summary>
+        public static string Copyrights {
+            get {
+                return ResourceManager.GetString("Copyrights", resourceCulture);
             }
         }
         
@@ -436,7 +517,7 @@ namespace SysLanguages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الحسابات : عملاء، موردين ، ومندوبي المبيعات ..وو.
+        ///   Looks up a localized string similar to الحسابات : عملاء، موردين ، ومندوبي المبيعات.
         /// </summary>
         public static string CustomersSupliersEtc {
             get {
@@ -589,6 +670,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to زيادة.
+        /// </summary>
+        public static string Extra {
+            get {
+                return ResourceManager.GetString("Extra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to من الخزينة/البنك.
         /// </summary>
         public static string FromBank {
@@ -621,6 +711,15 @@ namespace SysLanguages {
         public static string FromYear {
             get {
                 return ResourceManager.GetString("FromYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المجموعة.
+        /// </summary>
+        public static string Group {
+            get {
+                return ResourceManager.GetString("Group", resourceCulture);
             }
         }
         
@@ -679,6 +778,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تاريخ الفاتورة.
+        /// </summary>
+        public static string InvoiceDate {
+            get {
+                return ResourceManager.GetString("InvoiceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رقم الفاتورة.
         /// </summary>
         public static string InvoiceNo {
@@ -697,11 +805,20 @@ namespace SysLanguages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to قائمة فواتير قطع الغيار المسجلة..
+        ///   Looks up a localized string similar to فواتير قطع الغيار.
         /// </summary>
         public static string InvoicesList {
             get {
                 return ResourceManager.GetString("InvoicesList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نوع الفاتورة.
+        /// </summary>
+        public static string InvoiceType {
+            get {
+                return ResourceManager.GetString("InvoiceType", resourceCulture);
             }
         }
         
@@ -751,7 +868,7 @@ namespace SysLanguages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to دخول.
+        ///   Looks up a localized string similar to تسجيل الدخول.
         /// </summary>
         public static string Login {
             get {
@@ -774,6 +891,15 @@ namespace SysLanguages {
         public static string Longitude {
             get {
                 return ResourceManager.GetString("Longitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رقم اللوت.
+        /// </summary>
+        public static string LotNo {
+            get {
+                return ResourceManager.GetString("LotNo", resourceCulture);
             }
         }
         
@@ -814,11 +940,29 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to موديل السيارة.
+        /// </summary>
+        public static string ModelName {
+            get {
+                return ResourceManager.GetString("ModelName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to موديلات السيارات.
         /// </summary>
         public static string Models {
             get {
                 return ResourceManager.GetString("Models", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to بيانات اضافية.
+        /// </summary>
+        public static string More {
+            get {
+                return ResourceManager.GetString("More", resourceCulture);
             }
         }
         
@@ -1293,6 +1437,15 @@ namespace SysLanguages {
         /// <summary>
         ///   Looks up a localized string similar to رقم المرجع/الشيك.
         /// </summary>
+        public static string RefCheckNo {
+            get {
+                return ResourceManager.GetString("RefCheckNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رقم المرجع.
+        /// </summary>
         public static string RefNo {
             get {
                 return ResourceManager.GetString("RefNo", resourceCulture);
@@ -1314,6 +1467,15 @@ namespace SysLanguages {
         public static string Register {
             get {
                 return ResourceManager.GetString("Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ملاحظات.
+        /// </summary>
+        public static string Remarks {
+            get {
+                return ResourceManager.GetString("Remarks", resourceCulture);
             }
         }
         
@@ -1435,6 +1597,42 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إجمالى الفاتورة.
+        /// </summary>
+        public static string SubTotalAmount {
+            get {
+                return ResourceManager.GetString("SubTotalAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المورد.
+        /// </summary>
+        public static string Supplier {
+            get {
+                return ResourceManager.GetString("Supplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رقم السيارة عند المورد.
+        /// </summary>
+        public static string SupplierCarNo {
+            get {
+                return ResourceManager.GetString("SupplierCarNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الضريبة.
+        /// </summary>
+        public static string Tax {
+            get {
+                return ResourceManager.GetString("Tax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فاتورة ضريبية.
         /// </summary>
         public static string TaxInvoice {
@@ -1444,11 +1642,38 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العنوان.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إلى الخزينة/البنك.
         /// </summary>
         public static string ToBank {
             get {
                 return ResourceManager.GetString("ToBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إلى الخزينة/البنك.
+        /// </summary>
+        public static string ToBanks {
+            get {
+                return ResourceManager.GetString("ToBanks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إلى العميل.
+        /// </summary>
+        public static string ToClient {
+            get {
+                return ResourceManager.GetString("ToClient", resourceCulture);
             }
         }
         
@@ -1489,6 +1714,42 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سعر القطعة.
+        /// </summary>
+        public static string UnitPrice {
+            get {
+                return ResourceManager.GetString("UnitPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الصورة.
+        /// </summary>
+        public static string Url {
+            get {
+                return ResourceManager.GetString("Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to القيمة.
+        /// </summary>
+        public static string Value {
+            get {
+                return ResourceManager.GetString("Value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الضريبة.
+        /// </summary>
+        public static string VAT {
+            get {
+                return ResourceManager.GetString("VAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 0.3.
         /// </summary>
         public static string Version {
@@ -1507,7 +1768,7 @@ namespace SysLanguages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تسجيل فاتورة قطع غيار جديدة..
+        ///   Looks up a localized string similar to قائمة فواتير قطع الغيار المسجلة فى النظام..
         /// </summary>
         public static string ViewPartInvoicesList {
             get {

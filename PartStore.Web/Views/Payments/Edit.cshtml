@@ -30,7 +30,7 @@
                 <select asp-for="InvoiceId" class="form-control" asp-items="ViewBag.InvoiceId"><option value="">@Lang.ChooseInvoice</option></select>
             </div>
             <div class="form-group Account">
-                <label asp-for="AccountId" class="control-label">Account</label>
+                <label asp-for="AccountId" class="control-label">@Lang.Account</label>
                 <select asp-for="AccountId" class="form-control select2" asp-items="ViewBag.AccountId"><option value="">@Lang.ChooseAccount</option></select>
             </div>
             <div class="form-group">
@@ -59,7 +59,7 @@
                 <label asp-for="ToBankId" class="control-label">@Lang.ToBank</label>
                 <a title="Add new bank" asp-controller="Banks" asp-action="Create"><span class="glyphicon glyphicon-plus"></span></a>
                 <select asp-for="ToBankId" class="form-control select2" required asp-items="ViewBag.ToBankId">
-                    <option value="">Choose to bank</option>
+                    <option value="">@Lang.ChooseToBank</option>
                 </select>
             </div>
             <div class="form-group">
@@ -78,11 +78,9 @@
         </div>
     </form>
 </div>
-
 <div>
     <a asp-action="Index">@Lang.BackToList</a>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/lib/datepicker/js/bootstrap-datepicker.js"></script>

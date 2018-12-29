@@ -13,26 +13,38 @@
             <div class="row">
                 <div class="col-md-6">
                     <input type="hidden" asp-for="Id" value="0" />
-                    <div class="form-group">
-                        <label asp-for="AccountId" class="control-label">@Lang.Customer</label>
-                        <select asp-for="AccountId" class="select2 form-control" asp-items="ViewBag.AccountId"></select>
-                        <span asp-validation-for="AccountId" class="text-danger"></span>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" asp-for="InvoiceTypeId"></label>
+                                <select class="form-control" asp-for="InvoiceTypeId" asp-items="ViewBag.InvoiceTypeId"></select>
+                                <span asp-validation-for="InvoiceTypeId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" asp-for="AddDate"></label>
+                                <div class="input-group date" data-provide="datepicker">
+                                    <input asp-for="AddDate" type="text" class="form-control datepicker today">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label asp-for="InvoiceNo" class="control-label"></label>
-                        <input asp-for="InvoiceNo" class="form-control" value="@ViewBag.InvoiceNo" />
-                        <span asp-validation-for="InvoiceNo" class="text-danger"></span>
+                        <label asp-for="AccountId" class="control-label">@Lang.Customer</label>
+                        <select asp-for="AccountId" class="select2 form-control" asp-items="ViewBag.AccountId" data-placeholder="@Lang.ChooseAClient"><option></option></select>
+                        <span asp-validation-for="AccountId" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" asp-for="AddDate"></label>
-                        <div class="input-group date" data-provide="datepicker">
-                            <input asp-for="AddDate" type="text" class="form-control datepicker today">
-                            <div class="input-group-addon">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </div>
-                        </div>
+                        <label asp-for="InvoiceNo" class="control-label"></label>
+                        <input asp-for="InvoiceNo" class="form-control" value="@ViewBag.InvoiceNo" />
+                        <span asp-validation-for="InvoiceNo" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label class="control-label" asp-for="Notes"></label>
@@ -50,7 +62,7 @@
                     <tr>
                         <th width="50" class="text-center" title="Index">#</th>
                         <th width="350px">@Lang.ChooseACar</th>
-                        <th>Part name</th>
+                        <th>@Lang.PartName</th>
                         <th width="100px">@Lang.Quantity</th>
                         <th width="120px" title="Unit price">@Lang.Price <sub>$</sub></th>
                         <th width="120px">@Lang.Total <sub>$</sub></th>
@@ -60,13 +72,13 @@
                     <tr>
                         <td class="itemdiv text-center"><span class="num">1</span><input type="hidden" name="childID" value="0" /></td>
                         <td class="edit">
-                            <select asp-for="InvoiceDetails.First().ItemId" id="car_1" required class="select2 form-control cars" asp-items="ViewBag.Cars" data-placeholder="Choose a car"></select>
+                            <select asp-for="InvoiceDetails.First().ItemId" id="car_1" required class="select2 form-control cars" asp-items="ViewBag.Cars" data-placeholder="@Lang.ChooseACar"><option></option></select>
                         </td>
                         <td class="edit">
                             <input asp-for="InvoiceDetails.First().PartName" required class="input-block-level form-control" type="text" />
                         </td>
                         <td class="edit">
-                            <input asp-for="InvoiceDetails.First().Quantity" required class="input-block-level form-control" type="number" value="0" />
+                            <input asp-for="InvoiceDetails.First().Quantity" required class="input-block-level form-control" type="number" value="1" />
                         </td>
                         <td class="edit">
                             <input asp-for="InvoiceDetails.First().Price" required class="input-block-level form-control money" type="text" value="0" />
@@ -78,32 +90,33 @@
                     <tr>
                         <th colspan="5">
                             <button type="button" class="btn btn-default newLine btn-xs" data-toggle="tooltip" title="Add new line">@Lang.NewPart</button>
-                            <strong class="pull-right blue">@Lang.Total <sub>$</sub></strong>
+                            <strong class="pull-left blue">@Lang.Total <sub>$</sub></strong>
                         </th>
                         <th style="border-right: 0.5px dotted rgba(213, 213, 213, 0.63)!important;" id="TotalAmount">0</th>
                     </tr>
                     <tr>
-                        <th colspan="5"><strong class="pull-right purple">@Lang.Discount <sub>$</sub></strong></th>
+                        <th colspan="5"><strong class="pull-left purple">@Lang.Discount <sub>$</sub></strong></th>
                         <th style="border-right: 0!important;" class="edit">
                             <input asp-for="Discount" name="Discount" id="Discount" required class="input-block-level form-control bolder money" type="text" value="0" />
                             <span asp-validation-for="Discount" class="text-danger"></span>
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="5"><strong class="pull-right green">@Lang.NetPrice <sub>$</sub></strong></th>
+                        <th colspan="5"><strong class="pull-left green">@Lang.NetPrice <sub>$</sub></strong></th>
                         <th style="border-right: 0.5px dotted rgba(213, 213, 213, 0.63)!important;" id="NetAmount">0</th>
                     </tr>
                 </tfoot>
             </table>
             <div>
                 <a class="btn" asp-action="Index">@Lang.BackToList</a>
-                <button type="submit" id="btnSave" class="btn btn-app btn-success pull-right" title="Save"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> @Lang.SaveAll</button>
+                <button type="submit" id="btnSave" class="btn btn-app btn-success pull-left" title="Save"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span> @Lang.SaveAll</button>
             </div>
         </div>
     </div>
 </form>
 <script type="text/javascript">
     var avialableCars = [];
+    avialableCars.push({ id: '', text: '@Lang.ChooseACar' });
     @foreach (var d in ViewBag.Cars)
     {
         @:avialableCars.push({ id: '@d?.Value', text: '@d?.Text' });

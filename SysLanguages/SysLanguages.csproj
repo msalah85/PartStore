@@ -13,9 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Lang.ar.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Lang.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Lang.Designer.cs</LastGenOutput>

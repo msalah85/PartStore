@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PartStore.Core.StoreModels
 {
@@ -19,6 +17,7 @@ namespace PartStore.Core.StoreModels
         public virtual DbSet<Banks> Banks { get; set; }
         public virtual DbSet<InvoiceDetails> InvoiceDetails { get; set; }
         public virtual DbSet<Invoices> Invoices { get; set; }
+        public virtual DbSet<InvoiceTypes> InvoiceTypes { get; set; }
         public virtual DbSet<Items> Items { get; set; }
         public virtual DbSet<Makes> Makes { get; set; }
         public virtual DbSet<Models> Models { get; set; }
@@ -29,12 +28,13 @@ namespace PartStore.Core.StoreModels
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<Years> Years { get; set; }
 
+        // Unable to generate entity type for table 'dbo.ItemPhotos'. Please see the warning messages.
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=PartStore;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=PartStore;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
 
@@ -120,6 +120,8 @@ namespace PartStore.Core.StoreModels
 
                 entity.Property(e => e.AccountId).HasColumnName("AccountID");
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.AddDate)
                     .HasColumnType("date")
                     .HasDefaultValueSql("(getdate())");
@@ -129,6 +131,8 @@ namespace PartStore.Core.StoreModels
                 entity.Property(e => e.Discount).HasColumnType("money");
 
                 entity.Property(e => e.InvoiceNo).HasMaxLength(50);
+
+                entity.Property(e => e.InvoiceTypeId).HasColumnName("InvoiceTypeID");
 
                 entity.Property(e => e.Ip)
                     .HasColumnName("IP")
@@ -152,29 +156,76 @@ namespace PartStore.Core.StoreModels
                     .WithMany(p => p.Invoices)
                     .HasForeignKey(d => d.AccountId)
                     .HasConstraintName("FK_Invoices_Accounts");
+
+                entity.HasOne(d => d.InvoiceType)
+                    .WithMany(p => p.Invoices)
+                    .HasForeignKey(d => d.InvoiceTypeId)
+                    .HasConstraintName("FK_Invoices_InvoiceTypes");
+            });
+
+            modelBuilder.Entity<InvoiceTypes>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Items>(entity =>
             {
                 entity.HasKey(e => e.ItemId);
-                //entity.HasIndex(e => e.ItemId).HasName("IX_Items").IsUnique();
-                entity.Property(e => e.ItemId).HasColumnName("ItemID").ValueGeneratedNever();
+
+                entity.Property(e => e.ItemId).HasColumnName("ItemID");
+
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
-                entity.Property(e => e.AvgCost).HasColumnType("money").HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.AvgCost)
+                    .HasColumnType("money")
+                    .HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Barcode).HasMaxLength(1000);
-                entity.Property(e => e.Discount).HasColumnType("money").HasDefaultValueSql("((0))");
-                entity.Property(e => e.ItemId).ValueGeneratedOnAdd();
-                entity.Property(e => e.LastCost).HasColumnType("money").HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Discount)
+                    .HasColumnType("money")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.LastCost)
+                    .HasColumnType("money")
+                    .HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.LastPurchasedDate).HasColumnType("date");
+
+                entity.Property(e => e.LotNo).HasMaxLength(50);
+
                 entity.Property(e => e.MakeId).HasColumnName("MakeID");
+
                 entity.Property(e => e.ModelId).HasColumnName("ModelID");
+
                 entity.Property(e => e.More).HasMaxLength(1000);
-                entity.Property(e => e.NetPrice).HasColumnType("money").HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.NetPrice)
+                    .HasColumnType("money")
+                    .HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Photo).HasMaxLength(100);
+
                 entity.Property(e => e.Qty).HasDefaultValueSql("((0))");
-                entity.Property(e => e.SalePrice).HasColumnType("money").HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.RefNo).HasMaxLength(50);
+
+                entity.Property(e => e.SalePrice)
+                    .HasColumnType("money")
+                    .HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Starred).HasDefaultValueSql("((0))");
-                entity.Property(e => e.Vin).HasColumnName("VIN").HasMaxLength(60);
+
+                entity.Property(e => e.SupplierCarNo).HasMaxLength(50);
+
+                entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
+
+                entity.Property(e => e.Vin)
+                    .HasColumnName("VIN")
+                    .HasMaxLength(60);
+
                 entity.Property(e => e.YearId).HasColumnName("YearID");
 
                 entity.HasOne(d => d.Make)
@@ -186,6 +237,11 @@ namespace PartStore.Core.StoreModels
                     .WithMany(p => p.Items)
                     .HasForeignKey(d => d.ModelId)
                     .HasConstraintName("FK_Items_Models");
+
+                entity.HasOne(d => d.Supplier)
+                    .WithMany(p => p.Items)
+                    .HasForeignKey(d => d.SupplierId)
+                    .HasConstraintName("FK_Items_Accounts");
 
                 entity.HasOne(d => d.Year)
                     .WithMany(p => p.Items)
@@ -231,6 +287,8 @@ namespace PartStore.Core.StoreModels
 
                 entity.Property(e => e.AccountId).HasColumnName("AccountID");
 
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.AddDate)
                     .HasColumnType("date")
                     .HasDefaultValueSql("(getdate())");
@@ -238,6 +296,8 @@ namespace PartStore.Core.StoreModels
                 entity.Property(e => e.AddTime).HasDefaultValueSql("(CONVERT([time],sysutcdatetime()))");
 
                 entity.Property(e => e.Amount).HasColumnType("money");
+
+                entity.Property(e => e.Deleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Discount)
                     .HasColumnType("money")
@@ -294,11 +354,10 @@ namespace PartStore.Core.StoreModels
                     .HasForeignKey(d => d.PaymentTypeId)
                     .HasConstraintName("FK_Payments_PaymentTypes");
 
-                entity.Ignore("FK_Payments_BanksTo");
-                //entity.HasOne(d => d.ToBank)
-                //    .WithMany(p => p.PaymentsToBank)
-                //    .HasForeignKey(d => d.ToBankId)
-                //    .HasConstraintName("FK_Payments_BanksTo");
+                entity.HasOne(d => d.ToBank)
+                    .WithMany(p => p.PaymentsToBank)
+                    .HasForeignKey(d => d.ToBankId)
+                    .HasConstraintName("FK_Payments_BanksTo");
             });
 
             modelBuilder.Entity<PaymentTypes>(entity =>

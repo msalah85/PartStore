@@ -51,6 +51,7 @@ namespace PartStore.Web.Controllers
         {
             if (id == null) // add
             {
+                ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name");
                 ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "Title");
                 // new refrence No
                 var lastInv = _context.Invoices.LastOrDefault();
@@ -64,6 +65,7 @@ namespace PartStore.Web.Controllers
                 {
                     return NotFound();
                 }
+                ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name", invoices.InvoiceTypeId);
                 ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "Title", invoices.AccountId);
                 ViewBag.InvoiceNo = invoices.InvoiceNo;
             }
@@ -72,6 +74,8 @@ namespace PartStore.Web.Controllers
             var _cars = await _context.Items.Include(c => c.Make).Include(c => c.Model)
                 .Select(c => new { c.ItemId, Name = c.ItemId + " - " + c.Make.MakeName + " " + c.Model.ModelName + " " + c.YearId }).ToListAsync();
             ViewData["Cars"] = new SelectList(_cars, "ItemId", "Name");
+            ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name");
+            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "Title");
 
             return View();
         }

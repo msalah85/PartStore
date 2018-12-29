@@ -9,31 +9,31 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card card-body printableArea">
-            <h3><b>@Lang.TaxInvoice</b> <span class="pull-right">#@Html.DisplayFor(model => model.InvoiceNo)</span></h3>
+            <h3><b>@Lang.TaxInvoice</b> <span class="pull-left">#@Html.DisplayFor(model => model.InvoiceNo)</span></h3>
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="pull-left">
+                    <div class="pull-right">
                         <address>
-                            <h3><b class="text-danger">A-Z Auto Car Parts</b></h3>
+                            <h3><strong class="text-danger">A-Z لقطع غيار السيارات</strong></h3>
                             <p class="text-muted m-l-5">
-                                Block #15, Dajla Road,
-                                <br />Industerial Area #6,
-                                <br> Sharjah,
-                                <br> UAE - 33930
-                                <br />TRX: 00000000000000
+                                بلوك #15، شارع دجلة،
+                                <br />المنطقة الصناعية السادسة #6،
+                                <br> الشارقة،
+                                <br> الإمارات - 33930
+                                <br />الرقم الضريبي: 00000000000000
                             </p>
                         </address>
                     </div>
-                    <div class="pull-right text-right">
+                    <div class="pull-left text-left">
                         <address>
-                            <h3>To,</h3>
-                            <h4 class="font-bold">@Html.DisplayFor(model => model.Account.Title),</h4>
+                            <h3>@Lang.ToClient،</h3>
+                            <h4 class="font-bold">@Html.DisplayFor(model => model.Account.Title)،</h4>
                             <p class="text-muted m-l-30">
                                 @Html.DisplayFor(model => model.Account.Address)
                                 <br />
                             </p>
-                            <p class="m-t-30"><b>Invoice Date :</b> <i class="fa fa-calendar"></i> @Html.DisplayFor(model => model.AddDate)</p>
+                            <p class="m-t-30"><b>@Lang.InvoiceDate :</b> <i class="fa fa-calendar"></i> @Html.DisplayFor(model => model.AddDate)</p>
                         </address>
                     </div>
                 </div>
@@ -43,10 +43,10 @@
                             <thead>
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th>Description</th>
-                                    <th class="text-right">Quantity</th>
-                                    <th class="text-right">Unit Cost</th>
-                                    <th class="text-right">Total</th>
+                                    <th>@Lang.Description</th>
+                                    <th class="text-right">@Lang.Quantity</th>
+                                    <th class="text-right">@Lang.UnitPrice</th>
+                                    <th class="text-right">@Lang.Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,23 +65,23 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="pull-right m-t-30 text-right">
-                        <p>Sub - Total amount: @Html.DisplayFor(model => model.TotalAmount)</p>
-                        <p>VAT (5%): @Html.DisplayFor(model => model.Tax) </p>
-                        <p>Discount: @Html.DisplayFor(model => model.Discount) </p>
+                    <div class="pull-left m-t-30 text-left">
+                        <p>@Lang.SubTotalAmount: @Html.DisplayFor(model => model.TotalAmount)</p>
+                        <p>@Lang.VAT (5%): @Html.DisplayFor(model => model.Tax) </p>
+                        <p>@Lang.Discount: @Html.DisplayFor(model => model.Discount) </p>
                         <hr>
-                        <h3><b>Total :</b> @Html.DisplayFor(model => model.NetAmount)</h3>
+                        <h3><b>@Lang.Total :</b> @Html.DisplayFor(model => model.NetAmount)</h3>
                     </div>
                     <div class="clearfix"></div>
                     <hr>
                     <p>
-                        Remarks: @Html.DisplayFor(model => model.Notes)
+                        @Lang.Remarks: @Html.DisplayFor(model => model.Notes)
                     </p>
                     <div class="text-right">
                         @*<button class="btn btn-danger" type="submit"> Proceed to payment </button>*@
                         <button id="print" class="btn btn-default btn-outline noprint" type="button" onclick="window.print();">
                             <span class="glyphicon glyphicon-print"></span>
-                            Print
+                            @Lang.Print
                         </button>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
 </div>
 <div class="noprint">
     <a class="noprint" asp-action="Create" asp-route-id="@Model.Id">@Lang.Edit</a> |
-    <a class="noprint" asp-action="Index">Back to List</a>
+    <a class="noprint" asp-action="Index">@Lang.BackToList</a>
 </div>
 @section Styles{
     <style>
@@ -102,7 +102,7 @@
 
         .btn {
             border-radius: .25rem;
-            transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            transition: color .15s ease-in-out،background-color .15s ease-in-out،border-color .15s ease-in-out،box-shadow .15s ease-in-out;
             color: #455a64;
         }
 

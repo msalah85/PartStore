@@ -63,6 +63,7 @@
                     @Html.DisplayFor(modelItem => item.Vin)
                 </td>
                 <td>
+                    <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId">@Lang.Photos</a> |
                     <a asp-action="Edit" asp-route-id="@item.ItemId">@Lang.Edit</a> |
                     <a asp-action="Delete" asp-route-id="@item.ItemId">@Lang.Delete</a>
                 </td>

@@ -4,5 +4,29 @@
     "inputFiles": [
       "wwwroot/lib/numeral.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/app/parts/addPayment.min.js",
+    "inputFiles": [
+      "wwwroot/lib/app/parts/addPayment.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-rtl.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/bootstrap-rtl.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/app/ar.min.js",
+    "inputFiles": [
+      "wwwroot/lib/app/ar.js"
+    ]
   }
 ]
