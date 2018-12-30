@@ -34,16 +34,15 @@ namespace PartStore.Web.Controllers
                 return NotFound();
             }
 
-            var invoices = await _context.Invoices
-                .Include(i => i.Account)
-                .Include(i => i.InvoiceDetails) //.ThenInclude(d => d.Items)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (invoices == null)
+            var invoice = new InvoicePrintModel()
             {
-                return NotFound();
-            }
+                Invoice = await _context.Invoices.Include(i => i.Account)
+                                    .Include(i => i.InvoiceDetails).ThenInclude(d => d.Item).ThenInclude(d => d.Model).ThenInclude(d => d.Make)
+                                    .FirstOrDefaultAsync(m => m.Id == id),
+                CompanyInfo = await _context.Settings.Where(m => m.GroupName.ToLower().Equals("company")).ToListAsync()
+            };
 
-            return View(invoices);
+            return View(invoice);
         }
 
         // GET: Invoices/Create

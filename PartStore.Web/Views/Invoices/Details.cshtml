@@ -1,5 +1,5 @@
 ﻿@using SysLanguages;
-@model PartStore.Core.StoreModels.Invoices
+@model PartStore.Web.Models.InvoicePrintModel
 
 @{
     ViewData["Title"] = Lang.Print;
@@ -9,31 +9,30 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card card-body printableArea">
-            <h3><b>@Lang.TaxInvoice</b> <span class="pull-left">#@Html.DisplayFor(model => model.InvoiceNo)</span></h3>
+            <h3><b>@Lang.TaxInvoice</b> <span class="pull-left">#@Html.DisplayFor(model => model.Invoice.InvoiceNo)</span></h3>
             <hr>
             <div class="row">
                 <div class="col-md-12">
                     <div class="pull-right">
+                        <h3><strong class="text-danger">@Model.CompanyInfo.FirstOrDefault(a => a.Title.Equals("companyname"))?.Value</strong></h3>
                         <address>
-                            <h3><strong class="text-danger">A-Z لقطع غيار السيارات</strong></h3>
                             <p class="text-muted m-l-5">
-                                بلوك #15، شارع دجلة،
-                                <br />المنطقة الصناعية السادسة #6،
-                                <br> الشارقة،
-                                <br> الإمارات - 33930
-                                <br />الرقم الضريبي: 00000000000000
+                                @foreach (var setting in Model.CompanyInfo)
+                                {
+                                    @setting.Value <br />
+                                }
                             </p>
                         </address>
                     </div>
                     <div class="pull-left text-left">
                         <address>
                             <h3>@Lang.ToClient،</h3>
-                            <h4 class="font-bold">@Html.DisplayFor(model => model.Account.Title)،</h4>
+                            <h4 class="font-bold">@Html.DisplayFor(model => model.Invoice.Account.Title)،</h4>
                             <p class="text-muted m-l-30">
-                                @Html.DisplayFor(model => model.Account.Address)
-                                <br />
+                                @Html.DisplayFor(model => model.Invoice.Account.Address)
                             </p>
-                            <p class="m-t-30"><b>@Lang.InvoiceDate :</b> <i class="fa fa-calendar"></i> @Html.DisplayFor(model => model.AddDate)</p>
+                            <br />
+                            <p class="m-t-30"><b>@Lang.InvoiceDate :</b> <i class="fa fa-calendar"></i> @Html.DisplayFor(model => model.Invoice.AddDate)</p>
                         </address>
                     </div>
                 </div>
@@ -42,22 +41,26 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th class="text-center">#</th>
-                                    <th>@Lang.Description</th>
-                                    <th class="text-right">@Lang.Quantity</th>
-                                    <th class="text-right">@Lang.UnitPrice</th>
-                                    <th class="text-right">@Lang.Total</th>
+                                    <th class="text-center" title="مسلسل">#</th>
+                                    <th>@Lang.Car</th>
+                                    <th>@Lang.PartName</th>
+                                    <th class="text-center">@Lang.Quantity</th>
+                                    <th class="text-left">@Lang.UnitPrice</th>
+                                    <th class="text-left">@Lang.Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.InvoiceDetails)
+                                @{int index = 0; }
+                                @foreach (var item in Model.Invoice.InvoiceDetails)
                                 {
+                                    index++;
                                     <tr>
-                                        <td class="text-center">@item.Id</td>
+                                        <td class="text-center">@index</td>
+                                        <td>@item.ItemId# @item.Item.YearId @item.Item.Make.MakeName-@item.Item.Model.ModelName</td>
                                         <td>@item.PartName</td>
-                                        <td class="text-right">@item.Quantity</td>
-                                        <td class="text-right">@item.Price</td>
-                                        <td class="text-right">@item.SubTotal</td>
+                                        <td class="text-center">@item.Quantity</td>
+                                        <td class="text-left"><span class="money">@item.Price</span></td>
+                                        <td class="text-left"><span class="money">@item.SubTotal</span></td>
                                     </tr>
                                 }
                             </tbody>
@@ -66,19 +69,18 @@
                 </div>
                 <div class="col-md-12">
                     <div class="pull-left m-t-30 text-left">
-                        <p>@Lang.SubTotalAmount: @Html.DisplayFor(model => model.TotalAmount)</p>
-                        <p>@Lang.VAT (5%): @Html.DisplayFor(model => model.Tax) </p>
-                        <p>@Lang.Discount: @Html.DisplayFor(model => model.Discount) </p>
+                        <p>@Lang.SubTotalAmount: <span>@Html.DisplayFor(model => model.Invoice.TotalAmount)</span></p>
+                        <p>@Lang.VAT (5%): <span class="money">@Html.DisplayFor(model => model.Invoice.Tax)</span> </p>
+                        <p>@Lang.Discount: <span class="money">@Html.DisplayFor(model => model.Invoice.Discount)</span> </p>
                         <hr>
-                        <h3><b>@Lang.Total :</b> @Html.DisplayFor(model => model.NetAmount)</h3>
+                        <h3><b>@Lang.Total :</b> <span>@Html.DisplayFor(model => model.Invoice.NetAmount)</span></h3>
                     </div>
                     <div class="clearfix"></div>
                     <hr>
                     <p>
-                        @Lang.Remarks: @Html.DisplayFor(model => model.Notes)
+                        @Lang.Remarks: @Html.DisplayFor(model => model.Invoice.Notes)
                     </p>
                     <div class="text-right">
-                        @*<button class="btn btn-danger" type="submit"> Proceed to payment </button>*@
                         <button id="print" class="btn btn-default btn-outline noprint" type="button" onclick="window.print();">
                             <span class="glyphicon glyphicon-print"></span>
                             @Lang.Print
@@ -90,9 +92,15 @@
     </div>
 </div>
 <div class="noprint">
-    <a class="noprint" asp-action="Create" asp-route-id="@Model.Id">@Lang.Edit</a> |
+    <a class="noprint" asp-action="Create" asp-route-id="@Model.Invoice.Id">@Lang.Edit</a> |
     <a class="noprint" asp-action="Index">@Lang.BackToList</a>
 </div>
+@section Scripts{
+    <script src="~/lib/autoNumeric.js"></script>
+    <script>
+        $('.money').autoNumeric('init');
+    </script>
+}
 @section Styles{
     <style>
         .card {
@@ -108,6 +116,12 @@
 
         .card-body .btn span.glyphicon {
             font-size: 1.4rem;
+        }
+
+        @@media print {
+            html, body {
+                font-family: 'Droid Arabic Kufi', Verdana, Geneva, Tahoma, sans-serif
+            }
         }
     </style>
 }

@@ -58,7 +58,7 @@ var
                 $('#' + formId + ' .modal-body').find('input, textarea, button, select').removeAttr('disabled');
             },
             showMessage = function (title, msg, type) {
-                console.log(title, msg, type);
+                //console.log(title, msg, type);
                 toastr.options = {
                     closeButton: true,
                     debug: false,
@@ -436,7 +436,7 @@ var
                 if (isvalidatedForm) {
                     dataService.callAjax('Post', JSON.stringify(DTO), mainServiceUrl + 'saveDefaultData',
                         function (data) {
-                            console.log(data);
+                            //console.log(data);
                             $(modalDialog).modal('hide');
                             if (data.d.Status) // show success message if done.
                                 success(data);
@@ -775,8 +775,8 @@ if ($.isFunction($.fn.editable)) {
                     //console.log(response.d);
                     //alert(response.d);
                 },
-                error: function () {
-                    console.log("Error in Ajax!..");
+                error: function (err) {
+                    console.log("Error in Ajax!..", err);
                 }
             });
         }

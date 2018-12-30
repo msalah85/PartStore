@@ -12,8 +12,11 @@
 <table class="table table-bordered table-responsive table-hover table-striped datatable2">
     <thead>
         <tr>
+            <th title="@Lang.InvoiceNo">
+                #
+            </th>
             <th>
-                @Lang.InvoiceNo
+                @Lang.Date
             </th>
             <th>
                 @Lang.Customer
@@ -30,13 +33,7 @@
             <th>
                 @Lang.NetAmount
             </th>
-            <th>
-                @Lang.Date
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>@Lang.Options</th>
+            <th width="100">@Lang.Options</th>
         </tr>
     </thead>
     <tbody>
@@ -45,6 +42,9 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.InvoiceNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Account.Title)
@@ -62,15 +62,9 @@
                     @Html.DisplayFor(modelItem => item.NetAmount)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AddDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Notes)
-                </td>
-                <td>
-                    <a asp-action="Create" asp-route-id="@item.Id">@Lang.Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">@Lang.Print</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">@Lang.Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" title="@Lang.Print" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-print"></span></a>
+                    <a asp-action="Create" asp-route-id="@item.Id" title="@Lang.Edit" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" title="@Lang.Delete" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
                 </td>
             </tr>
         }

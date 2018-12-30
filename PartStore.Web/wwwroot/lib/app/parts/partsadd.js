@@ -45,7 +45,7 @@ var partsManager = function () {
                                 _row = $(pageElements.rowClone.split('car_1').join('car_' + rowIndex)).clone(true),
                                 carSelectId = '#car_' + rowIndex;
 
-                            $(".num", _row).text(i + 1);
+                            $(".num", _row).text(rowIndex);
                             $("[name='childID']", _row).val(item.id || 0);
                             $("[name='ItemID']", _row).val(item.itemId).trigger('change'); // select2 
                             $("[name='PartName']", _row).val(item.partName);
@@ -59,6 +59,7 @@ var partsManager = function () {
                         }).promise().done(function () {
                             invoiceTotalCalc();
                             bindSelect2();
+                            //reArrangBillIndexs();
                         });
                     }
                 };
@@ -94,6 +95,7 @@ var partsManager = function () {
                 tolerance: 'pointer',
                 stop: function (e, ui) { //just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
                     $(ui.item).css('z-index', 'auto');
+                    reArrangBillIndexs();
                 }
             });
 
@@ -120,12 +122,14 @@ var partsManager = function () {
                 e.preventDefault();
                 // add new row.
                 var rowIndex = (pageElements.billBody.children('tr').length + 1),
-                    _row = pageElements.rowClone.split('1').join('' + rowIndex),
+                    _row = pageElements.rowClone.split('car_1').join('car_' + rowIndex),
                     carSelectId = '#car_' + rowIndex;
 
+                $(".num", _row).text(rowIndex);
                 pageElements.billBody.append($(_row));
                 $(carSelectId).focus();
                 bindCarsSelect2(carSelectId); // fire choices in cars select
+                reArrangBillIndexs();
 
                 // add validate rule.
                 $('input.new').each(function () { $(this).rules("add", { required: true }); });

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PartStore.Core.StoreModels;
+using PartStore.Web.Models;
 
 namespace PartStore.Web.Controllers
 {
@@ -21,8 +22,9 @@ namespace PartStore.Web.Controllers
         // GET: Items
         public async Task<IActionResult> Index()
         {
-            var partStoreContext = _context.Items.Include(i => i.Make).Include(i => i.Model).Include(i => i.Year);
-            return View(await partStoreContext.OrderByDescending(i => i.ItemId).ToListAsync());
+            var partStoreContext = await _context.Items.Include(i => i.Make).Include(i => i.Model).Include(i => i.Year).
+                Include(i => i.Photos).OrderByDescending(i => i.ItemId).ToListAsync();
+            return View(partStoreContext);
         }
 
         // GET: Items/Details/5
@@ -161,6 +163,24 @@ namespace PartStore.Web.Controllers
         private bool ItemsExists(long id)
         {
             return _context.Items.Any(e => e.ItemId == id);
+        }
+
+
+        // GET: Items/Car/5
+        public async Task<IActionResult> Car(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var items = new CarInvoicesItemsModel()
+            {
+                Car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.ItemId == id),
+                Invoices = await _context.InvoiceDetails.Where(i => i.ItemId == id).ToListAsync()
+            };
+
+            return View(items);
         }
     }
 }

@@ -14,8 +14,7 @@ namespace PartStore.Core.StoreModels
         public string PartName { get; set; }
         [Display(Name = "Quantity", ResourceType = typeof(Lang))]
         public int Quantity { get; set; }
-        [DisplayFormat(DataFormatString = "{0:C}")]
-        [Display(Name = "Price", ResourceType = typeof(Lang))]
+        [DisplayFormat(DataFormatString = "{0:C}"), Display(Name = "Price", ResourceType = typeof(Lang))]
         public decimal Price { get; set; }
         public decimal? Discount { get; set; } = 0;
         [DisplayFormat(DataFormatString = "{0:C}")]

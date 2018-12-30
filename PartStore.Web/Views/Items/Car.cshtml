@@ -1,0 +1,69 @@
+﻿@using SysLanguages
+@model PartStore.Web.Models.CarInvoicesItemsModel
+
+@{
+    ViewData["Title"] = Lang.Car;
+}
+<h2>
+    @Lang.Car
+    @Model.Car.Make.MakeName -
+    @Model.Car.Model.ModelName
+    @Model.Car.YearId
+    <small class="pull-left noprint">
+        <a title="طباعة التقرير" href="javascript:window.print();"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a> |
+        <a asp-action="Index">@Lang.BackToCars</a>
+    </small>
+</h2>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Lang.PartName
+            </th>
+            <th>
+                @Lang.Quantity
+            </th>
+            <th>
+                @Lang.Price
+            </th>
+            <th>
+                @Lang.Total
+            </th>
+            <th class="noprint">
+                الفاتورة
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Invoices)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PartName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubTotal)
+                </td>
+                <td class="noprint">
+                    <a asp-action="Details" asp-controller="Invoices" asp-route-id="@item.InvoiceId"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th></th>
+            <th>@Model.Invoices.Sum(i => i.Quantity)</th>
+            <th></th>
+            <th>@Model.Invoices.Sum(i => i.SubTotal)</th>
+            <th class="noprint"></th>
+        </tr>
+    </tfoot>
+</table>

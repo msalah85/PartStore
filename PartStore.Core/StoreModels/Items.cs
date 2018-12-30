@@ -58,5 +58,10 @@ namespace PartStore.Core.StoreModels
         public Accounts Supplier { get; set; }
         public ICollection<InvoiceDetails> InvoiceDetails { get; set; }
         public ICollection<Photos> Photos { get; set; }
+
+        public static implicit operator Items(List<InvoiceDetails> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

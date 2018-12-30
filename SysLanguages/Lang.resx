@@ -565,7 +565,7 @@
     <value>عمليات الدفع</value>
   </data>
   <data name="PaymentsReceiptsList" xml:space="preserve">
-    <value>تقرير المدفوعات ،المصروفات ، والتحويلات البنكية.</value>
+    <value>المدفوعات، المصروفات، والتحويلات البنكية.</value>
   </data>
   <data name="PaymentType" xml:space="preserve">
     <value>بند المدفوع</value>

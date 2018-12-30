@@ -1282,7 +1282,7 @@ namespace SysLanguages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تقرير المدفوعات ،المصروفات ، والتحويلات البنكية..
+        ///   Looks up a localized string similar to المدفوعات، المصروفات، والتحويلات البنكية..
         /// </summary>
         public static string PaymentsReceiptsList {
             get {
