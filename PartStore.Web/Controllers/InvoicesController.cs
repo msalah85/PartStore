@@ -51,7 +51,7 @@ namespace PartStore.Web.Controllers
             if (id == null) // add
             {
                 ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name");
-                ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "Title");
+                ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title"); // Clients
                 // new refrence No
                 var lastInv = _context.Invoices.LastOrDefault();
                 int.TryParse(lastInv?.InvoiceNo, out int newInvNo);
@@ -65,7 +65,7 @@ namespace PartStore.Web.Controllers
                     return NotFound();
                 }
                 ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name", invoices.InvoiceTypeId);
-                ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "Title", invoices.AccountId);
+                ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title", invoices.AccountId);
                 ViewBag.InvoiceNo = invoices.InvoiceNo;
             }
 
@@ -74,7 +74,7 @@ namespace PartStore.Web.Controllers
                 .Select(c => new { c.ItemId, Name = c.ItemId + " - " + c.Make.MakeName + " " + c.Model.ModelName + " " + c.YearId }).ToListAsync();
             ViewData["Cars"] = new SelectList(_cars, "ItemId", "Name");
             ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name");
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "Title");
+            ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title");
 
             return View();
         }
@@ -92,7 +92,7 @@ namespace PartStore.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "Title", invoices.AccountId);
+            ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title", invoices.AccountId);
             return View(invoices);
         }
 
@@ -184,7 +184,7 @@ namespace PartStore.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "Title", invoices.AccountId);
+            ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title", invoices.AccountId);
             return View(invoices);
         }
 

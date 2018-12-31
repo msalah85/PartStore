@@ -4,6 +4,11 @@ body {
     padding-top: 50px;
     padding-bottom: 20px;
     font-family: 'Droid Arabic Kufi', Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #f4f6f9;
+}
+
+.container {
+    background-color: #fff;
 }
 
 .body-content {
@@ -223,10 +228,56 @@ html body .m-t-10 {
 /*fix daatbels rtl*/
 div.dataTables_wrapper div.dataTables_paginate,
 div.dataTables_wrapper div.dataTables_filter {
-    text-align: left!important;
+    text-align: left !important;
 }
 /*fix home card title*/
-h2.m-t-0{font-size:20px;}
+h2.m-t-0 {
+    font-size: 20px;
+}
+
 .form-control {
     padding: 2px 12px;
 }
+
+/*thumb*/
+.bg-cover, *[data-bg-img] {
+    background-position: center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.embed-responsive {
+    position: relative;
+    display: block;
+    padding: 0;
+    overflow: hidden;
+}
+figure {
+    display: block;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    min-height:40px!important;
+}
+.deal-thumbnail:before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiP…B3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=);
+    background-size: 100%;
+    z-index: 0;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(0, 0, 0, 0.2)), color-stop(30%, rgba(0, 0, 0, 0.3)), color-stop(65%, rgba(0, 0, 0, 0.4)), color-stop(100%, rgba(0, 0, 0, 0.5)));
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 30%, rgba(0, 0, 0, 0.4) 65%, rgba(0, 0, 0, 0.5) 100%);
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 30%, rgba(0, 0, 0, 0.4) 65%, rgba(0, 0, 0, 0.5) 100%);
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 30%, rgba(0, 0, 0, 0.4) 65%, rgba(0, 0, 0, 0.5) 100%);
+    opacity: 0.5;
+}
+/*thumb*/

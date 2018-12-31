@@ -2,7 +2,7 @@
 @model PartStore.Web.Models.InvoicePrintModel
 
 @{
-    ViewData["Title"] = Lang.Print;
+    ViewData["Title"] = Lang.Print +" "+ Lang.TaxInvoice;
 }
 
 <br />
@@ -14,10 +14,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="pull-right">
-                        <h3><strong class="text-danger">@Model.CompanyInfo.FirstOrDefault(a => a.Title.Equals("companyname"))?.Value</strong></h3>
+                        <h4><strong class="text-danger">@Model.CompanyInfo.FirstOrDefault(a => a.Title.ToLower().Equals("companyname"))?.Value</strong></h4>
                         <address>
                             <p class="text-muted m-l-5">
-                                @foreach (var setting in Model.CompanyInfo)
+                                @foreach (var setting in Model.CompanyInfo.Where(a => !a.Title.ToLower().Equals("companyname")))
                                 {
                                     @setting.Value <br />
                                 }

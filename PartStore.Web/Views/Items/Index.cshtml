@@ -10,63 +10,57 @@
 <p>
     <a asp-action="Create">@Lang.New</a>
 </p>
-<table class="table table-bordered table-responsive table-hover table-striped">
+<table class="table table-bordered table-responsive table-hover table-striped datatable2">
     <thead>
         <tr>
-            <th>
+            <th class="text-center" width="40">
                 #
             </th>
-            <th>
+            <th width="60" class="text-center">
                 @Lang.Photo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Make)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Model)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Year)
-            </th>
-            <th>
-                @Lang.Quantity
-            </th>
-            <th>
-                @Lang.Price
+                @Lang.Car
             </th>
             <th>
                 @Lang.VIN
             </th>
-            <th>@Lang.Options</th>
+            <th>
+                @Lang.LotNo
+            </th>
+            <th>
+                @Lang.Price
+            </th>
+            <th width="80">@Lang.Options</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.ItemId)
                 </td>
-                <td>
-                    <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId"><img src="~/public/@Html.DisplayFor(modelItem => item.Photos.FirstOrDefault().Url)" height="40" /></a>
+                <td class="text-center">
+                    <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId" title="@Lang.Photos">
+                        <figure class="deal-thumbnail embed-responsive" data-bg-img="bg"
+                                style="background-image: url('/public/@Html.DisplayFor(modelItem => item.Photos.FirstOrDefault().Url)');">
+                        </figure>
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Make.MakeName)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Model.ModelName)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Year.YearId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Qty)
+                    @Html.DisplayFor(modelItem => item.Vin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LotNo)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LastCost)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Vin)
                 </td>
                 <td>
                     <div class="dropdown">
@@ -76,16 +70,16 @@
                         </button>
                         <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
                             <li>
-                                <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId">@Lang.Photos</a>
+                                <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-picture text-info"></span> @Lang.Photos</a>
                             </li>
                             <li>
-                                <a asp-action="Car" asp-route-id="@item.ItemId">المبيعات</a>
+                                <a asp-action="Car" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-list-alt text-info"></span> المبيعات</a>
                             </li>
                             <li role="separator" class="divider"></li>
                             <li>
-                                <a asp-action="Edit" asp-route-id="@item.ItemId">@Lang.Edit</a>
+                                <a asp-action="Edit" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-edit text-info"></span> @Lang.Edit</a>
                             </li>
-                            <li> <a asp-action="Delete" asp-route-id="@item.ItemId">@Lang.Delete</a></li>
+                            <li><a asp-action="Delete" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-trash text-danger"></span> @Lang.Delete</a></li>
                         </ul>
                     </div>
                 </td>
@@ -93,3 +87,6 @@
         }
     </tbody>
 </table>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_DataTablesSettingsPartial");}
+}
