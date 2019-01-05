@@ -1,0 +1,68 @@
+﻿@using SysLanguages
+@model PartStore.Web.Models.ItemPartsViewModel
+
+@{
+    ViewData["Title"] = Lang.CarParts;
+}
+<br />
+<h3>
+    @ViewData["Title"]
+    :
+    @Model.Car.Make.MakeName -
+    @Model.Car.Model.ModelName
+    @Model.Car.YearId
+
+<small class="pull-left">
+    <a asp-controller="Items" asp-action="Index">@Lang.BackToCars</a>
+</small>
+</h3>
+<hr />
+
+<p>
+    @Lang.New
+</p>
+
+@{await Html.RenderPartialAsync("Create", Model.ItemPart);}
+<hr />
+<table class="table table-bordered">
+    <thead>
+        <tr style="background-color:#e6e3e3">
+            <th>
+                @Html.DisplayNameFor(model => model.ItemPart.PartName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemPart.Qty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemPart.SalePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemPart.More)
+            </th>
+            <th width="120"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ItemParts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PartName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.More)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.PartId">@Lang.Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.PartId">@Lang.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

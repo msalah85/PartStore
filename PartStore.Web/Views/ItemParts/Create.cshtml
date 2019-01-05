@@ -1,0 +1,42 @@
+﻿@using SysLanguages
+@model PartStore.Core.StoreModels.ItemParts
+@{
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" class="form-inline">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="ItemId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PartName" class="control-label"></label>
+                <input asp-for="PartName" class="form-control" required />
+                <span asp-validation-for="PartName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Qty" class="control-label"></label>
+                <input asp-for="Qty" class="form-control" required style="width:70px;" />
+                <span asp-validation-for="Qty" class="text-danger" value="1"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SalePrice" class="control-label"></label>
+                <input asp-for="SalePrice" class="form-control" required style="width:100px;" />
+                <span asp-validation-for="SalePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="More" class="control-label"></label>
+                <textarea asp-for="More" class="form-control" rows="1" style="min-height: 36px;"></textarea>
+                <span asp-validation-for="More" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" title="@Lang.New" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> @Lang.Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,69 @@
+﻿@using SysLanguages
+@model PartStore.Web.Models.ItemPartsViewModel
+@{
+    ViewData["Title"] = Lang.Car;
+}
+<br />
+<h2>
+    @ViewData["Title"]
+    <small>
+        @Model.Car?.Make.MakeName
+        @Model.Car?.Model.ModelName
+        @Model.Car?.YearId
+    </small>
+
+    <small class="pull-left noprint">
+        <a title="طباعة التقرير" href="javascript:window.print();"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a> |
+        <a asp-action="Index">@Lang.BackToCars</a>
+    </small>
+</h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Lang.PartName
+            </th>
+            <th class="text-center">
+                @Lang.Quantity
+            </th>
+            <th>
+                <span class="pull-center">@Lang.Price</span>
+            </th>
+            <th class="noprint" width="70">
+                <span class="pull-left">تعديل</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ItemParts != null)
+        {
+            @foreach (var item in Model.ItemParts)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PartName)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Qty)
+                    </td>
+                    <td>
+                        <span class="pull-center">@Html.DisplayFor(modelItem => item.SalePrice)</span>
+                    </td>
+                    <td class="noprint">
+                        <span class="pull-left"><a asp-action="Edit" asp-controller="ItemParts" asp-route-id="@item.PartId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></span>
+                    </td>
+                </tr>
+            }}
+        else
+        {<tr><td colspan="4">@Lang.NoDataFound</td></tr>}
+        </tbody>
+    <tfoot>
+        <tr>
+            <th></th>
+            <th class="text-center">@Model?.ItemParts?.Sum(i => i.Qty)</th>
+            <th class="pull-center">@Model?.ItemParts?.Sum(i => i.SalePrice)</th>
+            <th class="noprint"></th>
+        </tr>
+    </tfoot>
+</table>
+

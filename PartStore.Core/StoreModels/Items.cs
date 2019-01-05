@@ -10,6 +10,7 @@ namespace PartStore.Core.StoreModels
         public Items()
         {
             InvoiceDetails = new HashSet<InvoiceDetails>();
+            ItemParts = new HashSet<ItemParts>();
             Photos = new HashSet<Photos>();
         }
 
@@ -47,7 +48,6 @@ namespace PartStore.Core.StoreModels
         public string RefNo { get; set; }
         [Display(Name = "SupplierCarNo", ResourceType = typeof(Lang))]
         public string SupplierCarNo { get; set; }
-
         [Display(Name = "Make", ResourceType = typeof(Lang))]
         public Makes Make { get; set; }
         [Display(Name = "ModelName", ResourceType = typeof(Lang))]
@@ -58,6 +58,7 @@ namespace PartStore.Core.StoreModels
         public Accounts Supplier { get; set; }
         public ICollection<InvoiceDetails> InvoiceDetails { get; set; }
         public ICollection<Photos> Photos { get; set; }
+        public ICollection<ItemParts> ItemParts { get; set; }
 
         public static implicit operator Items(List<InvoiceDetails> v)
         {

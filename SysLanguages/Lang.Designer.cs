@@ -175,6 +175,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تاريخ التسجيل.
+        /// </summary>
+        public static string AddDate {
+            get {
+                return ResourceManager.GetString("AddDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فاتورة جديدة.
         /// </summary>
         public static string AddInvoice {
@@ -832,6 +841,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تقرير حركة الصنف.
+        /// </summary>
+        public static string ItemReport {
+            get {
+                return ResourceManager.GetString("ItemReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to السيارات.
         /// </summary>
         public static string Items {
@@ -1008,6 +1026,15 @@ namespace SysLanguages {
         public static string NewPart {
             get {
                 return ResourceManager.GetString("NewPart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا توجد بيانات متاحة..
+        /// </summary>
+        public static string NoDataFound {
+            get {
+                return ResourceManager.GetString("NoDataFound", resourceCulture);
             }
         }
         
@@ -1525,6 +1552,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to بحث بـــ.
+        /// </summary>
+        public static string SearchBy {
+            get {
+                return ResourceManager.GetString("SearchBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ابحث عن قطع غيار.
         /// </summary>
         public static string SearchParts {
@@ -1593,6 +1629,15 @@ namespace SysLanguages {
         public static string SiteName {
             get {
                 return ResourceManager.GetString("SiteName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to قطع غيار السيارة.
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

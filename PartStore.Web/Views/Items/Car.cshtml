@@ -2,8 +2,9 @@
 @model PartStore.Web.Models.CarInvoicesItemsModel
 
 @{
-    ViewData["Title"] = Lang.Car;
+    ViewData["Title"] = Lang.ItemReport;
 }
+<br />
 <h2>
     @Lang.Car
     @Model.Car.Make.MakeName -
@@ -15,23 +16,23 @@
     </small>
 </h2>
 <hr />
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
                 @Lang.PartName
             </th>
-            <th>
+            <th class="text-center">
                 @Lang.Quantity
             </th>
             <th>
-                @Lang.Price
+                <span class="pull-left">@Lang.Price</span>
             </th>
             <th>
-                @Lang.Total
+                <span class="pull-left">@Lang.Total</span>
             </th>
-            <th class="noprint">
-                الفاتورة
+            <th class="noprint" width="70">
+                <span class="pull-left">الفاتورة</span>
             </th>
         </tr>
     </thead>
@@ -42,17 +43,17 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PartName)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    <span class="pull-left">@Html.DisplayFor(modelItem => item.Price)</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SubTotal)
+                    <span class="pull-left">@Html.DisplayFor(modelItem => item.SubTotal)</span>
                 </td>
                 <td class="noprint">
-                    <a asp-action="Details" asp-controller="Invoices" asp-route-id="@item.InvoiceId"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a>
+                    <span class="pull-left"><a asp-action="Details" asp-controller="Invoices" asp-route-id="@item.InvoiceId"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a></span>
                 </td>
             </tr>
         }
@@ -60,9 +61,9 @@
     <tfoot>
         <tr>
             <th></th>
-            <th>@Model.Invoices.Sum(i => i.Quantity)</th>
+            <th class="text-center">@Model.Invoices.Sum(i => i.Quantity)</th>
             <th></th>
-            <th>@Model.Invoices.Sum(i => i.SubTotal)</th>
+            <th><span class="pull-left money">@Model.Invoices.Sum(i => i.SubTotal)</span></th>
             <th class="noprint"></th>
         </tr>
     </tfoot>

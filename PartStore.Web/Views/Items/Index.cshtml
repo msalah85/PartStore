@@ -80,6 +80,10 @@
                                 <a asp-action="Edit" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-edit text-info"></span> @Lang.Edit</a>
                             </li>
                             <li><a asp-action="Delete" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-trash text-danger"></span> @Lang.Delete</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a asp-controller="ItemParts" asp-action="Index" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-wrench text-info"></span> @Lang.CarParts</a>
+                            </li>
                         </ul>
                     </div>
                 </td>

@@ -58,7 +58,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More")] Items items)
+        public async Task<IActionResult> Create([Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo")] Items items)
         {
             if (ModelState.IsValid)
             {   // Incresing the item no
@@ -99,7 +99,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More")] Items items)
+        public async Task<IActionResult> Edit(long id, [Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo")] Items items)
         {
             if (id != items.ItemId)
             {
@@ -165,7 +165,6 @@ namespace PartStore.Web.Controllers
             return _context.Items.Any(e => e.ItemId == id);
         }
 
-
         // GET: Items/Car/5
         public async Task<IActionResult> Car(long? id)
         {
@@ -179,6 +178,50 @@ namespace PartStore.Web.Controllers
                 Car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.ItemId == id),
                 Invoices = await _context.InvoiceDetails.Where(i => i.ItemId == id).ToListAsync()
             };
+
+            return View(items);
+        }
+
+        /// <summary>
+        /// Search/Get entered car parts by car id or lot or vin.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="lot"></param>
+        /// <param name="vin"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> CarInfo(long? id, string lot, string vin)
+        {
+            var items = new ItemPartsViewModel();
+            if (id != null) // car id search
+            {
+                items.Car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.ItemId == id);
+                items.ItemParts = await _context.ItemParts.Where(i => i.ItemId == id).ToListAsync();
+                return View(items);
+            }
+
+            if (!string.IsNullOrEmpty(lot)) // lot search
+            {
+                var _car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.LotNo == lot);
+                if (_car != null)
+                {
+                    items.Car = _car;
+                    items.ItemParts = await (from i in _context.ItemParts join t in _context.Items on i.ItemId equals t.ItemId
+                                             where t.LotNo == lot select i).ToListAsync();
+                    return View(items);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(vin)) // chassis no (VIN) search
+            {
+                var _car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.Vin == vin);
+                if (_car != null)
+                {
+                    items.Car = _car;
+                    items.ItemParts = await (from i in _context.ItemParts join t in _context.Items on i.ItemId equals t.ItemId
+                                              where t.Vin == vin select i).ToListAsync();
+                    return View(items);
+                }
+            }
 
             return View(items);
         }

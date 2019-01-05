@@ -18,6 +18,7 @@ namespace PartStore.Core.StoreModels
         public virtual DbSet<InvoiceDetails> InvoiceDetails { get; set; }
         public virtual DbSet<Invoices> Invoices { get; set; }
         public virtual DbSet<InvoiceTypes> InvoiceTypes { get; set; }
+        public virtual DbSet<ItemParts> ItemParts { get; set; }
         public virtual DbSet<Items> Items { get; set; }
         public virtual DbSet<Makes> Makes { get; set; }
         public virtual DbSet<Models> Models { get; set; }
@@ -34,6 +35,7 @@ namespace PartStore.Core.StoreModels
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=PartStore;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
@@ -168,6 +170,53 @@ namespace PartStore.Core.StoreModels
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<ItemParts>(entity =>
+            {
+                entity.HasKey(e => e.PartId);
+
+                entity.Property(e => e.PartId).HasColumnName("PartID");
+
+                entity.Property(e => e.Active).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.AddDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.AvgCost)
+                    .HasColumnType("money")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Barcode).HasMaxLength(500);
+
+                entity.Property(e => e.Deleted).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.ItemId).HasColumnName("ItemID");
+
+                entity.Property(e => e.LastCost)
+                    .HasColumnType("money")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.LastPurchasedDate).HasColumnType("date");
+
+                entity.Property(e => e.More).HasMaxLength(1000);
+
+                entity.Property(e => e.PartName)
+                    .IsRequired()
+                    .HasMaxLength(150);
+
+                entity.Property(e => e.SalePrice)
+                    .HasColumnType("money")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Starred).HasDefaultValueSql("((0))");
+
+                entity.HasOne(d => d.Item)
+                    .WithMany(p => p.ItemParts)
+                    .HasForeignKey(d => d.ItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ItemParts_Items");
             });
 
             modelBuilder.Entity<Items>(entity =>
