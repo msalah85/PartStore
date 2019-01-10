@@ -34,5 +34,23 @@
     "inputFiles": [
       "wwwroot/js/site.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/app/parts/partsadd.min.js",
+    "inputFiles": [
+      "wwwroot/lib/app/parts/partsadd.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/app/Common.min.js",
+    "inputFiles": [
+      "wwwroot/lib/app/Common.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/keys/jquery.hotkeys.min.js",
+    "inputFiles": [
+      "wwwroot/lib/keys/jquery.hotkeys.js"
+    ]
   }
 ]

@@ -1,0 +1,98 @@
+﻿@using SysLanguages
+@model PartStore.Web.Models.ClientInvoicesViewModel
+
+@{
+    ViewData["Title"] = Lang.Invoices;
+}
+<br />
+<h2>
+    @ViewData["Title"]
+    <small>
+        @Lang.Customer
+        @Model.Client.Title
+    </small>
+    <span class="pull-left"><a class="btn" asp-controller="Accounts" asp-action="Index">رجوع للعملاء</a></span>
+</h2>
+<p>
+    <a asp-action="Create">@Lang.New</a>
+</p>
+<hr />
+<table class="table table-bordered table-responsive table-hover table-striped datatable2">
+    <thead>
+        <tr>
+            <th title="@Lang.InvoiceNo">
+                #
+            </th>
+            <th>
+                الإجراء
+            </th>
+            <th>
+                @Lang.Date
+            </th>
+            <th>
+                @Lang.Total
+            </th>
+            <th>
+                @Lang.Discount
+            </th>
+            <th>
+                @Lang.Tax
+            </th>
+            <th>
+                @Lang.NetAmount
+            </th>
+            <th width="100">@Lang.Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Invoices)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NetAmount)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" title="@Lang.Print" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-print"></span></a>
+                <a asp-action="Create" asp-route-id="@item.Id" title="@Lang.Edit" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-edit"></span></a>
+                <a asp-action="Delete" asp-route-id="@item.Id" title="@Lang.Delete" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.datatable2').DataTable({
+                pageLength: 50,
+                language: {
+                    "url": "/lib/DataTables/Arabic.json"
+                }
+            });
+        });
+    </script>
+}
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+}

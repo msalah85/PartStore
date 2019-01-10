@@ -176,7 +176,7 @@ namespace PartStore.Web.Controllers
             var items = new CarInvoicesItemsModel()
             {
                 Car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.ItemId == id),
-                Invoices = await _context.InvoiceDetails.Where(i => i.ItemId == id).ToListAsync()
+                Invoices = await _context.InvoiceDetails.Include(v=>v.Invoice).ThenInclude(v => v.InvoiceType).Where(i => i.ItemId == id).ToListAsync()
             };
 
             return View(items);

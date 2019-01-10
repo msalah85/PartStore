@@ -55,15 +55,21 @@
                 </tr>
             }}
         else
-        {<tr><td colspan="4">@Lang.NoDataFound</td></tr>}
-        </tbody>
+        {
+            <tr><td colspan="4">@Lang.NoDataFound</td></tr>}
+    </tbody>
     <tfoot>
         <tr>
             <th></th>
             <th class="text-center">@Model?.ItemParts?.Sum(i => i.Qty)</th>
-            <th class="pull-center">@Model?.ItemParts?.Sum(i => i.SalePrice)</th>
+            <th class="pull-center money">@Model?.ItemParts?.Sum(i => i.SalePrice)</th>
             <th class="noprint"></th>
         </tr>
     </tfoot>
 </table>
-
+@section Scripts{
+    <script src="~/lib/autoNumeric.js"></script>
+    <script>
+    $('.money').autoNumeric();
+    </script>
+}

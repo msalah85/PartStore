@@ -33,7 +33,16 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    @if (item.AccountTypeId == 1)
+                    {
+                        <a title="حساب الزبون" asp-action="Client" asp-controller="Invoices" asp-route-id="@item.AccountId">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Title)
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Phone)

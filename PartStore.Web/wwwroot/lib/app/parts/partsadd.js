@@ -1,5 +1,7 @@
 ﻿$.fn.select2.defaults.set("theme", "bootstrap");
 
+///////////////////////////////
+
 var partsManager = function () {
     var pageElements = {
         billBody: $("#listItems tbody"),
@@ -12,18 +14,14 @@ var partsManager = function () {
         //saveAll: $('#SaveAll'),
         invoiceID: $('#Id'),
         accountId: $('#AccountId'),
+        invoiceTypeId: $('#InvoiceTypeId'),
         invoiceN: $('#InvoiceNo'),
         addDate: $('#AddDate'),
         notes: $('#Notes'),
         cSave: $('#btnSave'),
         form: 'aspnetForm'
     },
-        //generateId = function () {
-        //    var text = "", possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        //    for (var i = 0; i < 5; i++)
-        //        text += possible.charAt(Math.floor(Math.random() * possible.length));
-        //    return text;
-        //},
+
         getInvoiceDetails = function () {
             var sUrl = "/Invoices/Edit/" + pageElements.invoiceID.val(),
                 bindControls = function (data) {
@@ -67,7 +65,7 @@ var partsManager = function () {
 
             dataService.callAjax('GET', {}, sUrl, bindControls, commonManger.errorException);
         },
-        Init = function () {
+        init = function () {
             $(document).delegate('input[type="text"],input[type="number"]', "click", function () {
                 $(this).select();
             });
@@ -136,10 +134,14 @@ var partsManager = function () {
                 pageElements.billBody.find('select[name="ItemID"]:last').focus();
                 $('.money').autoNumeric('init'); // apply format money.
 
+                invoiceTotalCalc();
+
                 // apply validation on new controls.
                 var valid = commonManger.applyValidation(pageElements.form);
                 if (!valid)
                     commonManger.showMessage(lang.Required, lang.RequiredMsg, 'warning');
+
+                bindInvoiceItemRowEvents();
             });
 
             // set new line
@@ -153,12 +155,14 @@ var partsManager = function () {
                 saveAll();
             });
 
+            bindInvoiceItemRowEvents();
         },
         saveAll = function () {
             var
                 _data = {
                     "id": pageElements.invoiceID.val(),
                     "accountId": pageElements.accountId.val(),
+                    "invoiceTypeId": pageElements.invoiceTypeId.val(),
                     "invoiceNo": pageElements.invoiceN.val(),
                     "notes": pageElements.notes.val(),
                     "totalAmount": numeral(pageElements.TotalAmount.text()).value(),
@@ -239,6 +243,28 @@ var partsManager = function () {
                 });
             }
         },
+        jumbToNext = function (el) {
+            var _this = $(el),
+                _thisVal = _this.val(),
+                _thisTd = _this.closest('td');
+            if (_thisVal !== '') {
+                _thisTd.next('td').find('input').select();
+            }
+        },
+        bindInvoiceItemRowEvents = function () {
+            $('select.cars.select2').on('select2:close', function (e) {                
+                jumbToNext(this); return false;
+            });
+            jQuery('input[name="PartName"]').bind('keydown.return', function (evt) {
+                jumbToNext(this); return false;
+            });
+            jQuery('input[name="Quantity"]').bind('keydown.return', function (evt) {
+                jumbToNext(this); return false;
+            });
+            jQuery('input[name="Price"]').bind('keydown.return', function (evt) {
+                pageElements.newLine.trigger('click'); return false;
+            });
+        },
         reArrangBillIndexs = function () {
             pageElements.billBody.find('tr').each(function (i, n) {
                 $(this).find('span.num').text(i + 1);
@@ -261,7 +287,8 @@ var partsManager = function () {
         };
 
     return {
-        Init: Init
+        Init: init
     };
+
 }();
 partsManager.Init();

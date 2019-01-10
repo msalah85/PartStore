@@ -13,7 +13,7 @@ namespace PartStore.Core.StoreModels
         [Display(Name = "PartName", ResourceType = typeof(Lang))]
         public string PartName { get; set; }
         [Display(Name = "Quantity", ResourceType = typeof(Lang))]
-        public int Qty { get; set; }
+        public int Qty { get; set; } = 1;
         [Display(Name = "Barcode", ResourceType = typeof(Lang))]
         public string Barcode { get; set; }
         public decimal? AvgCost { get; set; }

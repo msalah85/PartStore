@@ -22,7 +22,7 @@ namespace PartStore.Web.Controllers
         // GET: Invoices
         public async Task<IActionResult> Index()
         {
-            var partStoreContext = _context.Invoices.Include(i => i.Account);
+            var partStoreContext = _context.Invoices.Include(i => i.Account).Include(i => i.InvoiceType);
             return View(await partStoreContext.OrderByDescending(a => a.Id).ToListAsync());
         }
 
@@ -84,7 +84,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AccountId,InvoiceNo,Notes,TotalAmount,Discount,Tax,NetAmount,UserId,Ip,IsCache,AddDate,AddTime")] Invoices invoices)
+        public async Task<IActionResult> Create([Bind("Id,AccountId,InvoiceNo,Notes,TotalAmount,Discount,Tax,NetAmount,UserId,Ip,IsCache,AddDate,AddTime,InvoiceTypeId")] Invoices invoices)
         {
             if (ModelState.IsValid)
             {
@@ -115,6 +115,7 @@ namespace PartStore.Web.Controllers
                         exitsBefore.Discount = invoice.Discount;
                         exitsBefore.TotalAmount = invoice.TotalAmount;
                         exitsBefore.AccountId = invoice.AccountId;
+                        exitsBefore.InvoiceTypeId = invoice.InvoiceTypeId;
                         exitsBefore.AddDate = invoice.AddDate;
                         _context.Update(exitsBefore);
                         _context.UpdateRange(invoice.InvoiceDetails);
@@ -221,6 +222,24 @@ namespace PartStore.Web.Controllers
         private bool InvoicesExists(int id)
         {
             return _context.Invoices.Any(e => e.Id == id);
+        }
+
+
+        // GET: Invoices/Client/5
+        public async Task<IActionResult> Client(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var data = new ClientInvoicesViewModel()
+            {
+                Client = await _context.Accounts.FirstOrDefaultAsync(m => m.AccountId == id),
+                Invoices = await _context.Invoices.Include(i=>i.InvoiceType).Where(m => m.AccountId == id).ToListAsync()
+            };
+
+            return View(data);
         }
 
     }

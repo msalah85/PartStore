@@ -13,7 +13,6 @@
             <div class="row">
                 <div class="col-md-6">
                     <input type="hidden" asp-for="Id" value="0" />
-
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -64,8 +63,8 @@
                         <th width="50" class="text-center" title="Index">#</th>
                         <th width="350px">
                             @Lang.ChooseACar
-                                                <a asp-action="Create" asp-controller="Items" title="@Lang.New"><span class="glyphicon glyphicon-plus"></span></a>
-                                            </th>
+                            <a asp-action="Create" asp-controller="Items" title="@Lang.New"><span class="glyphicon glyphicon-plus"></span></a>
+                        </th>
                         <th>@Lang.PartName</th>
                         <th width="100px">@Lang.Quantity</th>
                         <th width="120px" title="Unit price">@Lang.Price <sub>$</sub></th>
@@ -131,12 +130,13 @@
     <script src="~/lib/autoNumeric.js"></script>
     <script src="~/lib/select2/js/select2.js"></script>
     <script src="~/lib/app/DataService.js"></script>
-    <script src="~/lib/app/Common.js"></script>
+    <script src="~/lib/app/Common.js?v=1"></script>
     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/lib/numeral.js"></script>
     <script src="~/lib/jquery/dist/jquery-ui.js"></script>
     <script src="~/lib/moment/moment.js"></script>
     <script src="~/lib/datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/lib/keys/jquery.hotkeys.min.js"></script>
     <script src="~/lib/app/parts/partsadd.js?v=1.1"></script>
 }
 @section Styles{

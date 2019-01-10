@@ -5,66 +5,101 @@
     ViewData["Title"] = Lang.ItemReport;
 }
 <br />
-<h2>
-    @Lang.Car
-    @Model.Car.Make.MakeName -
-    @Model.Car.Model.ModelName
-    @Model.Car.YearId
-    <small class="pull-left noprint">
-        <a title="طباعة التقرير" href="javascript:window.print();"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a> |
-        <a asp-action="Index">@Lang.BackToCars</a>
-    </small>
-</h2>
-<hr />
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>
-                @Lang.PartName
-            </th>
-            <th class="text-center">
-                @Lang.Quantity
-            </th>
-            <th>
-                <span class="pull-left">@Lang.Price</span>
-            </th>
-            <th>
-                <span class="pull-left">@Lang.Total</span>
-            </th>
-            <th class="noprint" width="70">
-                <span class="pull-left">الفاتورة</span>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Invoices)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PartName)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    <span class="pull-left">@Html.DisplayFor(modelItem => item.Price)</span>
-                </td>
-                <td>
-                    <span class="pull-left">@Html.DisplayFor(modelItem => item.SubTotal)</span>
-                </td>
-                <td class="noprint">
-                    <span class="pull-left"><a asp-action="Details" asp-controller="Invoices" asp-route-id="@item.InvoiceId"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a></span>
-                </td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <th></th>
-            <th class="text-center">@Model.Invoices.Sum(i => i.Quantity)</th>
-            <th></th>
-            <th><span class="pull-left money">@Model.Invoices.Sum(i => i.SubTotal)</span></th>
-            <th class="noprint"></th>
-        </tr>
-    </tfoot>
-</table>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>
+            @Lang.Car
+            @Model.Car.Make.MakeName -
+            @Model.Car.Model.ModelName
+            @Model.Car.YearId
+                </strong>
+            <span class="pull-left noprint">
+                <a title="طباعة التقرير" href="javascript:window.print();"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a> |
+                <a asp-action="Index">@Lang.BackToCars</a>
+            </span>
+
+</div>
+    <div class="">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Lang.PartName
+                    </th>
+                    <th>
+                        الإجراء
+                    </th>
+                    <th class="text-center">
+                        @Lang.Quantity
+                    </th>
+                    <th>
+                        <span class="pull-left">@Lang.Price</span>
+                    </th>
+                    <th>
+                        <span class="pull-left">@Lang.Total</span>
+                    </th>
+                    <th class="noprint" width="70">
+                        <span class="pull-left">الفاتورة</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Invoices)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PartName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Invoice.InvoiceType.Name)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            <span class="pull-left">@Html.DisplayFor(modelItem => item.Price)</span>
+                        </td>
+                        <td>
+                            <span class="pull-left">@Html.DisplayFor(modelItem => item.SubTotal)</span>
+                        </td>
+                        <td class="noprint">
+                            <span class="pull-left"><a asp-action="Details" asp-controller="Invoices" asp-route-id="@item.InvoiceId"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a></span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="active">
+                    <th><span class="pull-left">عدد فواتير البيع:</span></th>
+                    <th>@Model.Invoices.Where(p => p.Invoice.InvoiceTypeId == 1).Count()</th>
+                    <th class="text-center">@Model.Invoices.Where(p => p.Invoice.InvoiceTypeId == 1).Sum(i => i.Quantity)</th>
+                    <th></th>
+                    <th><span class="pull-left money totalParts">@Model.Invoices.Where(p => p.Invoice.InvoiceTypeId == 1).Sum(i => i.SubTotal)</span></th>
+                    <th class="noprint"></th>
+                </tr>
+                <tr class="active">
+                    <th colspan="4"><span class="pull-left">سعر شراء السيارة:</span></th>
+                    <th><span class="pull-left money carCost">@Model.Car.LastCost</span></th>
+                    <th class="noprint"></th>
+                </tr>
+                <tr class="active">
+                    <th colspan="4"><span class="pull-left">الربح:</span></th>
+                    <th><span class="pull-left money netAmount"></span></th>
+                    <th class="noprint"></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section Scripts{ 
+<script src="~/lib/autoNumeric.js"></script>
+<script>
+    var totalSales = parseFloat($('.totalParts').text().replace(',','')),
+        carCost = parseFloat($('.carCost').text().replace(',', '')),
+        netAmount = parseFloat(totalSales - carCost).toFixed();
+
+    $('.netAmount').text(netAmount);
+    $('.money').autoNumeric();
+</script>
+}

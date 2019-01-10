@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PartStore.Core.StoreModels;
@@ -69,7 +70,19 @@ namespace PartStore.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { id = itemParts.ItemId });
             }
-            return View(itemParts);
+            else
+            {
+                var invalid = ModelState.Where(p => p.Value.ValidationState == ModelValidationState.Invalid).FirstOrDefault();
+                ViewData["ErrorMessage"] = "Error:!" + string.Join(",", invalid.Value.Errors.Select(i => i.ErrorMessage));
+            }
+
+            var model = new ItemPartsViewModel()
+            {
+                ItemParts = await _context.ItemParts.Include(i => i.Item).Where(p => p.ItemId == itemParts.ItemId).ToListAsync(),
+                ItemPart = new ItemParts() { ItemId = (long)itemParts.ItemId },
+                Car = await _context.Items.Include(p => p.Make).Include(p => p.Model).FirstOrDefaultAsync(i => i.ItemId == itemParts.ItemId)
+            };
+            return View(nameof(Index), model);
         }
 
         // GET: ItemParts/Edit/5

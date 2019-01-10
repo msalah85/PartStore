@@ -46,10 +46,12 @@ var
             },
             doWork = function (form, url, dtoObject, success) {
                 // if validation complete 
-                var isValid = applyValidation(form);
-                if (isValid) {
-                    dataService.callAjax('Post', JSON.stringify(dtoObject), url, success, errorException);
-                }
+                //var isValid = applyValidation(form);
+                //if (isValid) {
+                dataService.callAjax('Post', JSON.stringify(dtoObject), url, success, errorException);
+                //} else {
+                //    showMessage('بيانات مطلوبة', 'يرجي التحقق من إدخال الحقول المطلوبة.', 'warning');
+                //}
             },
             disableAllFormElements = function (formId) {
                 $('#' + formId + ' .modal-body').find('input, textarea, button, select').attr('disabled', 'disabled');

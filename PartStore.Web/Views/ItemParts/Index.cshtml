@@ -12,16 +12,15 @@
     @Model.Car.Model.ModelName
     @Model.Car.YearId
 
-<small class="pull-left">
-    <a asp-controller="Items" asp-action="Index">@Lang.BackToCars</a>
-</small>
+    <small class="pull-left">
+        <a asp-controller="Items" asp-action="Index">@Lang.BackToCars</a>
+    </small>
 </h3>
 <hr />
 
 <p>
     @Lang.New
 </p>
-
 @{await Html.RenderPartialAsync("Create", Model.ItemPart);}
 <hr />
 <table class="table table-bordered">
@@ -65,4 +64,27 @@
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <th><span class="pull-left">الإجمالى</span></th>
+            <th>@Model.ItemParts.Sum(p => p.Qty)</th>
+            <th><span class="money">@Model.ItemParts.Sum(p => p.SalePrice)</span></th>
+            <th colspan="2"></th>
+        </tr>
+        <tr>
+            <th colspan="2"><span class="pull-left">سعر شراء السيارة</span></th>
+            <th><span class="money">@Model.Car.LastCost</span></th>
+            <th colspan="2"></th>
+        </tr>
+    </tfoot>
 </table>
+@section Scripts{
+    <script src="~/lib/autoNumeric.min.js"></script>
+    <script src="~/lib/keys/jquery.hotkeys.min.js"></script>
+    <script>
+        $(window).on("load", function () {
+            $('input#PartName').focus();
+        });
+        $('.money').autoNumeric();
+    </script>
+}
