@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <label asp-for="AccountId" class="control-label">@Lang.Customer</label>
                         <a asp-action="Create" asp-controller="Accounts" title="@Lang.New"><span class="glyphicon glyphicon-plus"></span></a>
-                        <select asp-for="AccountId" class="select2 form-control" asp-items="ViewBag.AccountId" data-placeholder="@Lang.ChooseAClient"><option></option></select>
+                        <select asp-for="AccountId" class="select2 form-control" data-placeholder="@Lang.ChooseAClient"></select>
                         <span asp-validation-for="AccountId" class="text-danger"></span>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                     <tr>
                         <td class="itemdiv text-center"><span class="num">1</span><input type="hidden" name="childID" value="0" /></td>
                         <td class="edit">
-                            <select asp-for="InvoiceDetails.First().ItemId" id="car_1" required class="select2 form-control cars" asp-items="ViewBag.Cars" data-placeholder="@Lang.ChooseACar"><option></option></select>
+                            <select asp-for="InvoiceDetails.First().ItemId" id="car_1" required class="select2 form-control cars" data-placeholder="@Lang.ChooseACar"><option></option></select>
                         </td>
                         <td class="edit">
                             <input asp-for="InvoiceDetails.First().PartName" required class="input-block-level form-control" type="text" />
@@ -117,18 +117,11 @@
         </div>
     </div>
 </form>
-<script type="text/javascript">
-    var avialableCars = [];
-    avialableCars.push({ id: '', text: '@Lang.ChooseACar' });
-    @foreach (var d in ViewBag.Cars)
-    {
-        @:avialableCars.push({ id: '@d?.Value', text: '@d?.Text' });
-    }
-</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/lib/autoNumeric.js"></script>
     <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/select2/js/i18n/ar.js"></script>
     <script src="~/lib/app/DataService.js"></script>
     <script src="~/lib/app/Common.js?v=1"></script>
     <script src="~/lib/toastr/toastr.min.js"></script>
@@ -137,7 +130,7 @@
     <script src="~/lib/moment/moment.js"></script>
     <script src="~/lib/datepicker/js/bootstrap-datepicker.js"></script>
     <script src="~/lib/keys/jquery.hotkeys.min.js"></script>
-    <script src="~/lib/app/parts/partsadd.js?v=1.1"></script>
+    <script src="~/lib/app/parts/partsadd.min.js?v=1.2"></script>
 }
 @section Styles{
     <link href="~/lib/select2/css/select2.css" rel="stylesheet" />

@@ -708,6 +708,37 @@ var
                             successCall(data);
                         }
                     }, errorException);
+            },
+            GetData = function (dataType, data, url, fnCallback) {
+                dataType = dataType ? dataType : "GET";
+                data = data ? data : {};
+
+                dataService.callAjax(dataType, data, url, fnCallback, commonManger.errorException);
+            },
+            bindSelect = function (controlId, field, text, list) {
+                list = $.isArray(list) ? list : $.makeArray(list);
+                var options = $.map(list, function (el) { return $('<option />').text(el[text]).val(el[field]) });
+                console.log(controlId, field, text, list, options);
+
+                var $el = $('#' + controlId);
+                $el.html($('<option />')).append(options);
+
+                if ($el.hasClass('select2'))
+                    bindSelect2('#' + controlId);
+            },
+            getSelectAjax = function (url, childCtrlId, value, text) {
+                var bindData = function (response) {
+                    bindSelect(childCtrlId, value, text, response);
+                };
+
+                GetData(null, null, url, bindData);
+            }, bindSelect2 = function (elId) {
+                $(elId).select2({
+                    language: "ar",
+                    placeholder: lang.PleaseChoose,
+                    allowClear: true,
+                    dir: "rtl"
+                });
             };
 
         return {
@@ -753,7 +784,10 @@ var
             saveEditable: editableSave,
             fullRoles: fullRoles,
             comp2json: comp2Json,
-            postData: callGenericData
+            postData: callGenericData,
+            getData: GetData,
+            bindSelect: bindSelect,
+            getSelect: getSelectAjax
         };
     }();
 

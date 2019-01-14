@@ -48,6 +48,7 @@ var pageManager = function () {
             $(".select2").select2({
                 placeholder: lang.PleaseChoose,
                 allowClear: true,
+                language: "ar",
                 theme: "bootstrap",
                 dir: "rtl"
             });

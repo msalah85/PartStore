@@ -36,6 +36,9 @@
                 @Html.DisplayNameFor(model => model.ItemPart.SalePrice)
             </th>
             <th>
+                @Lang.Total
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ItemPart.More)
             </th>
             <th width="120"></th>
@@ -55,6 +58,9 @@
                     @Html.DisplayFor(modelItem => item.SalePrice)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.AvgCost)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.More)
                 </td>
                 <td>
@@ -67,7 +73,7 @@
     <tfoot>
         <tr>
             <th><span class="pull-left">الإجمالى</span></th>
-            <th>@Model.ItemParts.Sum(p => p.Qty)</th>
+            <th colspan="2">@Model.ItemParts.Sum(p => p.Qty)</th>
             <th><span class="money">@Model.ItemParts.Sum(p => p.SalePrice)</span></th>
             <th colspan="2"></th>
         </tr>

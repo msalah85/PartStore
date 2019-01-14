@@ -50,8 +50,8 @@ namespace PartStore.Web.Controllers
         {
             if (id == null) // add
             {
-                ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name");
-                ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title"); // Clients
+                //ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name");
+                //ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title"); // Clients
                 // new refrence No
                 var lastInv = _context.Invoices.LastOrDefault();
                 int.TryParse(lastInv?.InvoiceNo, out int newInvNo);
@@ -64,17 +64,17 @@ namespace PartStore.Web.Controllers
                 {
                     return NotFound();
                 }
-                ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name", invoices.InvoiceTypeId);
-                ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title", invoices.AccountId);
+                //ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name", invoices.InvoiceTypeId);
+                //ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title", invoices.AccountId);
                 ViewBag.InvoiceNo = invoices.InvoiceNo;
             }
 
             // available cars (Items) list
-            var _cars = await _context.Items.Include(c => c.Make).Include(c => c.Model)
-                .Select(c => new { c.ItemId, Name = c.ItemId + " - " + c.Make.MakeName + " " + c.Model.ModelName + " " + c.YearId }).ToListAsync();
-            ViewData["Cars"] = new SelectList(_cars, "ItemId", "Name");
+            //var _cars = await _context.Items.Include(c => c.Make).Include(c => c.Model)
+            //    .Select(c => new { c.ItemId, Name = c.ItemId + " - " + c.Make.MakeName + " " + c.Model.ModelName + " " + c.YearId }).ToListAsync();
+            //ViewData["Cars"] = new SelectList(_cars, "ItemId", "Name");
             ViewData["InvoiceTypeId"] = new SelectList(_context.InvoiceTypes, "Id", "Name");
-            ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title");
+            //ViewData["AccountId"] = new SelectList(_context.Accounts.Where(a => a.AccountTypeId == 1), "AccountId", "Title");
 
             return View();
         }
@@ -149,7 +149,10 @@ namespace PartStore.Web.Controllers
                 return NotFound();
             }
 
-            var invoices = await _context.Invoices.Include(d => d.InvoiceDetails).FirstOrDefaultAsync(m => m.Id == id);
+            var invoices = await _context.Invoices
+                .Include(a => a.Account)
+                .Include(d => d.InvoiceDetails).ThenInclude(d => d.Item).ThenInclude(d => d.Model).ThenInclude(d => d.Make)
+                .FirstOrDefaultAsync(m => m.Id == id);
             return CreatedAtAction("Result", new { invoice = invoices, saved = true });
         }
 
@@ -236,10 +239,26 @@ namespace PartStore.Web.Controllers
             var data = new ClientInvoicesViewModel()
             {
                 Client = await _context.Accounts.FirstOrDefaultAsync(m => m.AccountId == id),
-                Invoices = await _context.Invoices.Include(i=>i.InvoiceType).Where(m => m.AccountId == id).ToListAsync()
+                Invoices = await _context.Invoices.Include(i => i.InvoiceType).Where(m => m.AccountId == id).ToListAsync()
             };
 
             return View(data);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCars(string searchTerm, int pageSize, int pageNum)
+        {
+            var list = _context.Items.Where(p => string.IsNullOrEmpty(searchTerm) || p.Vin.ToLower().StartsWith(searchTerm.ToLower()) || p.ItemId.ToString().Equals(searchTerm)
+                                || p.Make.MakeName.ToLower().StartsWith(searchTerm.ToLower()) || p.Model.ModelName.ToLower().StartsWith(searchTerm.ToLower()));
+
+            var result = new Select2Result()
+            {
+                Results = await list.Select(a => new Select2Model { id = a.ItemId.ToString(), text = string.Format("{0} - {1} {2} {3}", a.ItemId, a.Make.MakeName, a.Model.ModelName, a.YearId) })
+                                    .Skip((pageNum * pageSize) - 10).Take(pageSize).ToListAsync(),
+                Total = await list.CountAsync()
+            };
+
+            return Ok(result);
         }
 
     }

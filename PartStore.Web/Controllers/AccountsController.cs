@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PartStore.Core.StoreModels;
+using PartStore.Web.Models;
 
 namespace PartStore.Web.Controllers
 {
@@ -147,6 +148,21 @@ namespace PartStore.Web.Controllers
         private bool AccountsExists(int id)
         {
             return _context.Accounts.Any(e => e.AccountId == id);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AccountByType(string searchTerm, int pageSize, int pageNum, int? invoiceType)
+        {
+            var list = _context.Accounts.Where(p => (p.AccountTypeId == invoiceType && (string.IsNullOrEmpty(searchTerm) || p.Title.ToLower().StartsWith(searchTerm.ToLower()))));
+
+            var result = new Select2Result()
+            {
+                Results = await list.Select(a => new Select2Model { id = a.AccountId.ToString(), text = a.Title })
+                                    .Skip((pageNum * pageSize) - 10).Take(pageSize).ToListAsync(),
+                Total = await list.CountAsync()
+            };
+
+            return Ok(result);
         }
     }
 }

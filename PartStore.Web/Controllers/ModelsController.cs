@@ -155,5 +155,18 @@ namespace PartStore.Web.Controllers
         {
             return _context.Models.Any(e => e.ModelId == id);
         }
+
+        // GET: Adm/Models/ModelByMake/5
+        public async Task<IActionResult> ModelByMake(int? id)
+        {
+            var models = await _context.Models.Where(m => m.MakeId == id).ToListAsync();
+
+            if (models == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(models);
+        }
     }
 }

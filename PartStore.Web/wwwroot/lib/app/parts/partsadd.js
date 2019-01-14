@@ -1,4 +1,6 @@
 ﻿$.fn.select2.defaults.set("theme", "bootstrap");
+$.fn.select2.defaults.set("ajax--cache", true);
+
 
 ///////////////////////////////
 
@@ -10,7 +12,7 @@ var partsManager = function () {
         Discount: $('#Discount'),
         NetAmount: $('#NetAmount'),
         newLine: $('.newLine'),
-        rowClone: '<tr><td class="itemdiv text-center"><span class="glyphicon glyphicon-resize-vertical movable"></span><span class="num">1</span><input type="hidden" name="childID" value="0" /><div class="tools"><a href="#delete" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></div></td><td class="edit"><select name="ItemID" id="car_1" required class="input-block-level form-control select2 new cars" data-placeholder="' + lang.ChooseaCar + '"></select></td><td class="edit"><input name="PartName" required class="input-block-level form-control new" type="text"></td><td class="edit"><input name="Quantity" required class="input-block-level form-control number new" type="number" value="1"></td><td class="edit"><input name="Price" required class="input-block-level form-control money new" type="text" value="0"></td><td>0</td></tr>',
+        rowClone: '<tr><td class="itemdiv text-center"><span class="glyphicon glyphicon-resize-vertical movable"></span><span class="num">1</span><input type="hidden" name="childID" value="0" /><div class="tools"><a href="#delete" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></div></td><td class="edit"><select name="ItemID" id="car_1" required class="input-block-level form-control select2 new cars" data-placeholder="' + lang.ChooseaCar + '"><option></option></select></td><td class="edit"><input name="PartName" required class="input-block-level form-control new" type="text"></td><td class="edit"><input name="Quantity" required class="input-block-level form-control number new" type="number" value="1"></td><td class="edit"><input name="Price" required class="input-block-level form-control money new" type="text" value="0"></td><td>0</td></tr>',
         //saveAll: $('#SaveAll'),
         invoiceID: $('#Id'),
         accountId: $('#AccountId'),
@@ -34,7 +36,9 @@ var partsManager = function () {
                         $('#InvoiceNo').val(jsn.invoiceNo);
                         $('#AddDate').val(moment(jsn.addDate).format("MM/DD/YYYY"));
                         $('#Notes').val(jsn.notes);
-                        $(pageElements.accountId).val(jsn.accountId).trigger('change');
+                        var selectedOption = new Option(jsn.account.title, jsn.accountId, false, false)
+                        $(pageElements.accountId).append(selectedOption).trigger('change');
+                        //$(pageElements.accountId).val(jsn.accountId).trigger('change');
                     }
                     if (jsn1) {
                         pageElements.billBody.empty();// reset form.
@@ -45,7 +49,13 @@ var partsManager = function () {
 
                             $(".num", _row).text(rowIndex);
                             $("[name='childID']", _row).val(item.id || 0);
-                            $("[name='ItemID']", _row).val(item.itemId).trigger('change'); // select2 
+                            var selectedItem = {
+                                id: item.itemId,
+                                text: item.itemId + ' - ' + item.item.make.makeName + ' ' + item.item.model.modelName + ' ' + item.item.yearId
+                            },
+                                selectedOption = new Option(selectedItem.text, selectedItem.id, false, false);
+                            $("[name='ItemID']", _row).append(selectedOption).trigger('change'); // select2 
+                            //$("[name='ItemID']", _row).val(item.itemId).trigger('change'); // select2 
                             $("[name='PartName']", _row).val(item.partName);
                             $("[name='Quantity']", _row).val(item.quantity);
                             $("[name='Price']", _row).val(numeral(item.price).format('0,0.00'));
@@ -56,7 +66,7 @@ var partsManager = function () {
 
                         }).promise().done(function () {
                             invoiceTotalCalc();
-                            bindSelect2();
+                            //bindSelect2();
                             //reArrangBillIndexs();
                         });
                     }
@@ -80,7 +90,7 @@ var partsManager = function () {
                 getInvoiceDetails();
             }
 
-            bindSelect2(); // enable select2 for select search.
+            //bindSelect2(); // enable select2 for select search.
             $('.money').autoNumeric('init'); // 
 
             // table sortable
@@ -155,7 +165,64 @@ var partsManager = function () {
                 saveAll();
             });
 
+            // bind first car select2
+            bindCarsSelect2('#car_1');
+
             bindInvoiceItemRowEvents();
+
+            // get clients/suppliers based on invoice type selection.
+            //pageElements.invoiceTypeId.change(function () {                
+            //    var _vl = $(this).val();
+            //    pageElements.accountId.html(''); // reset childs controls
+            //    if (_vl) {
+            //        _vl = parseInt(_vl * 1) < 3 ? 1 : 2; // Clients/Suppliers types only                    
+            //        var url = "/Accounts/AccountByType/" + _vl;
+            //        commonManger.getSelect(url, 'AccountId', 'accountId', 'title');
+            //    }
+            //});
+
+            // account
+            pageElements.accountId.select2({
+                placeholder: lang.PleaseChoose,
+                dir: "rtl",
+                language: "ar",
+                allowClear: true,
+                //data: avialableCars
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    delay: 150,
+                    cacheDataSource: [],
+                    //The url of the json service
+                    url: '/Accounts/AccountByType',
+                    dataType: 'json',
+                    async: true,
+                    //Our search term and what page we are on
+                    data: function (params) {
+                        var invType = pageElements.invoiceTypeId.val(),
+                            accountType = parseInt(invType * 1) < 3 ? 1 : 2;
+
+                        return {
+                            pageSize: 10,
+                            pageNum: params.page || 1,
+                            searchTerm: params.term,
+                            // more param.
+                            invoiceType: accountType
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            //results: $.map(data.Results, function (obj) {
+                            //    return { id: obj.Id, text: obj.FirstName };
+                            //}),
+                            results: data.results,
+                            pagination: {
+                                more: (params.page * 10) <= data.total
+                            }
+                        };
+                    }
+                }
+            });
         },
         saveAll = function () {
             var
@@ -212,14 +279,7 @@ var partsManager = function () {
             } else {
                 commonManger.showMessage(lang.Required, lang.RequiredMsg, 'warning');
             }
-        },
-        bindSelect2 = function () {
-            $(".select2").select2({
-                placeholder: lang.PleaseChoose,
-                allowClear: true,
-                dir: "rtl"
-            });
-        },
+        },        
         bindCarsSelect2 = function (selector, selectedVal) {
             var el = $(selector);
 
@@ -227,9 +287,41 @@ var partsManager = function () {
                 // bind items list 
                 $(selector).select2({
                     placeholder: lang.ChooseACar,
+                    dir: "rtl",
+                    language: "ar",
                     allowClear: true,
-                    data: avialableCars,
-                    dir: "rtl"
+                    //data: avialableCars
+                    ajax: {
+                        //How long the user has to pause their typing before sending the next request
+                        delay: 150,
+                        cacheDataSource: [],
+                        //The url of the json service
+                        url: '/Invoices/GetCars',
+                        dataType: 'json',
+                        async: true,
+                        //Our search term and what page we are on
+                        data: function (params) {
+                            return {
+                                pageSize: 10,
+                                pageNum: params.page || 1,
+                                searchTerm: params.term,
+                                //Value from client side.
+                                //countyId: 'vv'
+                            };
+                        },
+                        processResults: function (data, params) {
+                            params.page = params.page || 1;
+                            return {
+                                //results: $.map(data.Results, function (obj) {
+                                //    return { id: obj.Id, text: obj.FirstName };
+                                //}),
+                                results: data.results,
+                                pagination: {
+                                    more: (params.page * 10) <= data.total
+                                }
+                            };
+                        }
+                    }
                 });
 
                 // show the selected item
@@ -238,6 +330,7 @@ var partsManager = function () {
             } else {
                 $(selector).select2({
                     //placeholder: _placeholder,
+                    language: "ar",
                     allowClear: true,
                     dir: "rtl"
                 });
@@ -252,7 +345,7 @@ var partsManager = function () {
             }
         },
         bindInvoiceItemRowEvents = function () {
-            $('select.cars.select2').on('select2:close', function (e) {                
+            $('select.cars.select2').on('select2:close', function (e) {
                 jumbToNext(this); return false;
             });
             jQuery('input[name="PartName"]').bind('keydown.return', function (evt) {

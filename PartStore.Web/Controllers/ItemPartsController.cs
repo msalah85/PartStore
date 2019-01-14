@@ -66,6 +66,7 @@ namespace PartStore.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                itemParts.AvgCost = itemParts.Qty * itemParts.SalePrice; // totalPrice = UnitPrice * Quantity
                 _context.Add(itemParts);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { id = itemParts.ItemId });
@@ -82,7 +83,7 @@ namespace PartStore.Web.Controllers
                 ItemPart = new ItemParts() { ItemId = (long)itemParts.ItemId },
                 Car = await _context.Items.Include(p => p.Make).Include(p => p.Model).FirstOrDefaultAsync(i => i.ItemId == itemParts.ItemId)
             };
-            return View(nameof(Index), model);
+            return View("Index.cshtml", model);
         }
 
         // GET: ItemParts/Edit/5
