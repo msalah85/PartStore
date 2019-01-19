@@ -332,7 +332,15 @@ var partsManager = function () {
                     //placeholder: _placeholder,
                     language: "ar",
                     allowClear: true,
-                    dir: "rtl"
+                    dir: "rtl",
+                    //multiple: false,
+                    //tags: true,
+                    //createTag: function (newTag) {
+                    //    return {
+                    //        id: newTag.term,
+                    //        text: newTag.term
+                    //    };
+                    //}
                 });
             }
         },

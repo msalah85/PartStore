@@ -3,6 +3,7 @@ $.fn.afterLoadDatawithdata = function (ArrayData) { }
 $.fn.afterLoadData = function () { }
 $.fn.afterSave = function (data) { }
 $.fn.beforeSave = function (data) { return true; }
+$.fn.triggerSelect2 = function () { }
 
 // jQuery plugin to prevent double click
 jQuery.fn.preventDoubleClick = function () {
@@ -87,6 +88,7 @@ var
                 //    console.log(message);
                 //}
                 //catch (err) {
+                showMessage('Error!', errorThrown.statusText, 'danger');
                 console.log(jqXhr, textStatus, errorThrown);
                 //}
             },
@@ -692,22 +694,8 @@ var
             },
 
             //dataObject = {actionName = '', names: [], values: []}
-            callGenericData = function (dataObject, successCall, funcName) {
-                funcName = funcName ? funcName : 'GetDataList';
-
-                dataService.callAjax('POST', JSON.stringify(dataObject), sUrl + funcName,
-                    function (data) {
-                        try {
-                            var cdata = LZString.decompressFromUTF16(data.d), // decompress data
-                                xml = $.parseXML(cdata), // xml format
-                                jsn = $.xml2json(xml); // json format
-
-                            successCall(jsn);
-                        }
-                        catch (err) {
-                            successCall(data);
-                        }
-                    }, errorException);
+            callGenericData = function (dataObject, successCall, serviceUrl) {
+                dataService.callAjax('POST', JSON.stringify(dataObject), serviceUrl, successCall, errorException);
             },
             GetData = function (dataType, data, url, fnCallback) {
                 dataType = dataType ? dataType : "GET";
@@ -718,7 +706,7 @@ var
             bindSelect = function (controlId, field, text, list) {
                 list = $.isArray(list) ? list : $.makeArray(list);
                 var options = $.map(list, function (el) { return $('<option />').text(el[text]).val(el[field]) });
-                console.log(controlId, field, text, list, options);
+                //console.log(controlId, field, text, list, options);
 
                 var $el = $('#' + controlId);
                 $el.html($('<option />')).append(options);
@@ -733,12 +721,14 @@ var
 
                 GetData(null, null, url, bindData);
             }, bindSelect2 = function (elId) {
-                $(elId).select2({
-                    language: "ar",
-                    placeholder: lang.PleaseChoose,
-                    allowClear: true,
-                    dir: "rtl"
-                });
+                //$(elId).select2({
+                //    language: "ar",
+                //    placeholder: lang.PleaseChoose,
+                //    allowClear: true,
+                //    dir: "rtl"
+                //});
+
+                $.fn.triggerSelect2();
             };
 
         return {

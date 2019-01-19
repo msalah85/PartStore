@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <label asp-for="AccountId" class="control-label">@Lang.Customer</label>
                         <a asp-action="Create" asp-controller="Accounts" title="@Lang.New"><span class="glyphicon glyphicon-plus"></span></a>
-                        <select asp-for="AccountId" class="select2 form-control" data-placeholder="@Lang.ChooseAClient"></select>
+                        <select asp-for="AccountId" class="select2 form-control" data-type="Accounts" data-placeholder="@Lang.ChooseAClient"></select>
                         <span asp-validation-for="AccountId" class="text-danger"></span>
                     </div>
                 </div>

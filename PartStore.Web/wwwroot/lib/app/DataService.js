@@ -14,6 +14,7 @@
                     success: function (data) {
                         successCallback(data);
                     },
+                    async:true,
                     headers: {
                         "__RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
                     },

@@ -120,33 +120,32 @@
         <div class="col-md-12">
             <partial name="~/Views/Items/CarSearchFrom.cshtml" />
         </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-grey">
+            <div class="card-body">
+                <a class="d-flex no-block" href="#">
+                    <div class="m-r-20 align-self-center"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span></div>
+                    <div class="align-self-center">
+                        <h6 class="m-t-10 m-b-0">@Lang.TodayTotalCache</h6>
+                        <h2 class="m-t-0">0</h2>
+                    </div>
+                </a>
+            </div>
         </div>
-        <div class="col-md-4">
-            <div class="card bg-grey">
-                <div class="card-body">
-                    <a class="d-flex no-block" href="#">
-                        <div class="m-r-20 align-self-center"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span></div>
-                        <div class="align-self-center">
-                            <h6 class="m-t-10 m-b-0">@Lang.TodayTotalCache</h6>
-                            <h2 class="m-t-0">0</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="list-group">
-                <a href="#" class="list-group-item active"> @Lang.DailyTransactionReport <span class="badge">0</span></a>
-                <a href="#" class="list-group-item">@Lang.Inventory <span class="badge">0</span></a>
-                <a href="#" class="list-group-item">@Lang.SalesAnalysisReport</a>
-                <a href="#" class="list-group-item">@Lang.PurchaseAnalysisReport</a>
-                <a href="#" class="list-group-item">@Lang.Installments <span class="badge">0</span></a>
-            </div>
-            <br />
-            <br />
-            <div class="list-group">
-                <a href="#" class="list-group-item"><strong>@Lang.TotalNotifications</strong> <span class="badge">0</span></a>
-                <a href="#" class="list-group-item">@Lang.DueChecksCount <span class="badge">0</span></a>
-                <a href="#" class="list-group-item">@Lang.CustomersAccountsToReview <span class="badge">0</span></a>
-            </div>
+        <div class="list-group">
+            <a href="#" class="list-group-item active"> @Lang.DailyTransactionReport <span class="badge">0</span></a>
+            <a href="#" class="list-group-item">@Lang.Inventory <span class="badge">0</span></a>
+            <a href="#" class="list-group-item">@Lang.SalesAnalysisReport</a>
+            <a href="#" class="list-group-item">@Lang.PurchaseAnalysisReport</a>
+            <a href="#" class="list-group-item">@Lang.Installments <span class="badge">0</span></a>
+        </div>
+        <br />
+        <br />
+        <div class="list-group">
+            <a href="#" class="list-group-item"><strong>@Lang.TotalNotifications</strong> <span class="badge">0</span></a>
+            <a href="#" class="list-group-item">@Lang.DueChecksCount <span class="badge">0</span></a>
+            <a href="#" class="list-group-item">@Lang.CustomersAccountsToReview <span class="badge">0</span></a>
         </div>
     </div>
-
+</div>

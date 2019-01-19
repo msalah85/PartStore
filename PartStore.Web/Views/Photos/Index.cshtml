@@ -6,7 +6,7 @@
 }
 
 <h2>
-    @ViewData["Title"] للسيارة : @Model.Car.Make.MakeName - @Model.Car.Model.ModelName  @Model.Car.YearId
+    @ViewData["Title"] للسيارة : @Model?.Car?.Make?.MakeName - @Model?.Car?.Model?.ModelName  @Model?.Car?.YearId
     <small><a asp-action="Index" asp-controller="Items" class="pull-left">@Lang.BackToCars</a></small>
 </h2>
 <hr />
@@ -19,7 +19,6 @@
     </div>
 </div>
 <hr />
-
 
 <div class="row">
     @foreach (var item in Model.Photo)

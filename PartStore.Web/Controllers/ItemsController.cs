@@ -58,7 +58,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo")] Items items)
+        public async Task<IActionResult> Create([Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo,SupplierCarNo,RefNo")] Items items)
         {
             if (ModelState.IsValid)
             {   // Incresing the item no
@@ -99,7 +99,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo")] Items items)
+        public async Task<IActionResult> Edit(long id, [Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo,SupplierCarNo,RefNo")] Items items)
         {
             if (id != items.ItemId)
             {

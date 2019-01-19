@@ -14,18 +14,15 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="MakeId" class="control-label">@Lang.Make</label>
-                <a asp-action="Create" asp-controller="Makes" title="@Lang.New"><span class="glyphicon glyphicon-plus"></span></a>
-                <select asp-for="MakeId" class="form-control select2" asp-items="ViewBag.MakeId" required><option></option></select>
+                <select asp-for="MakeId" class="form-control select2" data-type="Makes" asp-items="ViewBag.MakeId" required><option></option></select>
             </div>
             <div class="form-group">
                 <label asp-for="ModelId" class="control-label">@Lang.Model</label>
-                <a asp-action="Create" asp-controller="Models" title="@Lang.New"><span class="glyphicon glyphicon-plus"></span></a>
-                <select asp-for="ModelId" class="form-control select2" asp-items="ViewBag.ModelId" required><option></option></select>
+                <select asp-for="ModelId" class="form-control select2" data-type="Models" asp-items="ViewBag.ModelId" required><option></option></select>
             </div>
             <div class="form-group">
                 <label asp-for="YearId" class="control-label">@Lang.Year</label>
-                <a asp-action="Create" asp-controller="Years" title="@Lang.New"><span class="glyphicon glyphicon-plus"></span></a>
-                <select asp-for="YearId" class="form-control select2" asp-items="ViewBag.YearId" required><option></option></select>
+                <select asp-for="YearId" class="form-control select2" data-type="Years" asp-items="ViewBag.YearId" required><option></option></select>
             </div>
             <div class="form-group">
                 <label asp-for="Vin" class="control-label">@Lang.VIN</label> <em class="text-danger">*</em>
@@ -93,29 +90,30 @@
     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/lib/app/car/modelsFilter.js"></script>
     <script>
-        $(function () {
-            $('#login').popover({
-                placement: 'bottom',
-                title: 'اضافة نوع سيارة',
-                html: true,
-                content: $('#myForm').html()
-            }).on('click', function () {
-                // had to put it within the on click action so it grabs the correct info on submit
-                $('.btn-primary').click(function () {
-                    $('#result').after("form submitted by " + $('#email').val())
-                    $.post('/echo/html/', {
-                        email: $('#email').val(),
-                        name: $('#name').val(),
-                        gender: $('#gender').val()
-                    }, function (r) {
-                        $('#pops').popover('hide')
-                        $('#result').html('resonse from server could be here')
-                    })
-                })
-            })
-        })
+        //$(function () {
+        //    $('#login').popover({
+        //        placement: 'bottom',
+        //        title: 'اضافة نوع سيارة',
+        //        html: true,
+        //        content: $('#myForm').html()
+        //    }).on('click', function () {
+        //        // had to put it within the on click action so it grabs the correct info on submit
+        //        $('.btn-primary').click(function () {
+        //            $('#result').after("form submitted by " + $('#email').val())
+        //            $.post('/echo/html/', {
+        //                email: $('#email').val(),
+        //                name: $('#name').val(),
+        //                gender: $('#gender').val()
+        //            }, function (r) {
+        //                $('#pops').popover('hide')
+        //                $('#result').html('resonse from server could be here')
+        //            })
+        //        })
+        //    })
+        //})
     </script>
 }
 @section Styles{
+    <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
     <link href="~/lib/select2/bootstrap-theme/select2-bootstrap.css" rel="stylesheet" />}

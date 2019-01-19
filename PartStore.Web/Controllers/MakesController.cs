@@ -148,5 +148,26 @@ namespace PartStore.Web.Controllers
         {
             return _context.Makes.Any(e => e.MakeId == id);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> Save([FromBody] string name)
+        {
+            try
+            {
+                var itm = new Makes() { MakeId = 0, MakeName = name };
+                var existBefore = await _context.Makes.Where(m => m.MakeName == name).ToListAsync();
+
+                if (existBefore.Count() == 0) // not exist before then add.
+                {
+                    _context.Add(itm);
+                    await _context.SaveChangesAsync();
+                }
+                return Ok(itm.MakeId);
+            }
+            catch
+            {
+                return Ok(name);
+            }
+        }
     }
 }

@@ -5,3 +5,11 @@
     if (vl !== '')
         window.location.href = '/Items/CarInfo?' + type + '=' + vl;
 });
+
+jQuery('input[name="searchVl"]').bind('keydown.return', function (evt) {
+    $('.btnSearch').trigger('click'); return false;
+});
+
+jQuery('select[name="searchType"]').bind('keydown.return', function (evt) {
+    $('input[name="searchVl"]').focus(); return false;
+});

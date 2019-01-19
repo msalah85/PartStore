@@ -12,36 +12,41 @@
     @Model.Car.Model.ModelName
     @Model.Car.YearId
 
-    <small class="pull-left">
+    <small class="pull-left noprint">
         <a asp-controller="Items" asp-action="Index">@Lang.BackToCars</a>
     </small>
 </h3>
-<hr />
-
-<p>
-    @Lang.New
-</p>
-@{await Html.RenderPartialAsync("Create", Model.ItemPart);}
-<hr />
+<div class="noprint">
+    <hr />
+    <p>
+        @Lang.New
+    </p>
+    @{await Html.RenderPartialAsync("Create", Model.ItemPart);}
+    <hr />
+</div>
 <table class="table table-bordered">
     <thead>
         <tr style="background-color:#e6e3e3">
             <th>
                 @Html.DisplayNameFor(model => model.ItemPart.PartName)
+                <a class="pull-left show-col" href="javascript:showColumns(this)" title="عرض أعمدة الكمية وسعر البيع"><span class="glyphicon glyphicon-plus-sign"></span></a>
             </th>
-            <th>
+            <th class="col hidden">
                 @Html.DisplayNameFor(model => model.ItemPart.Qty)
             </th>
-            <th>
+            <th class="col hidden">
                 @Html.DisplayNameFor(model => model.ItemPart.SalePrice)
             </th>
             <th>
-                @Lang.Total
+                @Lang.Total سعر البيع
+            </th>
+            <th>
+                @Lang.PurchasePrice
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ItemPart.More)
             </th>
-            <th width="120"></th>
+            <th width="120" class="noprint"><a href="javascript:window.print();" title="طباعة القائمة"><span class="glyphicon glyphicon-print"></span> @Lang.Print</a></th>
         </tr>
     </thead>
     <tbody>
@@ -51,19 +56,22 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PartName)
                 </td>
-                <td>
+                <td class="col hidden">
                     @Html.DisplayFor(modelItem => item.Qty)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SalePrice)
+                <td class="col hidden">
+                    <span class="money">@Html.DisplayFor(modelItem => item.SalePrice)</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AvgCost)
+                    <span class="money">@Html.DisplayFor(modelItem => item.AvgCost)</span>
+                </td>
+                <td>
+                    <span class="money"></span>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.More)
                 </td>
-                <td>
+                <td class="noprint">
                     <a asp-action="Edit" asp-route-id="@item.PartId">@Lang.Edit</a> |
                     <a asp-action="Delete" asp-route-id="@item.PartId">@Lang.Delete</a>
                 </td>
@@ -73,14 +81,15 @@
     <tfoot>
         <tr>
             <th><span class="pull-left">الإجمالى</span></th>
-            <th colspan="2">@Model.ItemParts.Sum(p => p.Qty)</th>
-            <th><span class="money">@Model.ItemParts.Sum(p => p.SalePrice)</span></th>
-            <th colspan="2"></th>
+            <th colspan="2" class="col hidden">@Model.ItemParts.Sum(p => p.Qty)</th>
+            <th><span class="money total-costs">@Model.ItemParts.Sum(p => p.AvgCost)</span></th>
+            <th colspan="3"></th>
         </tr>
         <tr>
-            <th colspan="2"><span class="pull-left">سعر شراء السيارة</span></th>
-            <th><span class="money">@Model.Car.LastCost</span></th>
-            <th colspan="2"></th>
+            <th><span class="pull-left">سعر شراء السيارة</span></th>
+            <th class="col hidden" colspan="2"></th>
+            <th><span class="money buy-price">@Model.Car.LastCost</span></th>
+            <th colspan="3"></th>
         </tr>
     </tfoot>
 </table>
@@ -90,7 +99,39 @@
     <script>
         $(window).on("load", function () {
             $('input#PartName').focus();
+
+            // Get Item costs
+            var _totalCosts = ($('.total-costs').text().replace(/[^0-9\.]/g, '')) * 1,
+                _buyPrice = ($('.buy-price').text().replace(/[^0-9\.]/g, '')) * 1;
+
+            $('.table tbody tr').each(function (i, el) {
+                var tr = $(this),
+                    carSalePrice = (tr.find('td:eq(3)').text().replace(/[^0-9\.]/g, '')) * 1,
+                    rateMargin = (carSalePrice / _totalCosts),
+                    partCost = rateMargin * _buyPrice;
+                
+                tr.find('td:eq(4) span.money').text(partCost.toFixed(2));
+            }).promise().done(function () {
+                $('.money').autoNumeric();
+            });
         });
-        $('.money').autoNumeric();
+        function showColumns(ev) {
+            $('.col').removeClass('hidden');
+            //console.log(ev);
+            $(ev).remove();
+        }
     </script>
+}
+@section Styles{
+    <style>
+        table th, table th {
+            background: #f4f6f9
+        }
+
+        @@media print {
+            table th, table th {
+                background: #f4f6f9 !important
+            }
+        }
+    </style>
 }

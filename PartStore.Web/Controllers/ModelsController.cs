@@ -90,7 +90,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ModelId,MakeId,ModelName")] Core.StoreModels.Models  models)
+        public async Task<IActionResult> Edit(int id, [Bind("ModelId,MakeId,ModelName")] Core.StoreModels.Models models)
         {
             if (id != models.ModelId)
             {
@@ -167,6 +167,27 @@ namespace PartStore.Web.Controllers
             }
 
             return Ok(models);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> Save([FromBody] Core.StoreModels.Models data)
+        {
+            try
+            {
+                var itm = new Core.StoreModels.Models() { MakeId = data.MakeId, ModelName = data.ModelName, ModelId = 0 };
+                var existBefore = await _context.Models.Where(m => m.ModelName == data.ModelName).ToListAsync();
+
+                if (existBefore.Count() == 0) // not exist before then add.
+                {
+                    _context.Add(itm);
+                    await _context.SaveChangesAsync();
+                }
+                return Ok(itm.ModelId);
+            }
+            catch
+            {
+                return Ok(data.ModelName);
+            }
         }
     }
 }

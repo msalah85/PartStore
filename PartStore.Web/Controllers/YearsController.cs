@@ -148,5 +148,26 @@ namespace PartStore.Web.Controllers
         {
             return _context.Years.Any(e => e.YearId == id);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> Save([FromBody] int name)
+        {
+            try
+            {
+                var itm = new Years() { YearId = name };
+                var existBefore = await _context.Years.Where(m => m.YearId == name).ToListAsync();
+
+                if (existBefore.Count() == 0) // not exist before then add.
+                {
+                    _context.Add(itm);
+                    await _context.SaveChangesAsync();
+                }
+                return Ok(itm.YearId);
+            }
+            catch
+            {
+                return Ok(name);
+            }
+        }
     }
 }
