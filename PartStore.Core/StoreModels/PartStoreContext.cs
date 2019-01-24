@@ -14,6 +14,7 @@ namespace PartStore.Core.StoreModels
         }
 
         public virtual DbSet<Accounts> Accounts { get; set; }
+        public virtual DbSet<AccountTypes> AccountTypes { get; set; }
         public virtual DbSet<Banks> Banks { get; set; }
         public virtual DbSet<InvoiceDetails> InvoiceDetails { get; set; }
         public virtual DbSet<Invoices> Invoices { get; set; }
@@ -23,6 +24,7 @@ namespace PartStore.Core.StoreModels
         public virtual DbSet<Makes> Makes { get; set; }
         public virtual DbSet<Models> Models { get; set; }
         public virtual DbSet<Operations> Operations { get; set; }
+        public virtual DbSet<Parts> Parts { get; set; }
         public virtual DbSet<Payments> Payments { get; set; }
         public virtual DbSet<PaymentTypes> PaymentTypes { get; set; }
         public virtual DbSet<Photos> Photos { get; set; }
@@ -68,6 +70,18 @@ namespace PartStore.Core.StoreModels
                 entity.Property(e => e.Phone).HasMaxLength(50);
 
                 entity.Property(e => e.Title).HasMaxLength(50);
+
+                entity.HasOne(d => d.AccountType)
+                    .WithMany(p => p.Accounts)
+                    .HasForeignKey(d => d.AccountTypeId)
+                    .HasConstraintName("FK_Accounts_AccountTypes");
+            });
+
+            modelBuilder.Entity<AccountTypes>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Banks>(entity =>
@@ -201,6 +215,8 @@ namespace PartStore.Core.StoreModels
 
                 entity.Property(e => e.More).HasMaxLength(1000);
 
+                entity.Property(e => e.PartId1).HasColumnName("Part_ID");
+
                 entity.Property(e => e.PartName)
                     .IsRequired()
                     .HasMaxLength(150);
@@ -216,6 +232,11 @@ namespace PartStore.Core.StoreModels
                     .HasForeignKey(d => d.ItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ItemParts_Items");
+
+                entity.HasOne(d => d.PartId1Navigation)
+                    .WithMany(p => p.ItemParts)
+                    .HasForeignKey(d => d.PartId1)
+                    .HasConstraintName("FK_ItemParts_Parts");
             });
 
             modelBuilder.Entity<Items>(entity =>
@@ -327,6 +348,13 @@ namespace PartStore.Core.StoreModels
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Name).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Parts>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Name).HasMaxLength(150);
             });
 
             modelBuilder.Entity<Payments>(entity =>

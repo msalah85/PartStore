@@ -1,0 +1,102 @@
+﻿@using SysLanguages
+@model PartStore.Web.Models.PartsSaveListViewModel
+@{ ViewData["Title"] = string.Format("{0} {1} {2}", Model.Item.Make.MakeName, Model.Item.Model.ModelName, Model.Item.YearId); }
+<br />
+<h3 class="text-center">
+    @Lang.Car :
+    @ViewData["Title"]
+
+    <small class="pull-right"><a asp-controller="ItemParts" asp-action="Index" asp-route-id="@Model.Item.ItemId">@Lang.BackToList</a></small>
+</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr style="background-color:#e6e3e3">
+            <th>
+                <span class="pull-left">@Lang.PartName</span>
+            </th>
+            <th>
+                @Lang.Price
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Parts)
+        {
+            <tr>
+                <td class="active">
+                    <span class="pull-left">@Html.DisplayFor(modelItem => item.Name)</span>
+                </td>
+                <td class="input-no-padding">
+                    <input class="form-control itm" type="number" name="@item.Id" value="" />
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="active"></td>
+            <td class="active"><button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok-circle"></span> حفظ الكل</button></td>
+        </tr>
+    </tfoot>
+</table>
+<div>
+    <a class="lnk-to-list" asp-controller="ItemParts" asp-action="Index" asp-route-id="@Model.Item.ItemId">@Lang.BackToList</a>
+</div>
+@section Scripts{
+    <script src="~/lib/app/ar.min.js"></script>
+    <script src="~/lib/app/DataService.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script src="~/lib/app/Common.min.js"></script>
+    <script>
+        function saveItemParts(data) {
+            var url = '/Parts/Save',
+                successSaveClient = function (d) {                    
+                    if (d.saved === true) {
+                        commonManger.showMessage(lang.Success, lang.SuccessMessage, 'success');
+                        window.location.href = $('.lnk-to-list').attr('href');
+                    } else {
+                        commonManger.showMessage(lang.Error, lang.SystemError + d.id, 'error');
+                    }
+                };
+
+            commonManger.doWork('frm', url, data, successSaveClient);
+        }
+
+
+        // events
+        $('input.itm:eq(0)').focus();
+
+        $('.btn-success').click(function (e) {
+            e.preventDefault();
+
+            var itemID = @Model.Item.ItemId,
+                parts = $('input.itm').map(function () {
+                    var _this = $(this),
+                        _price = _this.val();
+
+                    if (_price !== "" && _price * 1 > 0)
+                        return { itemId: itemID, partId1: (_this.attr('name') * 1), salePrice: _this.val(), avgCost: _this.val(), partName:'' };
+                }).get();
+
+            if (parts.length > 0) {
+                saveItemParts(parts);
+            }
+            else
+                alert('يرجي تحديد سعر قطعة أو أكثر أولاً.');
+
+        });
+    </script>
+}
+@section Styles{
+    <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
+    <style>
+        td.input-no-padding {
+            padding: 0 !important
+        }
+
+            td.input-no-padding input {
+                border-radius: 0;
+                border: 0;
+            }
+    </style>
+}

@@ -13,6 +13,7 @@
     @Model.Car.YearId
 
     <small class="pull-left noprint">
+        <a class="btn btn-xs btn-warning" asp-controller="Parts" asp-action="SaveList" asp-route-id="@Model.ItemPart.ItemId">اضافة قائمة</a>
         <a asp-controller="Items" asp-action="Index">@Lang.BackToCars</a>
     </small>
 </h3>
@@ -29,7 +30,7 @@
         <tr style="background-color:#e6e3e3">
             <th>
                 @Html.DisplayNameFor(model => model.ItemPart.PartName)
-                <a class="pull-left show-col" href="javascript:showColumns(this)" title="عرض أعمدة الكمية وسعر البيع"><span class="glyphicon glyphicon-plus-sign"></span></a>
+                <a class="pull-left show-col" id="toggleColumns" href="javascript:showColumns(this.id)" title="عرض/إخفاء أعمدة الكمية وسعر البيع"><span class="glyphicon glyphicon-plus-sign"></span></a>
             </th>
             <th class="col hidden">
                 @Html.DisplayNameFor(model => model.ItemPart.Qty)
@@ -55,6 +56,7 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.PartName)
+                    @Html.DisplayFor(modelItem => item.PartId1Navigation.Name)
                 </td>
                 <td class="col hidden">
                     @Html.DisplayFor(modelItem => item.Qty)
@@ -82,50 +84,36 @@
         <tr>
             <th><span class="pull-left">الإجمالى</span></th>
             <th colspan="2" class="col hidden">@Model.ItemParts.Sum(p => p.Qty)</th>
-            <th><span class="money total-costs">@Model.ItemParts.Sum(p => p.AvgCost)</span></th>
-            <th colspan="3"></th>
+            <th><span class="money total-sale-price">@Model.ItemParts.Sum(p => p.AvgCost)</span></th>
+            <th><span class="money total-costs"></span></th>
+            <th colspan="2"></th>
         </tr>
         <tr>
             <th><span class="pull-left">سعر شراء السيارة</span></th>
             <th class="col hidden" colspan="2"></th>
             <th><span class="money buy-price">@Model.Car.LastCost</span></th>
-            <th colspan="3"></th>
+            <th></th>
+            <th colspan="2"></th>
         </tr>
     </tfoot>
 </table>
 @section Scripts{
     <script src="~/lib/autoNumeric.min.js"></script>
     <script src="~/lib/keys/jquery.hotkeys.min.js"></script>
-    <script>
-        $(window).on("load", function () {
-            $('input#PartName').focus();
-
-            // Get Item costs
-            var _totalCosts = ($('.total-costs').text().replace(/[^0-9\.]/g, '')) * 1,
-                _buyPrice = ($('.buy-price').text().replace(/[^0-9\.]/g, '')) * 1;
-
-            $('.table tbody tr').each(function (i, el) {
-                var tr = $(this),
-                    carSalePrice = (tr.find('td:eq(3)').text().replace(/[^0-9\.]/g, '')) * 1,
-                    rateMargin = (carSalePrice / _totalCosts),
-                    partCost = rateMargin * _buyPrice;
-                
-                tr.find('td:eq(4) span.money').text(partCost.toFixed(2));
-            }).promise().done(function () {
-                $('.money').autoNumeric();
-            });
-        });
-        function showColumns(ev) {
-            $('.col').removeClass('hidden');
-            //console.log(ev);
-            $(ev).remove();
-        }
-    </script>
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/select2/js/i18n/ar.js"></script>
+    <script src="~/lib/app/parts/partsNamesList.min.js"></script>
 }
 @section Styles{
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/select2/bootstrap-theme/select2-bootstrap.css" rel="stylesheet" />
     <style>
         table th, table th {
             background: #f4f6f9
+        }
+
+        .select2 {
+            min-width: 250px;
         }
 
         @@media print {

@@ -5,7 +5,8 @@
     ViewData["Title"] = Lang.CarsList;
 }
 
-<h2>@ViewData["Title"]</h2>
+<br />
+<h3>@ViewData["Title"]</h3>
 
 <p>
     <a asp-action="Create">@Lang.New</a>
@@ -60,7 +61,7 @@
                     @Html.DisplayFor(modelItem => item.LotNo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastCost)
+                    <span class="money">@Html.DisplayFor(modelItem => item.LastCost)</span>
                 </td>
                 <td>
                     <div class="dropdown">
@@ -90,7 +91,18 @@
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <th class="active" colspan="5"><span class="pull-left">الاجمالى</span></th>
+            <th class="active"><span class="money">@Model.Sum(p => p.LastCost)</span></th>
+            <th class="active"></th>
+        </tr>
+    </tfoot>
 </table>
-@section Scripts {
+@section Scripts{
     @{await Html.RenderPartialAsync("_DataTablesSettingsPartial");}
+    <script src="~/lib/autoNumeric.js"></script>
+    <script>
+        $('.money').autoNumeric();
+    </script>
 }

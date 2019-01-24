@@ -20,7 +20,12 @@
                 <span asp-validation-for="ItemId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PartName" class="control-label"></label>
+                <label asp-for="PartId1" class="control-label"></label> <em class="text-danger">*</em>
+                <select asp-for="PartId1" class="form-control select2" required asp-items="ViewBag.PartId1"><option></option></select>
+                <span asp-validation-for="PartId1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartName" class="control-label"></label> (قديم)
                 <input asp-for="PartName" class="form-control" />
                 <span asp-validation-for="PartName" class="text-danger"></span>
             </div>
@@ -30,16 +35,16 @@
                 <span asp-validation-for="Qty" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Barcode" class="control-label"></label>
-                <input asp-for="Barcode" class="form-control" />
-                <span asp-validation-for="Barcode" class="text-danger"></span>
+                <label asp-for="SalePrice" class="control-label"></label>
+                <input asp-for="SalePrice" class="form-control" />
+                <span asp-validation-for="SalePrice" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label asp-for="SalePrice" class="control-label"></label>
-                <input asp-for="SalePrice" class="form-control" />
-                <span asp-validation-for="SalePrice" class="text-danger"></span>
+                <label asp-for="Barcode" class="control-label"></label>
+                <input asp-for="Barcode" class="form-control" />
+                <span asp-validation-for="Barcode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="More" class="control-label"></label>
@@ -59,4 +64,19 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/select2/js/i18n/ar.js"></script>
+    <script>
+        $('.select2').select2({
+            placeholder: lang.PleaseChoose,
+            language: "ar",
+            allowClear: true,
+            theme: "bootstrap",
+            dir: "rtl",
+            "ajax--cache": true
+        });
+    </script>
 }
+@section Styles{
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/select2/bootstrap-theme/select2-bootstrap.css" rel="stylesheet" />}

@@ -726,4 +726,13 @@
   <data name="NoDataFound" xml:space="preserve">
     <value>لا توجد بيانات متاحة.</value>
   </data>
+  <data name="AccountTypeName" xml:space="preserve">
+    <value>اسم نوع الحساب</value>
+  </data>
+  <data name="Parts" xml:space="preserve">
+    <value>أسماء قطع الغيار</value>
+  </data>
+  <data name="PartsList" xml:space="preserve">
+    <value>قائمة أسماء قطع غيار السيارات.</value>
+  </data>
 </root>

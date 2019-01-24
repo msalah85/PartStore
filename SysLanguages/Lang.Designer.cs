@@ -130,6 +130,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اسم نوع الحساب.
+        /// </summary>
+        public static string AccountTypeName {
+            get {
+                return ResourceManager.GetString("AccountTypeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نشط.
         /// </summary>
         public static string Active {
@@ -1215,6 +1224,24 @@ namespace SysLanguages {
         public static string PartOtherOptions {
             get {
                 return ResourceManager.GetString("PartOtherOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to أسماء قطع الغيار.
+        /// </summary>
+        public static string Parts {
+            get {
+                return ResourceManager.GetString("Parts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to قائمة أسماء قطع غيار السيارات..
+        /// </summary>
+        public static string PartsList {
+            get {
+                return ResourceManager.GetString("PartsList", resourceCulture);
             }
         }
         

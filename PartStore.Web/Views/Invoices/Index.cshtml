@@ -76,6 +76,13 @@
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <th class="active" colspan="7"><span class="pull-left">الاجمالى</span></th>
+            <th class="active"><span class="money">@Model.Sum(p => p.NetAmount)</span></th>
+            <th class="active"></th>
+        </tr>
+    </tfoot>
 </table>
 @section Scripts{
     <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
@@ -89,6 +96,10 @@
                 }
             });
         });
+    </script>
+    <script src="~/lib/autoNumeric.js"></script>
+    <script>
+        $('.money').autoNumeric();
     </script>
 }
 @section Styles{

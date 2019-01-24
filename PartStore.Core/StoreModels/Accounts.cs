@@ -36,5 +36,6 @@ namespace PartStore.Core.StoreModels
         public ICollection<Invoices> Invoices { get; set; }
         public ICollection<Items> Items { get; set; }
         public ICollection<Payments> Payments { get; set; }
+        public AccountTypes AccountType { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace PartStore.Web.Controllers
                 ItemPart = new ItemParts() { ItemId = (long)id },
                 Car = await _context.Items.Include(p => p.Make).Include(p => p.Model).FirstOrDefaultAsync(i => i.ItemId == id)
             };
+            ViewData["PartId1"] = new SelectList(_context.Parts, "Id", "Name");
 
             return View(partStoreContext);
         }
@@ -53,7 +54,7 @@ namespace PartStore.Web.Controllers
         // GET: ItemParts/Create
         public IActionResult Create()
         {
-            //ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemId");
+            ViewData["PartId1"] = new SelectList(_context.Parts, "Id", "Name");
             return View();
         }
 
@@ -62,7 +63,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PartId,ItemId,PartName,Qty,Barcode,AvgCost,LastCost,SalePrice,More,Active,Starred,Deleted,LastPurchasedDate,AddDate")] ItemParts itemParts)
+        public async Task<IActionResult> Create([Bind("PartId,ItemId,PartName,Qty,Barcode,AvgCost,LastCost,SalePrice,More,Active,Starred,Deleted,LastPurchasedDate,AddDate,PartId1")] ItemParts itemParts)
         {
             if (ModelState.IsValid)
             {
@@ -100,6 +101,7 @@ namespace PartStore.Web.Controllers
                 return NotFound();
             }
             ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemId", itemParts.ItemId);
+            ViewData["PartId1"] = new SelectList(_context.Parts, "Id", "Name");
             return View(itemParts);
         }
 
@@ -108,7 +110,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("PartId,ItemId,PartName,Qty,Barcode,AvgCost,LastCost,SalePrice,More,Active,Starred,Deleted,LastPurchasedDate,AddDate")] ItemParts itemParts)
+        public async Task<IActionResult> Edit(long id, [Bind("PartId,ItemId,PartName,Qty,Barcode,AvgCost,LastCost,SalePrice,More,Active,Starred,Deleted,LastPurchasedDate,AddDate,PartId1")] ItemParts itemParts)
         {
             if (id != itemParts.PartId)
             {
@@ -119,6 +121,7 @@ namespace PartStore.Web.Controllers
             {
                 try
                 {
+                    itemParts.AvgCost = itemParts.Qty * itemParts.SalePrice;
                     _context.Update(itemParts);
                     await _context.SaveChangesAsync();
                 }
@@ -136,6 +139,7 @@ namespace PartStore.Web.Controllers
                 return RedirectToAction(nameof(Index), new { id = itemParts.ItemId });
             }
             ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemId", itemParts.ItemId);
+            ViewData["PartId1"] = new SelectList(_context.Parts, "Id", "Name", itemParts.PartId1);
             return View(itemParts);
         }
 

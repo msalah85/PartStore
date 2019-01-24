@@ -52,5 +52,23 @@
     "inputFiles": [
       "wwwroot/lib/keys/jquery.hotkeys.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/prettyPhoto/jquery.prettyPhoto.min.js",
+    "inputFiles": [
+      "wwwroot/lib/prettyPhoto/jquery.prettyPhoto.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/prettyPhoto/prettyPhoto.min.css",
+    "inputFiles": [
+      "wwwroot/lib/prettyPhoto/prettyPhoto.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/app/parts/partsNamesList.min.js",
+    "inputFiles": [
+      "wwwroot/lib/app/parts/partsNamesList.js"
+    ]
   }
 ]

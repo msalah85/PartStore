@@ -26,10 +26,13 @@ namespace PartStore.Core.StoreModels
         public bool? Active { get; set; }
         public bool? Starred { get; set; }
         public bool? Deleted { get; set; }
+        [Display(Name = "PartName", ResourceType = typeof(Lang))]
+        public int? PartId1 { get; set; }
         public DateTime? LastPurchasedDate { get; set; }
         [Display(Name = "AddDate", ResourceType = typeof(Lang))]
         public DateTime? AddDate { get; set; }
         [Display(Name = "Car", ResourceType = typeof(Lang))]
         public Items Item { get; set; }
+        public Parts PartId1Navigation { get; set; }
     }
 }
