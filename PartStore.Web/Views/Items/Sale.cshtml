@@ -1,0 +1,96 @@
+﻿@using SysLanguages
+@model PartStore.Core.StoreModels.Items
+
+@{
+    ViewData["Title"] = Lang.Sale;
+}
+
+<h2>@Lang.Sale</h2>
+<div>
+    <h4>@Lang.Items</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Lang.Photo
+        </dt>
+        <dd>
+            <img src="~/public/@Html.DisplayFor(model => model.Photos.FirstOrDefault().Url)" height="100" />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastCost)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastCost)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Qty)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Qty)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Vin)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vin)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.More)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.More)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LotNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LotNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RefNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RefNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplierCarNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SupplierCarNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sold)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Sold)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Make)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Make.MakeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Model.ModelName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.YearId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ItemId">@Lang.Edit</a> |
+    <a asp-action="Index">@Lang.BackToList</a>
+</div>

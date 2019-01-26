@@ -1543,6 +1543,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to بيع السيارة.
+        /// </summary>
+        public static string Sale {
+            get {
+                return ResourceManager.GetString("Sale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تحليل المبيعات.
         /// </summary>
         public static string SalesAnalysisReport {
@@ -1656,6 +1665,15 @@ namespace SysLanguages {
         public static string SiteName {
             get {
                 return ResourceManager.GetString("SiteName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مباعة.
+        /// </summary>
+        public static string Sold {
+            get {
+                return ResourceManager.GetString("Sold", resourceCulture);
             }
         }
         

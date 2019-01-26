@@ -735,4 +735,10 @@
   <data name="PartsList" xml:space="preserve">
     <value>قائمة أسماء قطع غيار السيارات.</value>
   </data>
+  <data name="Sale" xml:space="preserve">
+    <value>بيع السيارة</value>
+  </data>
+  <data name="Sold" xml:space="preserve">
+    <value>مباعة</value>
+  </data>
 </root>

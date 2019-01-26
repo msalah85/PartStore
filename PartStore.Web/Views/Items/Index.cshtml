@@ -8,10 +8,25 @@
 <br />
 <h3>@ViewData["Title"]</h3>
 
-<p>
-    <a asp-action="Create">@Lang.New</a>
-</p>
-<table class="table table-bordered table-responsive table-hover table-striped datatable2">
+<div class="row" id="search">
+    <form id="search-form">
+        <div class="form-group col-sm-3 col-xs-6">
+            <a asp-action="Create">@Lang.New</a>
+            <label class="pull-left">بحث بحالة السيارة</label>
+        </div>
+        <div class="form-group col-sm-6 col-xs-6">
+            <select class="form-control" id="car-sale-type">
+                <option value="">عرض جميع السيارات</option>
+                <option value="false">متاحة فقط للبيع</option>
+                <option value="true">مباعة</option>
+            </select>
+        </div>
+        <div class="form-group col-sm-3 col-xs-6">
+            <button type="button" class="btn btn-block btn-primary btnTopSearch"><span class="glyphicon glyphicon-search"></span> @Lang.Search</button>
+        </div>
+    </form>
+</div>
+<table class="table table-bordered table-responsive table-hover table-striped datatable2" id="tblList">
     <thead>
         <tr>
             <th class="text-center" width="40">
@@ -35,74 +50,125 @@
             <th width="80">@Lang.Options</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.ItemId)
-                </td>
-                <td class="text-center">
-                    <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId" title="@Lang.Photos">
-                        <figure class="deal-thumbnail embed-responsive" data-bg-img="bg"
-                                style="background-image: url('/public/@Html.DisplayFor(modelItem => item.Photos.FirstOrDefault().Url)');">
-                        </figure>
-                    </a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Make.MakeName)
-                    @Html.DisplayFor(modelItem => item.Model.ModelName)
-                    @Html.DisplayFor(modelItem => item.Year.YearId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Vin)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LotNo)
-                </td>
-                <td>
-                    <span class="money">@Html.DisplayFor(modelItem => item.LastCost)</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            @Lang.Options
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
-                            <li>
-                                <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-picture text-info"></span> @Lang.Photos</a>
-                            </li>
-                            <li>
-                                <a asp-action="Car" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-list-alt text-info"></span> المبيعات</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a asp-action="Edit" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-edit text-info"></span> @Lang.Edit</a>
-                            </li>
-                            <li><a asp-action="Delete" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-trash text-danger"></span> @Lang.Delete</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a asp-controller="ItemParts" asp-action="Index" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-wrench text-info"></span> @Lang.CarParts الافتراضية</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
     <tfoot>
-        <tr>
-            <th class="active" colspan="5"><span class="pull-left">الاجمالى</span></th>
-            <th class="active"><span class="money">@Model.Sum(p => p.LastCost)</span></th>
-            <th class="active"></th>
+        <tr class="active">
+            <th colspan="5">
+                <span class="pull-left">الإجمالى</span>
+            </th>
+            <th></th>
+            <th></th>
         </tr>
     </tfoot>
 </table>
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+}
 @section Scripts{
-    @{await Html.RenderPartialAsync("_DataTablesSettingsPartial");}
     <script src="~/lib/autoNumeric.js"></script>
     <script>
         $('.money').autoNumeric();
+    </script>
+
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js"></script>
+
+    <script src="~/lib/app/DataService.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script src="~/lib/app/Common.js"></script>
+    <script src="~/lib/app/gridManager.js"></script>
+    <script>
+
+        $.fn.addMoreFilters = function (data) {
+            var _saleType = $('#car-sale-type').val();
+
+            if (_saleType != '') {
+                return $.extend({}, data, {
+                    sold: _saleType
+                });
+            }
+            else
+                return;
+        };
+
+        $.fn.gvFooterCall = function (tfoot, data, start, end, display) {
+            var
+                _total = 0,
+                api = $(data).map(function (i, vl) {                    
+                    _total += vl.lastCost;
+                    return vl.lastCost;
+                });
+
+            $(tfoot).find('th').eq(1).html('<span class="money">'+_total+'</span>');
+            $('.money').autoNumeric();
+        };
+
+        var gridId = 'tblList',
+            sUrl = 'items',
+            modalDialog = 'myModal',
+            deleteModalDialog = 'myDelModal',
+            gridColumns = [{ "mDataProp": "itemId" },
+                {
+                    "render": function (data, type, row, meta) {
+                        return '<a asp-controller="Photos" asp-action="Index" asp-route-id="' + row.itemId+'" title="@Lang.Photos">\
+                                    <figure class="deal-thumbnail embed-responsive" data-bg-img="bg"\
+                                            style="background-image: url(\'/public/'+ (row.photos.length > 0 ? row.photos[0].url : '')+'");\'>\
+                                    </figure></a>';
+                    }
+                },
+                {
+                    "render": function (data, type, row, meta) {
+                        console.log(row);
+                        return (row.make != null ? row.make.makeName : '') + ' ' + (row.model ? row.model.modelName : '') + ' ' + row.yearId;
+                    }
+                },
+                { "mDataProp": "vin" },
+                {"mDataProp": "lotNo"},
+                {
+                "mDataProp": "modelId",
+                    "render": function (data, type, row, meta) {
+                        return '<span class="money">' + row.lastCost+'</span>';
+                    }
+                },
+                {
+                "mDataProp": "more",
+                "render": function (data, type, row, meta) {
+                    var saleLnk = '<li><a href="items/sale/' + row.itemId + '"><span class="glyphicon glyphicon-ok-sign text-success"></span> @Lang.Sale</a></li>';
+
+                    return '<div class="dropdown">\
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">\
+                            @Lang.Options\
+                            <span class="caret"></span>\
+                        </button>\
+                        <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">\
+                            <li>\
+                                <a href="photos/index/' + row.itemId + '"><span class="glyphicon glyphicon-picture text-info"></span> @Lang.Photos</a>\
+                            </li>\
+                            <li>\
+                                <a href="Car/' + row.itemId + '"><span class="glyphicon glyphicon-list-alt text-info"></span> المبيعات</a>\
+                            </li>\
+                            <li role="separator" class="divider"></li>\
+                            <li>\
+                                <a href="items/edit/' + row.itemId + '"><span class="glyphicon glyphicon-edit text-info"></span> @Lang.Edit</a>\
+                            </li>\
+                            <li><a href="items/delete/' + row.itemId + '"><span class="glyphicon glyphicon-trash text-danger"></span> @Lang.Delete</a></li>' +
+                                (row.sold !== true ? saleLnk : '') +
+                            '<li role="separator" class="divider"></li>\
+                            <li>\
+                                <a href="ItemParts/Index/' + row.itemId + '"><span class="glyphicon glyphicon-wrench text-info"></span> @Lang.CarParts الافتراضية</a>\
+                            </li>\
+                        </ul>\
+                    </div>';
+                }
+            }];
+
+
+        defaultGridManager.Init();
+
+
+        $('.btnTopSearch').click(function (e) {
+            e.preventDefault();
+            defaultGridManager.Refresh();
+        });
     </script>
 }

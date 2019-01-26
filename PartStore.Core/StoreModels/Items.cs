@@ -48,6 +48,8 @@ namespace PartStore.Core.StoreModels
         public string RefNo { get; set; }
         [Display(Name = "SupplierCarNo", ResourceType = typeof(Lang))]
         public string SupplierCarNo { get; set; }
+        [Display(Name = "Sold", ResourceType = typeof(Lang))]
+        public bool? Sold { get; set; } = false;
         [Display(Name = "Make", ResourceType = typeof(Lang))]
         public Makes Make { get; set; }
         [Display(Name = "ModelName", ResourceType = typeof(Lang))]

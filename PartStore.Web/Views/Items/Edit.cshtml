@@ -72,6 +72,14 @@
                 <span asp-validation-for="More" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Sold" class="control-label">@Lang.Sold</label>
+                <select class="form-control" asp-for="Sold">
+                    <option value="False">غير مباعة</option>
+                    <option value="True">مباعة</option>
+                </select>
+                <span asp-validation-for="Sold" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="@Lang.Save" class="btn btn-default" />
             </div>
         </div>

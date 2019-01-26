@@ -287,6 +287,8 @@ namespace PartStore.Core.StoreModels
 
                 entity.Property(e => e.Starred).HasDefaultValueSql("((0))");
 
+                entity.Property(e => e.Sold).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.SupplierCarNo).HasMaxLength(50);
 
                 entity.Property(e => e.SupplierId).HasColumnName("SupplierID");

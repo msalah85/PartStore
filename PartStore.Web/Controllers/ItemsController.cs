@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
+using DataTables.Queryable;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -58,7 +61,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo,SupplierCarNo,RefNo")] Items items)
+        public async Task<IActionResult> Create([Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo,SupplierCarNo,RefNo,Sold")] Items items)
         {
             if (ModelState.IsValid)
             {   // Incresing the item no
@@ -99,7 +102,7 @@ namespace PartStore.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo,SupplierCarNo,RefNo")] Items items)
+        public async Task<IActionResult> Edit(long id, [Bind("ItemsPk,ItemId,Barcode,AvgCost,LastCost,LastPurchasedDate,Qty,Starred,MakeId,ModelId,YearId,Vin,SalePrice,Discount,NetPrice,Active,Photo,More,LotNo,SupplierCarNo,RefNo,Sold")] Items items)
         {
             if (id != items.ItemId)
             {
@@ -176,7 +179,7 @@ namespace PartStore.Web.Controllers
             var items = new CarInvoicesItemsModel()
             {
                 Car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.ItemId == id),
-                Invoices = await _context.InvoiceDetails.Include(v=>v.Invoice).ThenInclude(v => v.InvoiceType).Where(i => i.ItemId == id).ToListAsync()
+                Invoices = await _context.InvoiceDetails.Include(v => v.Invoice).ThenInclude(v => v.InvoiceType).Where(i => i.ItemId == id).ToListAsync()
             };
 
             return View(items);
@@ -205,8 +208,10 @@ namespace PartStore.Web.Controllers
                 if (_car != null)
                 {
                     items.Car = _car;
-                    items.ItemParts = await (from i in _context.ItemParts join t in _context.Items on i.ItemId equals t.ItemId
-                                             where t.LotNo == lot select i).ToListAsync();
+                    items.ItemParts = await (from i in _context.ItemParts
+                                             join t in _context.Items on i.ItemId equals t.ItemId
+                                             where t.LotNo == lot
+                                             select i).ToListAsync();
                     return View(items);
                 }
             }
@@ -217,13 +222,53 @@ namespace PartStore.Web.Controllers
                 if (_car != null)
                 {
                     items.Car = _car;
-                    items.ItemParts = await (from i in _context.ItemParts join t in _context.Items on i.ItemId equals t.ItemId
-                                              where t.Vin == vin select i).ToListAsync();
+                    items.ItemParts = await (from i in _context.ItemParts
+                                             join t in _context.Items on i.ItemId equals t.ItemId
+                                             where t.Vin == vin
+                                             select i).ToListAsync();
                     return View(items);
                 }
             }
 
             return View(items);
+        }
+
+        //[HttpPost]
+        public async Task<JsonResult> LoadDT()
+        {
+            var query = HttpContext.Request.QueryString.Value;
+            var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(query);
+            var request = new DataTablesRequest<Items>(queryDictionary);
+
+            string searchTerm = request.GlobalSearchValue,
+            soldFilter = queryDictionary.FirstOrDefault(p => p.Key == "sold").Value;
+            int pageNum = request.PageNumber,
+                pageSize = request.PageSize;
+
+            var list = _context.Items.Include(i => i.Make).Include(i => i.Model)
+                    .Include(i => i.Photos).Where(p => (string.IsNullOrEmpty(searchTerm) || p.Vin.ToLower().StartsWith(searchTerm.ToLower()) || p.ItemId.ToString().Equals(searchTerm)
+                                || p.Make.MakeName.ToLower().StartsWith(searchTerm.ToLower()) || p.Model.ModelName.ToLower().StartsWith(searchTerm.ToLower())) &&
+                                (string.IsNullOrEmpty(soldFilter) || p.Sold == Convert.ToBoolean(soldFilter)));
+
+            return Json(new
+            {
+                draw = request.Draw,
+                recordsFiltered = await list.CountAsync(),
+                recordsTotal = await list.CountAsync(),
+                data = await list.OrderByDescending(i => i.ItemId).Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync()
+            });
+
+        }
+
+        // GET: Invoices/Sale/5
+        public async Task<IActionResult> Sale(int? id)
+        {
+            var data = await _context.Items.Include(i => i.Make)
+                                .Include(d => d.Model)
+                                .Include(d => d.Photos)
+                                .FirstOrDefaultAsync(m => m.ItemId == id);
+
+            return View(data);
         }
     }
 }

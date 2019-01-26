@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DataTables.Queryable\DataTables.Queryable.csproj" />
     <ProjectReference Include="..\PartStore.Core\PartStore.Core.csproj" />
     <ProjectReference Include="..\SysLanguages\SysLanguages.csproj" />
   </ItemGroup>

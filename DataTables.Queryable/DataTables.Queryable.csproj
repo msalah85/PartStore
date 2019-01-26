@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp2.1;net4.7.1</TargetFrameworks>    
+    <RootNamespace>DataTables.Queryable</RootNamespace>
+    <AssemblyName>DataTables.Queryable</AssemblyName>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\DataTables.Queryable.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
+    <DefineConstants />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DataTables.Queryable.nuspec" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net4.7.1'">
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="DataTablesAjaxPostModel.cs" />
+    <Compile Include="DataTablesColumn.cs" />
+    <Compile Include="DataTablesColumnsCollection.cs" />
+    <Compile Include="DataTablesQueryable.cs" />
+    <Compile Include="DataTablesQueryProvider.cs" />
+    <Compile Include="DataTablesRequest.cs" />
+    <Compile Include="ExpressionExtensions.cs" />
+    <Compile Include="PagedList.cs" />
+    <Compile Include="PredicateBuilder.cs" />
+    <Compile Include="QueryableExtensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Primitives">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.primitives\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
