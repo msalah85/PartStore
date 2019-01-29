@@ -741,4 +741,10 @@
   <data name="Sold" xml:space="preserve">
     <value>مباعة</value>
   </data>
+  <data name="Balance" xml:space="preserve">
+    <value>الرصيد</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>المطـلوب</value>
+  </data>
 </root>

@@ -30,6 +30,7 @@ namespace PartStore.Core.StoreModels
         public virtual DbSet<Photos> Photos { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<Years> Years { get; set; }
+        public virtual DbSet<ClientInvoicesPayments> ClientInvoicesPayments { get; set; } // Client Statement
 
         // Unable to generate entity type for table 'dbo.ItemPhotos'. Please see the warning messages.
 

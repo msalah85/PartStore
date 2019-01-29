@@ -70,5 +70,17 @@
     "inputFiles": [
       "wwwroot/lib/app/parts/partsNamesList.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/app/parts/ItemsListManager.min.js",
+    "inputFiles": [
+      "wwwroot/lib/app/parts/ItemsListManager.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/autoNumeric.min.js",
+    "inputFiles": [
+      "wwwroot/lib/autoNumeric.min.js"
+    ]
   }
 ]

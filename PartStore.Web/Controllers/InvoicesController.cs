@@ -231,18 +231,36 @@ namespace PartStore.Web.Controllers
         // GET: Invoices/Client/5
         public async Task<IActionResult> Client(int? id)
         {
-            if (id == null)
+            var data = new ClientInvoicesViewModel()
             {
-                return NotFound();
-            }
+                Client = await _context.Accounts.FirstOrDefaultAsync(m => m.AccountId == id),
+                Invoices = await _context.Set<ClientInvoicesPayments>()
+                            .FromSql("dbo.ClientStatement @ID = {0}, @From = NULL, @To = NULL", id).ToListAsync() // await _context.Invoices.Include(i => i.InvoiceType).Where(m => m.AccountId == id).ToListAsync()
+            };
+
+            return View(data);
+        }
+
+        [HttpPost, ActionName("Search")]
+        public async Task<IActionResult> SearchClientStatement(int? id, DateTime? from = null, DateTime? to = null)
+        {
+            string _from = string.Format("{0:MM/dd/yyyy}", from),
+            _to = string.Format("{0:MM/dd/yyyy}", to);
+
+            _from = string.IsNullOrEmpty(_from) ? "NULL" : "'" + _from + "'";
+            _to = string.IsNullOrEmpty(_to) ? "NULL" : "'" + _to + "'";
+
+            string query = string.Format("EXEC dbo.ClientStatement @ID = {0}, @From={1}, @To={2}", id, _from, _to);
 
             var data = new ClientInvoicesViewModel()
             {
                 Client = await _context.Accounts.FirstOrDefaultAsync(m => m.AccountId == id),
-                Invoices = await _context.Invoices.Include(i => i.InvoiceType).Where(m => m.AccountId == id).ToListAsync()
+                Invoices = await _context.ClientInvoicesPayments.FromSql(query).ToListAsync()
+                //Invoices = await _context.Set<ClientInvoicesPayments>().FromSql("dbo.ClientStatement @ID = {0}, @From={1}, @To={2}", id, _from, _to).ToListAsync() // await _context.Invoices.Include(i => i.InvoiceType).Where(m => m.AccountId == id).ToListAsync()
             };
 
-            return View(data);
+            return View(nameof(Client), data);
+            //return View(data);
         }
 
         [HttpGet]

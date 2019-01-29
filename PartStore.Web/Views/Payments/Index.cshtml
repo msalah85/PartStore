@@ -1,4 +1,5 @@
-﻿@using SysLanguages
+﻿
+@using SysLanguages
 @model IEnumerable<PartStore.Core.StoreModels.Payments>
 
 @{
@@ -28,12 +29,6 @@
                 @Lang.BankCache
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Invoice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Operation)
-            </th>
-            <th>
                 @Lang.PaymentType
             </th>
             <th></th>
@@ -60,22 +55,41 @@
                     @Html.DisplayFor(modelItem => item.ToBank.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Invoice.InvoiceNo)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Operation.Name)
-                </td>
-                <td>
+                    -
                     @Html.DisplayFor(modelItem => item.PaymentType.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">@Lang.Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">@Lang.Print</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">@Lang.Delete</a>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            @Lang.Options
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
+                            <li>
+                                <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit text-info"></span>  @Lang.Edit</a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a asp-action="Details" asp-route-id="@item.Id"><span class="glyphicon glyphicon-print text-warning"></span> @Lang.Print</a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-remove-circle text-danger"></span> @Lang.Delete</a>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr class="active">
+            <td>الاجمالى</td>
+            <td>@Model.Sum(p=>p.Amount)</td>
+            <td colspan="5"></td>
+        </tr>
+    </tfoot>
 </table>
 
 @section Scripts{
@@ -87,7 +101,8 @@
                 pageLength: 50,
                 language: {
                     "url": "/lib/DataTables/Arabic.json"
-                }});
+                }
+            });
         });
     </script>
 }

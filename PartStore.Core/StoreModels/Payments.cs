@@ -42,13 +42,16 @@ namespace PartStore.Core.StoreModels
         [Display(Name = "Deleted", ResourceType = typeof(Lang))]
         public bool? Deleted { get; set; }
 
+        [Display(Name = "Account", ResourceType = typeof(Lang))]
         public Accounts Account { get; set; }
 
         //[ForeignKey("FromBankId")]
         //[InverseProperty("PaymentsFromBank")]
         public Banks FromBank { get; set; }
 
+        [Display(Name = "Invoice", ResourceType = typeof(Lang))]
         public Invoices Invoice { get; set; }
+        [Display(Name = "Operation", ResourceType = typeof(Lang))]
         public Operations Operation { get; set; }
         public PaymentTypes PaymentType { get; set; }
 

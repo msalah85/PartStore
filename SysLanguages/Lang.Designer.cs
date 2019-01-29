@@ -292,6 +292,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الرصيد.
+        /// </summary>
+        public static string Balance {
+            get {
+                return ResourceManager.GetString("Balance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to دائن.
         /// </summary>
         public static string BalanceIn {
@@ -1530,6 +1539,15 @@ namespace SysLanguages {
         public static string Remarks {
             get {
                 return ResourceManager.GetString("Remarks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المطـلوب.
+        /// </summary>
+        public static string Required {
+            get {
+                return ResourceManager.GetString("Required", resourceCulture);
             }
         }
         
