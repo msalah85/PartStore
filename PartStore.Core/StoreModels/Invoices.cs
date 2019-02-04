@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PartStore.Core.StoreModels
 {
@@ -20,14 +19,14 @@ namespace PartStore.Core.StoreModels
         public string InvoiceNo { get; set; }
         [Display(Name = "Notes", ResourceType = typeof(Lang))]
         public string Notes { get; set; }
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DisplayFormat(DataFormatString = "{0:0,0}")]
         [Display(Name = "Total", ResourceType = typeof(Lang))]
         public decimal TotalAmount { get; set; }
         [Display(Name = "Discount", ResourceType = typeof(Lang))]
         public decimal Discount { get; set; }
         [Display(Name = "Tax", ResourceType = typeof(Lang))]
         public decimal? Tax { get; set; }
-        [DisplayFormat(DataFormatString = "{0:C}"), Display(Name = "NetAmount", ResourceType = typeof(Lang))]
+        [DisplayFormat(DataFormatString = "{0:0,0}"), Display(Name = "NetAmount", ResourceType = typeof(Lang))]
         public decimal NetAmount { get; set; }
         public int? UserId { get; set; }
         public string Ip { get; set; }
@@ -37,7 +36,9 @@ namespace PartStore.Core.StoreModels
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}"), Display(Name = "Date", ResourceType = typeof(Lang))]
         public DateTime AddDate { get; set; }
         //[DisplayFormat(DataFormatString = "{0:hh:mm:ss}")]
-        public TimeSpan? AddTime { get; set; }
+        public DateTime? AddTime { get; set; } // = DateTime.UtcNow;
+        public bool? Archived { get; set; } = false;
+
         [Display(Name = "InvoiceType", ResourceType = typeof(Lang))]
         public int? InvoiceTypeId { get; set; }
         [Display(Name = "Account", ResourceType = typeof(Lang))]

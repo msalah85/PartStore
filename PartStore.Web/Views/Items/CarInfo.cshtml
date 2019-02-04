@@ -1,75 +1,97 @@
 ﻿@using SysLanguages
-@model PartStore.Web.Models.ItemPartsViewModel
+@model IEnumerable<PartStore.Core.StoreModels.Items>
 @{
     ViewData["Title"] = Lang.Car;
 }
 <br />
 <h3>
-    @ViewData["Title"]
-    <small>
-        @Model.Car?.Make.MakeName
-        @Model.Car?.Model.ModelName
-        @Model.Car?.YearId
-    </small>
+    نتيجة البحث
 
     <small class="pull-left noprint">
-        <a title="طباعة التقرير" href="javascript:window.print();"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a> |
         <a asp-action="Index">@Lang.BackToCars</a>
     </small>
 </h3>
 <table class="table table-hover table-bordered">
     <thead>
         <tr>
+            <th class="text-center" width="40">
+                #
+            </th>
+            <th width="60" class="text-center">
+                @Lang.Photo
+            </th>
             <th>
-                @Lang.PartName
-            </th>
-            <th class="text-center">
-                @Lang.Quantity
+                @Lang.Car
             </th>
             <th>
-                <span class="pull-center">@Lang.Price</span>
+                @Lang.VIN
             </th>
-            <th class="noprint" width="70">
-                <span class="pull-left">تعديل</span>
+            <th>
+                @Lang.LotNo
             </th>
+            <th>
+                @Lang.Price
+            </th>
+            <th width="80">@Lang.Options</th>
         </tr>
     </thead>
     <tbody>
-        @if (Model.ItemParts != null)
+        @foreach (var item in Model)
         {
-            @foreach (var item in Model.ItemParts)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PartName)
-                    </td>
-                    <td class="text-center">
-                        @Html.DisplayFor(modelItem => item.Qty)
-                    </td>
-                    <td>
-                        <span class="pull-center">@Html.DisplayFor(modelItem => item.SalePrice)</span>
-                    </td>
-                    <td class="noprint">
-                        <span class="pull-left"><a asp-action="Edit" asp-controller="ItemParts" asp-route-id="@item.PartId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></span>
-                    </td>
-                </tr>
-            }}
-        else
-        {
-            <tr><td colspan="4">@Lang.NoDataFound</td></tr>}
+            <tr>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.ItemId)
+                </td>
+                <td class="text-center">
+                    <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId" title="@Lang.Photos">
+                        <figure class="deal-thumbnail embed-responsive" data-bg-img="bg"
+                                style="background-image: url('/public/@Html.DisplayFor(modelItem => item.Photos.FirstOrDefault().Url)');">
+                        </figure>
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Make.MakeName)
+                    @Html.DisplayFor(modelItem => item.Model.ModelName)
+                    @Html.DisplayFor(modelItem => item.Year.YearId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LotNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastCost)
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            @Lang.Options
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
+                            <li>
+                                <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-picture text-info"></span> @Lang.Photos</a>
+                            </li>
+                            <li>
+                                <a asp-action="Car" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-list-alt text-info"></span> المبيعات</a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a asp-action="Edit" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-edit text-info"></span> @Lang.Edit</a>
+                            </li>
+                            <li><a asp-action="Delete" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-trash text-danger"></span> @Lang.Delete</a></li>
+                            <li><a asp-controller="ItemParts" asp-action="Index" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-wrench text-info"></span> @Lang.CarParts الافتراضية</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
-    <tfoot>
-        <tr>
-            <th></th>
-            <th class="text-center">@Model?.ItemParts?.Sum(i => i.Qty)</th>
-            <th class="pull-center money">@Model?.ItemParts?.Sum(i => i.SalePrice)</th>
-            <th class="noprint"></th>
-        </tr>
-    </tfoot>
 </table>
 @section Scripts{
     <script src="~/lib/autoNumeric.min.js"></script>
     <script>
-    $('.money').autoNumeric();
+        $('.money').autoNumeric();
     </script>
 }

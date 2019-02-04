@@ -82,5 +82,17 @@
     "inputFiles": [
       "wwwroot/lib/autoNumeric.min.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/app/parts/clientStatement.min.js",
+    "inputFiles": [
+      "wwwroot/lib/app/parts/clientStatement.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/moment/moment.min.js",
+    "inputFiles": [
+      "wwwroot/lib/moment/moment.js"
+    ]
   }
 ]

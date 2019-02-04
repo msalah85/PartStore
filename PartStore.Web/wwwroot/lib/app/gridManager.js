@@ -80,16 +80,6 @@ var defaultGridManager = function () {
                         return {};
                     }
                 },
-                //sAjaxSource: sUrl + "/LoadDT",
-                //fnServerParams: function (aoData) {
-                //    aoData.push({ "name": "soldd", "value": false });
-                //    console.log(aoData);
-                //    //aoData.push({ "name": "funName", "value": tableName + 'List' }); /*,{ "name": "names", "value": filterNames }, { "name": "values", "value": filterValues }*/
-                //},
-                //fnServerData: function (sSource, aoData, fnCallback) {
-                //    console.log(aoData);
-                //    dataService.callAjax('GET', aoData, sSource, function (data) { console.log(data); fnCallback(data); }, commonManger.errorException);
-                //},
                 iDisplayLength: 50,
                 aaSorting: [], // default none sorting none.
                 order: [[0, "desc"]],

@@ -23,6 +23,7 @@
                     <div class="input-group-addon">$</div>
                 </div>
                 <span asp-validation-for="Amount" class="text-danger"></span>
+                <label class="text-danger">@ViewData["BankAmountMessage"]</label>
             </div>
             <div class="form-group hidden">
                 <label asp-for="InvoiceId" class="control-label">@Lang.InvoiceNo</label>

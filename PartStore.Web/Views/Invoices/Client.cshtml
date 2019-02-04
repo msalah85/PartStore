@@ -6,108 +6,108 @@
 }
 <br />
 <h3>
-    كشف حساب:
+    حساب العميل:
     <small>
         @Model.Client.Title
     </small>
     <span class="pull-left"><a class="btn" asp-controller="Accounts" asp-action="Index">قائمة العملاء</a></span>
 </h3>
+<br />
+<input type="hidden" id="ClientId" value="@Html.DisplayFor(modelItem => Model.Client.AccountId)" />
 <div class="row">
-    <form method="post" class="form-inline searchForm" asp-action="Search" asp-controller="Invoices">
-        <input type="hidden" id="id" name="id" value="@Model.Client.AccountId" />
-        <div class="col-md-2">
-            <a asp-action="Create">فاتورة جديدة</a>
+    <div class="col-md-12">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#activeAccount" aria-controls="activeAccount" role="tab" data-toggle="tab">المطلوب على الزبون</a></li>
+            <li role="presentation"><a href="#accountHistory" aria-controls="accountHistory" role="tab" data-toggle="tab">الفواتير/الإيصالات المسددة</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="activeAccount">
+                <table class="table table-bordered table-responsive table-hover">
+                    <thead>
+                        <tr class="active">
+                            <th title="@Lang.InvoiceNo">
+                                #
+                            </th>
+                            <th>
+                                الإجراء
+                            </th>
+                            <th>
+                                @Lang.Date
+                            </th>
+                            <th>
+                                <span class="pull-left">@Lang.Amount</span>
+                            </th>
+                            <th width="100"><span class="pull-left">@Lang.Options</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Invoices)
+                        {
+                            <tr class="@(item.Kind == 2 ? "success" : "")">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ID)
+                                </td>
+                                <td>
+                                    @(item.Kind == 1 ? "فاتورة بيع" : "ايصال سداد")
+                                </td>
+                                <td>
+                                    @string.Format("{0:yyyy-MM-dd}", item.AddDate)
+                                </td>
+                                <td>
+                                    <span title="صافى المطلوب حتى هذا الاجراء: @Html.DisplayFor(modelItem => item.Balance)" class="money pull-left">@Html.DisplayFor(modelItem => item.Amount)</span>
+                                </td>
+                                <td>
+                                    <div class="pull-left">
+                                        <a asp-controller="@(item.Kind == 1 ? "Invoices" : "Payments")" asp-action="Details" asp-route-id="@item.ID" title="@Lang.Print" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-print"></span></a>
+                                        <a asp-controller="@(item.Kind == 1 ? "Invoices" : "Payments")" asp-action="@(item.Kind == 1 ? "Create" : "Edit")" asp-route-id="@item.ID" title="@Lang.Edit" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-edit"></span></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="active">
+                            <th colspan="3"></th>
+                            <th><span class="pull-left"><span>صافى المطلوب:</span><span class="money">@Html.DisplayFor(modelItem => Model.Invoices.LastOrDefault().Balance)</span></span></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="accountHistory">
+                <table class="table table-bordered table-responsive table-hover" id="tblList">
+                    <thead>
+                        <tr class="active">
+                            <th title="@Lang.InvoiceNo">
+                                #
+                            </th>
+                            <th>
+                                الإجراء
+                            </th>
+                            <th>
+                                @Lang.Date
+                            </th>
+                            <th>
+                                <span class="pull-left">@Lang.Amount</span>
+                            </th>
+                            <th width="100"><span class="pull-left">@Lang.Print</span></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="email">بحث الفترة من تاريخ</label>
-            <input dir="rtl" type="date" class="form-control" name="from" id="from">
-        </div>
-        <div class="form-group">
-            <label for="email">إلى تاريخ</label>
-            <input dir="rtl" type="date" class="form-control" name="to" id="to">
-        </div>
-        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> بــحث</button>
-    </form>
+    </div>
 </div>
-<hr />
-<table class="table table-bordered table-responsive table-hover table-striped datatable2">
-    <thead>
-        <tr>
-            <th title="@Lang.InvoiceNo">
-                #
-            </th>
-            <th>
-                الإجراء
-            </th>
-            <th>
-                @Lang.Date
-            </th>
-            <th>
-                @Lang.Amount
-            </th>
-            <th>
-                @Lang.Required
-            </th>
-            <th width="70">@Lang.Options</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Invoices)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ID)
-                </td>
-                <td>
-                    @(item.Kind == 1 ? "فاتورة بيع" : "ايصال سداد")
-                </td>
-                <td>
-                    @string.Format("{0:yyyy-MM-dd}", item.AddDate)
-                </td>
-                <td>
-                    <span class="money">@Html.DisplayFor(modelItem => item.Amount)</span>
-                </td>
-                <td>
-                    <span class="money">@Html.DisplayFor(modelItem => item.Balance)</span>
-                </td>
-                <td>
-                    <a asp-controller="@(item.Kind == 1 ? "Invoices" : "Payments")" asp-action="Details" asp-route-id="@item.ID" title="@Lang.Print" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-print"></span></a>
-                    <a asp-controller="@(item.Kind == 1 ? "Invoices" : "Payments")" asp-action="@(item.Kind == 1 ? "Create" : "Edit")" asp-route-id="@item.ID" title="@Lang.Edit" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-edit"></span></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr class="active">
-            <th colspan="4"><span class="pull-left">صافى المطلوب</span></th>
-            <th><span class="money">@Model.Invoices.LastOrDefault().Balance</span></th>
-            <th></th>
-        </tr>
-    </tfoot>
-</table>
 @section Scripts{
     <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js"></script>
-    <script src="~/lib/autoNumeric.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.datatable2').DataTable({
-                pageLength: 50,
-                ordering: false,
-                language: {
-                    "url": "/lib/DataTables/Arabic.json"
-                },
-                footerCallback: function (tfoot, data, start, end, display) {
-                    $('.money').autoNumeric();
-                }
-            });
-        });
-    </script>
+    <script src="~/lib/app/DataService.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script src="~/lib/app/Common.js"></script>
+    <script src="~/lib/app/gridManager.js"></script>
+    <script src="~/lib/app/parts/clientStatement.min.js"></script>
 }
 @section Styles{
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
-    <style>
-        .searchForm{margin-top:10px;}
-    </style>
 }

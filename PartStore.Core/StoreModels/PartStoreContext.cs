@@ -29,6 +29,7 @@ namespace PartStore.Core.StoreModels
         public virtual DbSet<PaymentTypes> PaymentTypes { get; set; }
         public virtual DbSet<Photos> Photos { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
+        public virtual DbSet<Transactions> Transactions { get; set; }
         public virtual DbSet<Years> Years { get; set; }
         public virtual DbSet<ClientInvoicesPayments> ClientInvoicesPayments { get; set; } // Client Statement
 
@@ -138,11 +139,13 @@ namespace PartStore.Core.StoreModels
 
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
+                entity.Property(e => e.Archived).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.AddDate)
                     .HasColumnType("date")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.AddTime).HasDefaultValueSql("(CONVERT([time],sysutcdatetime()))");
+                entity.Property(e => e.AddTime).HasColumnType("datetime").HasDefaultValueSql("(getutcdate())");
 
                 entity.Property(e => e.Discount).HasColumnType("money");
 
@@ -368,11 +371,13 @@ namespace PartStore.Core.StoreModels
 
                 entity.Property(e => e.Active).HasDefaultValueSql("((1))");
 
+                entity.Property(e => e.Archived).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.AddDate)
                     .HasColumnType("date")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.AddTime).HasDefaultValueSql("(CONVERT([time],sysutcdatetime()))");
+                entity.Property(e => e.AddTime).HasColumnType("datetime").HasDefaultValueSql("(getutcdate())");
 
                 entity.Property(e => e.Amount).HasColumnType("money");
 
@@ -490,6 +495,39 @@ namespace PartStore.Core.StoreModels
                 entity.Property(e => e.Value)
                     .IsRequired()
                     .HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<Transactions>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.AccountId).HasColumnName("AccountID");
+
+                entity.Property(e => e.AddDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Balance).HasColumnType("money");
+
+                entity.Property(e => e.BankId).HasColumnName("BankID");
+
+                entity.Property(e => e.Credit).HasColumnType("money");
+
+                entity.Property(e => e.Debit).HasColumnType("money");
+
+                entity.Property(e => e.TransactionId)
+                    .HasColumnName("TransactionID")
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.Transactions)
+                    .HasForeignKey(d => d.AccountId)
+                    .HasConstraintName("FK_Transactions_Accounts");
+
+                entity.HasOne(d => d.Bank)
+                    .WithMany(p => p.Transactions)
+                    .HasForeignKey(d => d.BankId)
+                    .HasConstraintName("FK_Transactions_Banks");
             });
 
             modelBuilder.Entity<Years>(entity =>

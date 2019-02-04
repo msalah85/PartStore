@@ -194,43 +194,26 @@ namespace PartStore.Web.Controllers
         /// <returns></returns>
         public async Task<IActionResult> CarInfo(long? id, string lot, string vin)
         {
-            var items = new ItemPartsViewModel();
             if (id != null) // car id search
             {
-                items.Car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.ItemId == id);
-                items.ItemParts = await _context.ItemParts.Where(i => i.ItemId == id).ToListAsync();
-                return View(items);
+                var data = await _context.Items.Include(i => i.Make).Include(i => i.Model).Include(p=>p.Photos).Where(i => i.ItemId == id).ToListAsync();
+                return View(data);
             }
 
             if (!string.IsNullOrEmpty(lot)) // lot search
             {
-                var _car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.LotNo == lot);
-                if (_car != null)
-                {
-                    items.Car = _car;
-                    items.ItemParts = await (from i in _context.ItemParts
-                                             join t in _context.Items on i.ItemId equals t.ItemId
-                                             where t.LotNo == lot
-                                             select i).ToListAsync();
-                    return View(items);
-                }
+                var _car = await _context.Items.Include(i => i.Make).Include(i => i.Model).Include(p => p.Photos).Where(i => i.LotNo == lot).ToListAsync();
+                return View(_car);
             }
 
             if (!string.IsNullOrEmpty(vin)) // chassis no (VIN) search
             {
-                var _car = await _context.Items.Include(i => i.Make).Include(i => i.Model).FirstOrDefaultAsync(i => i.Vin == vin);
-                if (_car != null)
-                {
-                    items.Car = _car;
-                    items.ItemParts = await (from i in _context.ItemParts
-                                             join t in _context.Items on i.ItemId equals t.ItemId
-                                             where t.Vin == vin
-                                             select i).ToListAsync();
-                    return View(items);
-                }
+                var _car = await _context.Items.Include(i => i.Make).Include(i => i.Model).Include(p => p.Photos).Where(i => i.Vin == vin).ToListAsync();
+                return View(_car);
             }
 
-            return View(items);
+            var nullRsult = await _context.Items.Where(p => p.ItemId == 0).ToListAsync();
+            return View(nullRsult);
         }
 
         //[HttpPost]

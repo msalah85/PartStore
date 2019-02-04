@@ -747,4 +747,7 @@
   <data name="Required" xml:space="preserve">
     <value>المطـلوب</value>
   </data>
+  <data name="ValidateBankBalanceMessage" xml:space="preserve">
+    <value>يرجي التحقق من قيمة المبلغ أقل من الرصيد بالخزينة/البنك</value>
+  </data>
 </root>

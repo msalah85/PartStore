@@ -12,6 +12,7 @@ namespace PartStore.Core.StoreModels
         {
             PaymentsFromBank = new HashSet<Payments>();
             PaymentsToBank = new HashSet<Payments>();
+            Transactions = new HashSet<Transactions>();
         }
 
         public int Id { get; set; }
@@ -27,5 +28,6 @@ namespace PartStore.Core.StoreModels
         //[ForeignKey("Id")]
         //[InverseProperty("ToBank")]
         public ICollection<Payments> PaymentsToBank { get; set; }
+        public ICollection<Transactions> Transactions { get; set; }
     }
 }

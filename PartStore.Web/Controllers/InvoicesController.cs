@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -260,7 +259,6 @@ namespace PartStore.Web.Controllers
             };
 
             return View(nameof(Client), data);
-            //return View(data);
         }
 
         [HttpGet]
@@ -278,6 +276,5 @@ namespace PartStore.Web.Controllers
 
             return Ok(result);
         }
-
     }
 }

@@ -59,7 +59,7 @@ var gridId = 'tblList',
                         </button>\
                         <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">\
                             <li><a href="photos/index/' + row.itemId + '"><span class="glyphicon glyphicon-picture text-info"></span> ' + lang.Photos + '</a></li>\
-                            <li><a href="Car/' + row.itemId + '"><span class="glyphicon glyphicon-list-alt text-info"></span> المبيعات</a></li>\
+                            <li><a href="/Items/Car/' + row.itemId + '"><span class="glyphicon glyphicon-list-alt text-info"></span> المبيعات</a></li>\
                             <li role="separator" class="divider"></li>\
                             <li><a href="items/edit/' + row.itemId + '"><span class="glyphicon glyphicon-edit text-info"></span> ' + lang.Edit + '</a></li>\
                             <li><a href="items/delete/' + row.itemId + '"><span class="glyphicon glyphicon-trash text-danger"></span> ' + lang.Delete + '</a></li>' +

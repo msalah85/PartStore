@@ -11,6 +11,7 @@ namespace PartStore.Core.StoreModels
             Invoices = new HashSet<Invoices>();
             Payments = new HashSet<Payments>();
             Items = new HashSet<Items>();
+            Transactions = new HashSet<Transactions>();
         }
 
         public int AccountId { get; set; }
@@ -37,5 +38,6 @@ namespace PartStore.Core.StoreModels
         public ICollection<Items> Items { get; set; }
         public ICollection<Payments> Payments { get; set; }
         public AccountTypes AccountType { get; set; }
+        public ICollection<Transactions> Transactions { get; set; }
     }
 }

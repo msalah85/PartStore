@@ -1840,6 +1840,15 @@ namespace SysLanguages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to يرجي التحقق من قيمة المبلغ أقل من الرصيد بالخزينة/البنك.
+        /// </summary>
+        public static string ValidateBankBalanceMessage {
+            get {
+                return ResourceManager.GetString("ValidateBankBalanceMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to القيمة.
         /// </summary>
         public static string Value {

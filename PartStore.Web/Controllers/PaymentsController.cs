@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataTables.Queryable;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PartStore.Core.StoreModels;
+using PartStore.Web.Models;
+using PartStore.Web.Services;
 
 namespace PartStore.Web.Controllers
 {
@@ -68,10 +71,84 @@ namespace PartStore.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,InvoiceId,Amount,Discount,Tax,Extra,Total,AccountId,PaymentTypeId,OperationId,FromBankId,ToBankId,AddDate,AddTime,RefNo,Notes")] Payments payments)
         {
-            if (ModelState.IsValid)
+            var isValidtaedAmount = new TransactionsService(_context).ValidateBankBalance(payments.FromBankId, payments.Amount, payments.OperationId);
+            if (ModelState.IsValid && isValidtaedAmount)
             {
                 _context.Add(payments);
                 await _context.SaveChangesAsync();
+
+                #region "Update (Account/Banks) Balances"
+                decimal _credit = 0, _debit = 0, _toCredit = 0, _toDebit = 0;
+                var _trans = new TransactionsService(_context);
+
+                // قبض
+                if (payments.OperationId == (int)PaymentTypesEnum.Credit || payments.OperationId == (int)PaymentTypesEnum.CheckCredit)
+                {
+                    _credit = _toCredit = payments.Amount;
+                    //_debit = _toDebit = 0;
+                }
+                // صرف
+                else if (payments.OperationId == (int)PaymentTypesEnum.Debit || payments.OperationId == (int)PaymentTypesEnum.CehckDebit)
+                {
+                    _debit = _toDebit = payments.Amount;
+                    _credit = _toCredit = 0;
+                }
+                // تحويل بنكى من بنك إلى بنك
+                else if (payments.OperationId == (int)PaymentTypesEnum.BankTransfer)
+                {
+                    _debit = payments.Amount; // Debit from
+                    _toCredit = payments.Amount; // Debit to.
+
+                    _toDebit = _credit = 0;
+                }
+
+                // Update account balance
+                if (payments.AccountId > 0)
+                {
+                    var at = new Transactions()
+                    {
+                        AccountId = payments.AccountId,
+                        AddDate = DateTime.Now,
+                        Credit = _credit,
+                        Debit = _debit,
+                        TransactionId = payments.Id.ToString()
+                    };
+                    await _trans.UpdateAccountAccountAsync(at);
+                }
+                // Update FromBank balance.
+                if (payments.FromBankId > 0)
+                {
+                    var bt = new Transactions()
+                    {
+                        BankId = payments.FromBankId,
+                        AddDate = DateTime.Now,
+                        Credit = _credit,
+                        Debit = _debit,
+                        TransactionId = payments.Id.ToString()
+                    };
+                    await _trans.UpdateBankAccountAsync(bt);
+                }
+                // Update ToBank balance.
+                if (payments.ToBankId > 0)
+                {
+                    var bt = new Transactions()
+                    {
+                        BankId = payments.ToBankId,
+                        AddDate = DateTime.Now,
+                        Credit = _toCredit,
+                        Debit = _toDebit,
+                        TransactionId = payments.Id.ToString()
+                    };
+                    await _trans.UpdateBankAccountAsync(bt);
+                }
+                #endregion
+
+
+                // Archive client transactions in case he paying to us (قبض - قبض بشيك).
+                if (payments.AccountId > 0 && (payments.OperationId == (int)PaymentTypesEnum.Credit || payments.OperationId == (int)PaymentTypesEnum.CheckCredit))
+                    await _trans.ArchiveAccountInvoicesPaymanetsAsync(payments.AccountId);
+
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AccountId"] = new SelectList(_context.Accounts, "AccountId", "Title", payments.AccountId);
@@ -80,6 +157,10 @@ namespace PartStore.Web.Controllers
             ViewData["OperationId"] = new SelectList(_context.Operations, "Id", "Name", payments.OperationId);
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentTypes, "Id", "Name", payments.PaymentTypeId);
             ViewData["ToBankId"] = new SelectList(_context.Banks, "Id", "Name", payments.ToBankId);
+            if (!isValidtaedAmount)
+                ViewData["BankAmountMessage"] = SysLanguages.Lang.ValidateBankBalanceMessage;
+
+
             return View(payments);
         }
 
@@ -112,17 +193,19 @@ namespace PartStore.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,InvoiceId,Amount,Discount,Tax,Extra,Total,AccountId,PaymentTypeId,OperationId,FromBankId,ToBankId,AddDate,AddTime,RefNo,Notes")] Payments payments)
         {
-            if (id != payments.Id)
-            {
-                return NotFound();
-            }
+            if (id != payments.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    payments.AddTime = DateTime.UtcNow;
                     _context.Update(payments);
                     await _context.SaveChangesAsync();
+
+                    // Archive client transactions in case he paying to us (قبض - قبض بشيك).
+                    if (payments.AccountId > 0 && (payments.OperationId == (int)PaymentTypesEnum.Credit || payments.OperationId == (int)PaymentTypesEnum.CheckCredit))
+                        await new TransactionsService(_context).ArchiveAccountInvoicesPaymanetsAsync(payments.AccountId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -143,6 +226,7 @@ namespace PartStore.Web.Controllers
             ViewData["OperationId"] = new SelectList(_context.Operations, "Id", "Name", payments.OperationId);
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentTypes, "Id", "Name", payments.PaymentTypeId);
             ViewData["ToBankId"] = new SelectList(_context.Banks, "Id", "Name", payments.ToBankId);
+
             return View(payments);
         }
 
@@ -185,5 +269,29 @@ namespace PartStore.Web.Controllers
         {
             return _context.Payments.Any(e => e.Id == id);
         }
+
+        [ActionName("LoadDT")]
+        public async Task<JsonResult> ClientStatement()
+        {
+            var query = HttpContext.Request.QueryString.Value;
+            var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(query);
+            var request = new DataTablesRequest<Items>(queryDictionary);
+
+            string searchTerm = request.GlobalSearchValue,
+            _filter = queryDictionary.FirstOrDefault(p => p.Key == "id").Value; // accountID
+            int pageNum = request.PageNumber,
+                pageSize = request.PageSize;
+
+            var list = _context.Set<ClientInvoicesPayments>().FromSql("dbo.ClientStatement @ID={0}, @Archived=1", _filter).OrderByDescending(p => p.RowNo);
+
+            return Json(new
+            {
+                draw = request.Draw,
+                recordsFiltered = await list.CountAsync(),
+                recordsTotal = await list.CountAsync(),
+                data = await list.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync()
+            });
+        }
+
     }
 }

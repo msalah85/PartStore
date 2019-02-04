@@ -15,7 +15,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th></th>
+            <th width="100"></th>
         </tr>
     </thead>
     <tbody>
@@ -23,7 +23,9 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    <a title="@Lang.Balance" asp-action="Balances" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">@Lang.Edit</a> |

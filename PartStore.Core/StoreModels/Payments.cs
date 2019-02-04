@@ -32,15 +32,16 @@ namespace PartStore.Core.StoreModels
         public int? ToBankId { get; set; }
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}"), Display(Name = "Date", ResourceType = typeof(Lang))]
         public DateTime? AddDate { get; set; }
-        public TimeSpan? AddTime { get; set; }
+        public DateTime? AddTime { get; set; }
         [Display(Name = "RefNo", ResourceType = typeof(Lang))]
         public string RefNo { get; set; }
         [Display(Name = "Notes", ResourceType = typeof(Lang))]
         public string Notes { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Lang))]
-        public bool? Active { get; set; }
+        public bool? Active { get; set; } = true;
         [Display(Name = "Deleted", ResourceType = typeof(Lang))]
-        public bool? Deleted { get; set; }
+        public bool? Deleted { get; set; } = false;
+        public bool? Archived { get; set; } = false;
 
         [Display(Name = "Account", ResourceType = typeof(Lang))]
         public Accounts Account { get; set; }

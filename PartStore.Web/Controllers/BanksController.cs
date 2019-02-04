@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PartStore.Core.StoreModels;
+using PartStore.Web.Models;
 
 namespace PartStore.Web.Controllers
 {
@@ -147,6 +148,20 @@ namespace PartStore.Web.Controllers
         private bool BanksExists(int id)
         {
             return _context.Banks.Any(e => e.Id == id);
+        }
+
+        // GET: Banks/Balances/5
+        public async Task<IActionResult> Balances(int? id)
+        {
+            var data = new BankBalanceViewModel()
+            {
+                Bank = await _context.Banks.FirstOrDefaultAsync(m => m.Id == id),
+                BankBalance = await _context.Transactions.LastOrDefaultAsync(m => m.BankId == id),
+                Payments = await _context.Payments.Include(p => p.Account).Include(p => p.FromBank).Include(p => p.Invoice).Include(p => p.Operation).Include(p => p.PaymentType).Include(p => p.ToBank)
+                                .Where(p => p.FromBankId == id || p.ToBankId == id).OrderByDescending(a => a.Id).Take(100).ToListAsync()
+            };
+
+            return View(data);
         }
     }
 }
