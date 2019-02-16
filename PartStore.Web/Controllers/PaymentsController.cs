@@ -113,7 +113,7 @@ namespace PartStore.Web.Controllers
                         Debit = _debit,
                         TransactionId = payments.Id.ToString()
                     };
-                    await _trans.UpdateAccountAccountAsync(at);
+                    await _trans.UpdateAccountBalanceAsync(at);
                 }
                 // Update FromBank balance.
                 if (payments.FromBankId > 0)
@@ -126,8 +126,9 @@ namespace PartStore.Web.Controllers
                         Debit = _debit,
                         TransactionId = payments.Id.ToString()
                     };
-                    await _trans.UpdateBankAccountAsync(bt);
+                    await _trans.UpdateBankBalanceAsync(bt);
                 }
+
                 // Update ToBank balance.
                 if (payments.ToBankId > 0)
                 {
@@ -139,7 +140,7 @@ namespace PartStore.Web.Controllers
                         Debit = _toDebit,
                         TransactionId = payments.Id.ToString()
                     };
-                    await _trans.UpdateBankAccountAsync(bt);
+                    await _trans.UpdateBankBalanceAsync(bt);
                 }
                 #endregion
 
@@ -292,6 +293,5 @@ namespace PartStore.Web.Controllers
                 data = await list.Skip((pageNum - 1) * pageSize).Take(pageSize).ToListAsync()
             });
         }
-
     }
 }

@@ -9,6 +9,7 @@ namespace PartStore.Web.Models
     {
         public Banks Bank { get; set; }
         public Transactions BankBalance { get; set; }
-        public List<Payments> Payments { get; set; }
+        public List<Payments> PaymentsCredit { get; set; }
+        public List<Payments> PaymentsDebit { get; set; }
     }
 }

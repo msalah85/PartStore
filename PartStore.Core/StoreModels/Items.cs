@@ -14,7 +14,7 @@ namespace PartStore.Core.StoreModels
             Photos = new HashSet<Photos>();
         }
 
-        public long ItemsPk { get; set; }
+        public long ItemsPk { get; set; } = 0; // manual serial.
         public long ItemId { get; set; }
         [Display(Name = "Barcode", ResourceType = typeof(Lang))]
         public string Barcode { get; set; }

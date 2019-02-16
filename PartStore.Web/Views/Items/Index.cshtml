@@ -7,11 +7,11 @@
 
 <br />
 <h3>@ViewData["Title"]</h3>
-<div class="row" id="search">
+<div class="row noprint" id="search">
     <form id="search-form">
         <div class="form-group col-sm-3 col-xs-6">
             <a asp-action="Create">@Lang.New</a>
-            <label class="pull-left">بحث بحالة السيارة</label>
+            <label class="pull-left control-label">بحث بحالة السيارة</label>
         </div>
         <div class="form-group col-sm-6 col-xs-6">
             <select class="form-control" id="car-sale-type">
@@ -46,7 +46,7 @@
             <th>
                 @Lang.Price
             </th>
-            <th width="80">@Lang.Options</th>
+            <th width="80" class="noprint">@Lang.Options</th>
         </tr>
     </thead>
     <tfoot>
@@ -59,9 +59,35 @@
         </tr>
     </tfoot>
 </table>
+<div class="modal fade" id="soldModal" tabindex="-1" role="dialog" aria-labelledby="soldModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="soldModalLabel">تغيير حالة البيع للسيارة</h4>
+            </div>
+            <div class="modal-body text-center">
+                <p>
+                    <label for="sold" class="text-info">تكون حالة السيارة مباعة إذا تم اختيار الحقل التالى.</label>
+                </p>
+                <h4>
+                    نوع السيارة:
+                    <strong class="car"></strong>
+                </h4>
+                <label>
+                    <input type="checkbox" class="form-control" id="sold"> نعم مباعة!
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-success pull-right btnSaveSold">تحديث الحالة</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Styles{
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap.min.css" />
+    <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
 }
 @section Scripts{
     <script src="~/lib/autoNumeric.min.js"></script>
@@ -70,6 +96,6 @@
     <script src="~/lib/app/DataService.js"></script>
     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/lib/app/Common.js"></script>
-    <script src="~/lib/app/gridManager.js"></script>
-    <script src="~/lib/app/parts/ItemsListManager.min.js?v=0.2"></script>
+    <script src="~/lib/app/gridManager.js?v=1"></script>
+    <script src="~/lib/app/parts/ItemsListManager.min.js?v=0.5"></script>
 }

@@ -32,6 +32,9 @@
             <th>
                 @Lang.Price
             </th>
+            <th>
+                @Lang.Sold
+            </th>
             <th width="80">@Lang.Options</th>
         </tr>
     </thead>
@@ -40,7 +43,7 @@
         {
             <tr>
                 <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.ItemId)
+                    <span class="no">@Html.DisplayFor(modelItem => item.ItemId)</span>
                 </td>
                 <td class="text-center">
                     <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId" title="@Lang.Photos">
@@ -50,9 +53,11 @@
                     </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Make.MakeName)
-                    @Html.DisplayFor(modelItem => item.Model.ModelName)
-                    @Html.DisplayFor(modelItem => item.Year.YearId)
+                    <span class="car">
+                        @Html.DisplayFor(modelItem => item.Make.MakeName)
+                        @Html.DisplayFor(modelItem => item.Model.ModelName)
+                        @Html.DisplayFor(modelItem => item.Year.YearId)
+                    </span>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Vin)
@@ -64,23 +69,23 @@
                     @Html.DisplayFor(modelItem => item.LastCost)
                 </td>
                 <td>
+                    <span class="sold label @(item.Sold == true ? "label-success" : "label-warning")" data-sold="@item.Sold">@(item.Sold == true ? "مباعة" : "غير مباعة")</span>
+                </td>
+                <td>
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             @Lang.Options
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
-                            <li>
-                                <a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-picture text-info"></span> @Lang.Photos</a>
-                            </li>
-                            <li>
-                                <a asp-action="Car" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-list-alt text-info"></span> المبيعات</a>
-                            </li>
+                            <li><a asp-controller="Photos" asp-action="Index" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-picture text-info"></span> @Lang.Photos</a></li>
+                            <li><a asp-action="Car" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-list-alt text-info"></span> المبيعات</a></li>
                             <li role="separator" class="divider"></li>
-                            <li>
-                                <a asp-action="Edit" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-edit text-info"></span> @Lang.Edit</a>
-                            </li>
+                            <li><a asp-action="Edit" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-edit text-info"></span> @Lang.Edit</a></li>
                             <li><a asp-action="Delete" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-trash text-danger"></span> @Lang.Delete</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:void(0);" class="btnSold"><span class="glyphicon glyphicon-ok-circle text-success"></span> @Lang.Sale</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a asp-controller="ItemParts" asp-action="Index" asp-route-id="@item.ItemId"><span class="glyphicon glyphicon-wrench text-info"></span> @Lang.CarParts الافتراضية</a></li>
                         </ul>
                     </div>
@@ -89,9 +94,77 @@
         }
     </tbody>
 </table>
+<div class="modal fade" id="soldModal" tabindex="-1" role="dialog" aria-labelledby="soldModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="soldModalLabel">تغيير حالة البيع للسيارة</h4>
+            </div>
+            <div class="modal-body text-center">
+                <p>
+                    <label for="sold" class="text-info">تكون حالة السيارة مباعة إذا تم اختيار الحقل التالى.</label>
+                </p>
+                <h4>
+                    نوع السيارة:
+                    <strong class="car"></strong>
+                </h4>
+                <label>
+                    <input type="checkbox" class="form-control" id="sold"> نعم مباعة!
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-success pull-right btnSaveSold">تحديث الحالة</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
     <script src="~/lib/autoNumeric.min.js"></script>
+    <script src="~/lib/app/DataService.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script src="~/lib/app/Common.js"></script>
     <script>
         $('.money').autoNumeric();
+
+        $(document).delegate("tr a.btnSold", "click", function (event) {
+            event.preventDefault();
+
+            var self = $(this),
+                tr = self.closest('tr'),
+                isSold = tr.find('.sold').attr('data-sold') == 'True' ? true : false,
+                itemId = tr.find('.no').text();
+
+            if (tr !== null) {
+                var _car = tr.find('.car').text();
+                $('strong.car').text(_car);
+                $('#sold').prop('checked', isSold).val(itemId);
+                $('#soldModal').modal('show');
+            }
+        });
+
+        $('button.btnSaveSold').click(function (e) {
+            e.preventDefault();
+
+            var
+                $sold = $('#sold'),
+                _dta = {
+                    itemId: $sold.val() || 0,
+                    sold: $sold.is(':checked') ? true : false
+                },
+                url = '/Items/EditSale',
+                successSaveFn = function (d) {
+                    if (d.saved === true) {
+                        commonManger.showMessage(lang.Success, lang.SuccessMessage, 'success');
+                        window.location.reload();
+                        $('.modal').modal('hide');
+                    } else {
+                        commonManger.showMessage(lang.Error, lang.SystemError + d.error, 'error');
+                    }
+                };
+
+            commonManger.doWork('#form', url, _dta, successSaveFn);
+        });
     </script>
 }

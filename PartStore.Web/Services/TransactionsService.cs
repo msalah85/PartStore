@@ -14,7 +14,7 @@ namespace PartStore.Web.Services
             _context = context;
         }
 
-        public async Task<bool> UpdateBankAccountAsync(Transactions transaction)
+        public async Task<bool> UpdateBankBalanceAsync(Transactions transaction)
         {
             if (transaction == null)
                 return false;
@@ -42,14 +42,14 @@ namespace PartStore.Web.Services
             return true;
         }
 
-        public async Task<bool> UpdateAccountAccountAsync(Transactions transaction)
+        public async Task<bool> UpdateAccountBalanceAsync(Transactions transaction)
         {
             if (transaction == null)
                 return false;
 
 
             // get latest account balance. (transactions).
-            var latestTrans = _context.Transactions.Where(t => t.Deleted == false && t.BankId == transaction.BankId).LastOrDefault();
+            var latestTrans = _context.Transactions.Where(t => t.Deleted == false && t.AccountId == transaction.AccountId).LastOrDefault();
             if (latestTrans != null)
             {
                 transaction.Balance = latestTrans.Balance;

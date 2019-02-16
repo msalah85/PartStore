@@ -21,7 +21,8 @@ namespace PartStore.Web.Controllers
         // GET: Accounts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Accounts.ToListAsync());
+            var list = _context.Accounts.Include(p => p.AccountType);
+            return View(await list.ToListAsync());
         }
 
         // GET: Accounts/Details/5
@@ -123,8 +124,7 @@ namespace PartStore.Web.Controllers
                 return NotFound();
             }
 
-            var accounts = await _context.Accounts
-                .FirstOrDefaultAsync(m => m.AccountId == id);
+            var accounts = await _context.Accounts.FirstOrDefaultAsync(m => m.AccountId == id);
             if (accounts == null)
             {
                 return NotFound();

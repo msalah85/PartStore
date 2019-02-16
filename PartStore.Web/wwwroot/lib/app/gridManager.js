@@ -52,13 +52,14 @@ var defaultGridManager = function () {
         },
         fillDataTable = function () {
             var oTable = $('#' + gridId).DataTable({
-                dom: //"<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                dom: //"<'row noprint'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-12 col-md-5'li><'col-sm-12 col-md-7'p>>",
+                    "<'row noprint'<'col-sm-12 col-md-5'li><'col-sm-12 col-md-7'p>>",
                 language: {
                     "url": "/lib/DataTables/Arabic.json"
                 },
                 bAutoWidth: false,
+                processing: true,
                 bServerSide: true,
                 ajax: {
                     url: sUrl + "/LoadDT",

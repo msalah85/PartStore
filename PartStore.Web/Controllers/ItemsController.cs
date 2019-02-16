@@ -65,8 +65,10 @@ namespace PartStore.Web.Controllers
         {
             if (ModelState.IsValid)
             {   // Incresing the item no
-                //var latestItem = await _context.Items.LastOrDefaultAsync();
-                //if (latestItem != null) { items.ItemId = latestItem.ItemId + 1; }
+                long serial = 1;
+                var latestItem = await _context.Items.LastOrDefaultAsync();
+                if (latestItem != null) { serial = (latestItem.ItemsPk) + 1; }
+                items.ItemsPk = serial;
 
                 _context.Add(items);
                 await _context.SaveChangesAsync();
@@ -196,7 +198,7 @@ namespace PartStore.Web.Controllers
         {
             if (id != null) // car id search
             {
-                var data = await _context.Items.Include(i => i.Make).Include(i => i.Model).Include(p=>p.Photos).Where(i => i.ItemId == id).ToListAsync();
+                var data = await _context.Items.Include(i => i.Make).Include(i => i.Model).Include(p => p.Photos).Where(i => i.ItemId == id).ToListAsync();
                 return View(data);
             }
 
@@ -252,6 +254,26 @@ namespace PartStore.Web.Controllers
                                 .FirstOrDefaultAsync(m => m.ItemId == id);
 
             return View(data);
+        }
+
+        // POST: Items/EditSale/5
+        [HttpPost]
+        public async Task<IActionResult> EditSale([FromBody] Items items)
+        {
+            try
+            {
+                var _item = _context.Items.Find(items.ItemId);
+                _item.Sold = items.Sold;
+
+                _context.Update(_item);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { saved = true });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { saved = false, Error = ex.Message });
+            }
         }
     }
 }

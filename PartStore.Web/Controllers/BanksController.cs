@@ -157,8 +157,10 @@ namespace PartStore.Web.Controllers
             {
                 Bank = await _context.Banks.FirstOrDefaultAsync(m => m.Id == id),
                 BankBalance = await _context.Transactions.LastOrDefaultAsync(m => m.BankId == id),
-                Payments = await _context.Payments.Include(p => p.Account).Include(p => p.FromBank).Include(p => p.Invoice).Include(p => p.Operation).Include(p => p.PaymentType).Include(p => p.ToBank)
-                                .Where(p => p.FromBankId == id || p.ToBankId == id).OrderByDescending(a => a.Id).Take(100).ToListAsync()
+                PaymentsCredit = await _context.Payments.Include(p => p.Account).Include(p => p.FromBank).Include(p => p.Invoice).Include(p => p.Operation).Include(p => p.PaymentType).Include(p => p.ToBank)
+                                .Where(p => p.ToBankId == id).OrderByDescending(a => a.Id).Take(100).ToListAsync(),
+                PaymentsDebit = await _context.Payments.Include(p => p.Account).Include(p => p.FromBank).Include(p => p.Invoice).Include(p => p.Operation).Include(p => p.PaymentType).Include(p => p.ToBank)
+                                .Where(p => p.FromBankId == id).OrderByDescending(a => a.Id).Take(100).ToListAsync()
             };
 
             return View(data);

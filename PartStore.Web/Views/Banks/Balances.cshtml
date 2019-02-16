@@ -14,82 +14,182 @@
     </small>
 </h3>
 <hr />
-
-<h4>قائمة @Lang.Payments</h4>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Lang.AddDate
-            </th>
-            <th>
-                @Lang.Amount
-            </th>
-            <th>
-                @Lang.RefNo
-            </th>
-            <th>
-                @Lang.Account
-            </th>
-            <th>
-                @Lang.BankCache
-            </th>
-            <th>
-                @Lang.PaymentType
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model?.Payments)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AddDate)
-                </td>
-                <td>
-                    <span class="money">@Html.DisplayFor(modelItem => item.Amount)</span>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RefNo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Account.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FromBank.Name)
-                    @Html.DisplayFor(modelItem => item.ToBank.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Operation.Name)
-                    -
-                    @Html.DisplayFor(modelItem => item.PaymentType.Name)
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            @Lang.Options
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
-                            <li>
-                                <a asp-controller="Payments" asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit text-info"></span>  @Lang.Edit</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a asp-controller="Payments" asp-action="Details" asp-route-id="@item.Id"><span class="glyphicon glyphicon-print text-warning"></span> @Lang.Print</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li>
-                                <a asp-controller="Payments" asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-remove-circle text-danger"></span> @Lang.Delete</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#creditList" aria-controls="creditList" role="tab" data-toggle="tab">المقبوضات</a></li>
+            <li role="presentation"><a href="#debitList" aria-controls="debitList" role="tab" data-toggle="tab">المصروفات</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="creditList">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="active">
+                            <th>
+                                @Lang.AddDate
+                            </th>
+                            <th>
+                                @Lang.Amount
+                            </th>
+                            <th>
+                                @Lang.RefNo
+                            </th>
+                            <th>
+                                @Lang.Account
+                            </th>
+                            <th>
+                                @Lang.BankCache
+                            </th>
+                            <th>
+                                @Lang.PaymentType
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model?.PaymentsCredit)
+                        {
+                            <tr class="@(item.OperationId == (int)PaymentTypesEnum.Debit ? "warning" : "")">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AddDate)
+                                </td>
+                                <td>
+                                    <span class="money">@(item.OperationId == (int)PaymentTypesEnum.Debit ? "-" : "")@Html.DisplayFor(modelItem => item.Amount)</span>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RefNo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Account.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FromBank.Name)
+                                    @Html.DisplayFor(modelItem => item.ToBank.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Operation.Name)
+                                    -
+                                    @Html.DisplayFor(modelItem => item.PaymentType.Name)
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            @Lang.Options
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
+                                            <li>
+                                                <a asp-controller="Payments" asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit text-info"></span>  @Lang.Edit</a>
+                                            </li>
+                                            <li role="separator" class="divider"></li>
+                                            <li>
+                                                <a asp-controller="Payments" asp-action="Details" asp-route-id="@item.Id"><span class="glyphicon glyphicon-print text-warning"></span> @Lang.Print</a>
+                                            </li>
+                                            <li role="separator" class="divider"></li>
+                                            <li>
+                                                <a asp-controller="Payments" asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-remove-circle text-danger"></span> @Lang.Delete</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="active">
+                            <th><span class="pull-left">@Lang.Total</span></th>
+                            <th><span class="money">@Model.PaymentsCredit.Sum(p => p.Amount)</span></th>
+                            <th colspan="5"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="debitList">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr class="active">
+                            <th>
+                                @Lang.AddDate
+                            </th>
+                            <th>
+                                @Lang.Amount
+                            </th>
+                            <th>
+                                @Lang.RefNo
+                            </th>
+                            <th>
+                                @Lang.Account
+                            </th>
+                            <th>
+                                @Lang.BankCache
+                            </th>
+                            <th>
+                                @Lang.PaymentType
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model?.PaymentsDebit)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AddDate)
+                                </td>
+                                <td>
+                                    <span class="money">@Html.DisplayFor(modelItem => item.Amount)</span>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RefNo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Account.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FromBank.Name)
+                                    @Html.DisplayFor(modelItem => item.ToBank.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Operation.Name)
+                                    -
+                                    @Html.DisplayFor(modelItem => item.PaymentType.Name)
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            @Lang.Options
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
+                                            <li>
+                                                <a asp-controller="Payments" asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit text-info"></span>  @Lang.Edit</a>
+                                            </li>
+                                            <li role="separator" class="divider"></li>
+                                            <li>
+                                                <a asp-controller="Payments" asp-action="Details" asp-route-id="@item.Id"><span class="glyphicon glyphicon-print text-warning"></span> @Lang.Print</a>
+                                            </li>
+                                            <li role="separator" class="divider"></li>
+                                            <li>
+                                                <a asp-controller="Payments" asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-remove-circle text-danger"></span> @Lang.Delete</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr class="active">
+                            <th><span class="pull-left">@Lang.Total</span></th>
+                            <th><span class="money">@Model.PaymentsDebit.Sum(p => p.Amount)</span></th>
+                            <th colspan="5"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts{
     <script src="~/lib/autoNumeric.min.js"></script>
     <script>$('.money').autoNumeric();</script>

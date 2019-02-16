@@ -13,6 +13,7 @@
     <form asp-action="Edit" method="post">
         <div class="col-md-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ItemsPk" />
             <input type="hidden" asp-for="ItemId" />
             <div class="form-group">
                 <label asp-for="MakeId" class="control-label">@Lang.Make</label>
